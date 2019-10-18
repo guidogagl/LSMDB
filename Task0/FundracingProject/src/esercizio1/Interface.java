@@ -2,8 +2,6 @@ package esercizio1;
 
 import java.awt.event.KeyEvent;
 
-import javax.swing.JPasswordField;
-
 import javafx.scene.image.*;
 
 import javafx.event.*;
@@ -13,7 +11,7 @@ public class Interface {
 
 	Interface(Button login, TextField tf_companyName, Label table_title, TableProjects table, 
 			TextArea description, TextField name_project, TextField total_budget, Button insert, Button delete,
-			ImageView iv1, TextField stake, Button update, Label name_agency, Label address_agency, Label site_agency,PasswordField tf_password,
+			ImageView iv1, TextField stake, Button update, Label name_agency, Label address_agency, Label site_agency,TextField tf_password,
 			Label l_agencyName,Label l_password){
 		
 		//Abbasso tutte le y di 20
