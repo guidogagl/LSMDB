@@ -1,0 +1,120 @@
+package esercizio1;
+
+
+import java.sql.Connection;
+
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
+public class Connect {
+	private static String password = "root";
+	private static String username = "root";
+	
+	private String connStr = "jdbc:mysql://localhost:3306/esercizio1?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&user=";
+	private Connection conn = null;
+
+	private List<Vector<Object>> fetchRows(ResultSet result, int num) throws SQLException {
+		ArrayList<Vector<Object>> list = new ArrayList<Vector<Object>>();
+
+		while(result.next()) {
+            Vector<Object> v = new Vector<Object>();
+			
+            for(int i=1; i <= num; i++)
+            	v.add(result.getObject(i));
+            
+            list.add(v);
+        }
+		
+		return list;
+	}
+	
+	public Connect(){
+		connStr = connStr + username + "&password=" + password;
+		try {
+			conn = DriverManager.getConnection(connStr);
+
+		} catch(SQLException ex) {
+			System.out.println("SQLException: " + ex.getMessage() );
+			System.out.println("SQLState: " + ex.getSQLState() );
+			System.out.println("VendorError: " + ex.getErrorCode() );	
+		}
+	}
+
+	public void close() {
+		try {
+			conn.close();
+	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block	
+			e.printStackTrace();
+		}
+	}
+
+	public List<Vector<Object>> query(String queryString, int numColumns) {
+		System.out.print("in esecuzione la query: \n" + queryString + "\n");		
+		List<Vector<Object>> fetchedRows = new ArrayList<Vector<Object>>();
+		
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(queryString);
+			
+			if( numColumns == 0 ) {
+				stmt.close();
+				return null;
+			}
+			
+			fetchedRows =  fetchRows(rs, numColumns);
+			
+			stmt.close();
+			return fetchedRows;
+        }
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+
+			e.printStackTrace();
+		}
+
+		return null;		
+	}
+	
+	public List<Vector<Object>> query(String queryString, int numColumns, Vector<String> data) {
+		System.out.print("in esecuzione la query: \n" + queryString + "\n");
+		List<Vector<Object>> fetchedRows = new ArrayList<Vector<Object>>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(queryString);
+			System.out.println("Vector capacity: " + data.capacity());
+
+			for(int i=0; i < data.capacity() ; i++) 
+				pstmt.setString(i, data.get(i));	
+
+			int numRows = pstmt.executeUpdate();
+			System.out.print("number of row affected: " + numRows);
+			
+			if( numColumns == 0 ) {
+				pstmt.close();
+				return null;
+			}
+			
+			ResultSet rs = pstmt.getResultSet();
+			fetchedRows =  fetchRows(rs, numColumns);
+
+			pstmt.close();			
+			return fetchedRows;		
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+}

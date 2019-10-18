@@ -1,0 +1,231 @@
+package esercizio1;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
+public class DepositoDati {
+	
+	private Connect conn = null;
+	
+	private List<RowTableProjects> getRowTableProjects(String sql, Vector<String> v) {
+		conn = new Connect();
+		
+		List<RowTableProjects> ret = new ArrayList<RowTableProjects>();
+		
+		List<Vector<Object>> resultSet;
+		
+		if(v != null)
+			resultSet = conn.query(sql, 6, v);
+		else
+			resultSet = conn.query(sql, 6);
+
+		System.out.print("Connessione con il database chiusa correttamente \n");
+		for(int i = 0; i < resultSet.size(); i++) {
+			Vector<Object> val = resultSet.get(i);
+			
+			RowTableProjects row = new RowTableProjects( (int)val.get(0), 
+														val.get(1).toString(), 
+														val.get(2).toString(), 
+														(int)val.get(3), 
+														(int)val.get(4), 
+														val.get(5).toString()
+														); 
+			ret.add(row);
+		}
+
+		conn.close();
+		
+
+		return ret;		
+	}
+	
+	public DepositoDati() {
+		
+	}
+		
+	public List<RowTableProjects> getProjects(String agencyName){
+		String sqlStr = "select f1.id_project, f1.nome, f1.budget, max(f1.stake) as stake, f1.azienda\n" + 
+				"from  (\n" + 
+				"select p.id as id_project, p.nome, p.budget, case when f.azienda = ? then f.budget else 0 end as stake, p.azienda\n" + 
+				"from finanziamento f right outer join progetto p on f.progetto = p.id\n" + 
+				"order by stake desc\n" + 
+				"    ) as f1\n" + 
+				"group by f1.id_project";
+		
+		Vector<String> d = new Vector<String>();		
+		d.add(agencyName);
+		
+		List<RowTableProjects> ret = getRowTableProjects(sqlStr, d);
+		
+		return ret;
+	}
+	
+	public int getSommaStakes(int selectedProjectID){		
+		String sql="SELECT sum(f.budget) as somma "
+		  		+ "FROM finanziamento f  "
+				+" WHERE f.progetto="+ selectedProjectID +";"
+				;
+		
+		conn = new Connect();
+		
+		List<Vector<Object>> val = conn.query(sql, 1);
+		
+		conn.close();
+		
+		return (int)val.get(0).get(0);
+	}
+	
+	public double getProgress(int id_progetto)
+	{
+		String sql="SELECT (sum(f.budget)/p.budget)*100 as progresso "
+		  		+ "FROM progetto p inner join finanziamento f on p.id=f.progetto "
+				+" WHERE p.id="+ id_progetto +";"
+				;
+		conn = new Connect();
+		
+		List<Vector<Object>> val = conn.query(sql, 1);
+		
+		conn.close();
+		
+		return Double.valueOf(val.get(0).get(0).toString());
+		
+	}
+	
+	public List<RowTableProjects> getProjectsWithoutStake(){
+		String sqlStr =" select p.id as id_project, p.nome, case when d.id_project is null then 0 else d.progress end as progress, 0 as stake, p.budget,p.azienda\n" + 
+				"from progetto p left outer join (\n" + 
+				"select	p.id as id_project, p.nome as nome,(sum(f.budget)/p.budget)*100 as progress, p.budget, p.azienda\n" + 
+				"				from	progetto as p \n" + 
+				"						inner join \n" + 
+				"				        finanziamento as f \n" + 
+				"				        on p.id = f.progetto\n" + 
+				"				group by f.progetto) as d on d.id_project=p.id;";
+	
+		return getRowTableProjects(sqlStr, null);
+	}
+	
+	public void insertProject(Vector<String>val) {
+	  String insertProject="INSERT INTO progetto (nome,budget,descrizione,azienda) values ((?),(?),(?),(?))";
+	   
+	  Connect conn = new Connect();
+	  
+	  conn.query(insertProject, 0, val);
+	  
+	  conn.close();
+	}
+	
+	public boolean iAmOwner(int projectId,String agencyName) {
+		String sql="SELECT COUNT(*) as conta FROM progetto WHERE id="+ projectId +" and azienda='"+ agencyName +"';";
+		
+		conn = new Connect();
+		
+		List<Vector<Object>> val = conn.query(sql, 1);
+		
+		conn.close();
+		
+		int occurrency = (int)val.get(0).get(0);
+		
+		if( occurrency > 0)
+			return true;
+		return false;
+		
+	}
+	
+	public Boolean myStake(String agencyName, int id_project) {
+		String sql = "SELECT count(*) as conta FROM finanziamento WHERE progetto = "+ id_project + " and azienda = '"+ agencyName +"';";
+		
+		conn = new Connect();
+		
+		List<Vector<Object>> val = conn.query(sql, 1);
+		
+		conn.close();
+		
+		int occurrency = (int)val.get(0).get(0);
+		
+		if( occurrency > 0)
+			return true;
+		return false;
+	}	
+	public void deleteProject(int projectId) {
+		String sql="DELETE FROM progetto WHERE id = "+ projectId + ";";
+		
+		Connect conn = new Connect();
+	  
+		conn.query(sql, 0);
+	  
+		conn.close();
+		
+	}
+	
+	public Vector<String> getAgency(String agencyName,String password) {
+		
+		String sql = "SELECT * FROM azienda WHERE nomeAzienda = "+ agencyName + " AND password =" + password + ";";
+		
+		Connect conn = new Connect();
+		
+		Vector<Object> vett = conn.query(sql, 5).get(0);
+		
+		conn.close();
+		
+		Vector<String> ret = new Vector<String>();
+		for(int i = 0; i < 5; i++)
+			ret.add(vett.get(i).toString());
+		
+		return ret;
+	}
+	
+	public String getDescriptionProject(int id_project) {
+		String sql = "SELECT descrizione FROM progetto WHERE id ="+ id_project +";";
+		
+		conn = new Connect();
+		
+		List<Vector<Object>> val = conn.query(sql, 1);
+		
+		conn.close();
+		
+		return val.get(0).get(0).toString();
+	}
+	
+	
+	public void deleteMyStake(int projectId,String agencyName) {
+		String sql = "DELETE FROM finanziamento WHERE progetto = "+ projectId +" and azienda = '"+ agencyName + "';";
+		
+		Connect conn = new Connect();
+		  
+		conn.query(sql, 0);
+	  
+		conn.close();
+	}
+	
+	public void updateStake(int stakeBudget,String agencyName,int idProgetto) {
+		
+		boolean stakePresent = myStake(agencyName, idProgetto);
+		
+		Vector<String> val = new Vector<String>();
+		val.add(Integer.toString(stakeBudget));
+		val.add(agencyName);
+		val.add(Integer.toString(idProgetto));
+		
+		conn = new Connect();
+		String sql = "";
+		
+		//Se non esiste un finanziamento per il progetto selezionato da parte dell'azienda che ha fatto il login
+		if(stakePresent == false) 
+			sql = "INSERT INTO finanziamento (budget, azienda, progetto) values((?), (?), (?));";
+		else
+			sql = "UPDATE finanziamento SET budget = (?) WHERE progetto = (?) and azienda = (?);";
+		
+		conn.query(sql, 0, val);
+		
+		conn.close();
+	}
+	
+}
