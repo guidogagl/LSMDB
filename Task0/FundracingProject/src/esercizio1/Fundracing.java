@@ -64,6 +64,10 @@ public class Fundracing extends Application{
 	private Image image;
 	private ImageView iv1 = new ImageView();
 	
+	protected Button register= new Button("Register");
+	protected Button send= new Button("Send");
+	protected Button cancel= new Button("Cancel");
+	protected TextField message=new TextField("Message");
 	
 	public void start(Stage stage) {
 		
@@ -107,7 +111,7 @@ public class Fundracing extends Application{
 		
 		Interface interfaccia = new Interface(login, tf_companyName, table_title, table, 
 				description, name_project, total_budget, insert, delete, iv1, stake, update,
-				name_agency, address_agency, site_agency,tf_password,l_agencyName,l_password);
+				name_agency, address_agency, site_agency,tf_password,l_agencyName,l_password, register,  send,  cancel, message);
 		
 		
 		insert.setOnAction((ActionEvent ev2)->{
@@ -183,7 +187,7 @@ public class Fundracing extends Application{
 		
 		Group root = new Group(tf_companyName,tf_password, login, table_title, table, description,
 				name_project, total_budget, insert, delete, iv1, stake, update, 
-				name_agency, address_agency, site_agency,l_agencyName,l_password);
+				name_agency, address_agency, site_agency,l_agencyName,l_password, register,  send,  cancel, message);
 		
 		
 	

@@ -12,8 +12,22 @@ public class Interface {
 	Interface(Button login, TextField tf_companyName, Label table_title, TableProjects table, 
 			TextArea description, TextField name_project, TextField total_budget, Button insert, Button delete,
 			ImageView iv1, TextField stake, Button update, Label name_agency, Label address_agency, Label site_agency,TextField tf_password,
-			Label l_agencyName,Label l_password){
-		
+			Label l_agencyName,Label l_password, Button register, Button send, Button cancel,
+			TextField message){
+		cancel.setLayoutX(640);
+		cancel.setLayoutY(225);
+		cancel.setMinSize(70, 30);
+		cancel.setStyle("-fx-font-weight: bold;");
+
+		send.setLayoutX(640);
+		send.setLayoutY(225);
+		send.setMinSize(70, 30);
+		send.setStyle("-fx-font-weight: bold;");
+
+		register.setLayoutX(640);
+		register.setLayoutY(225);
+		register.setMinSize(70, 30);
+		register.setStyle("-fx-font-weight: bold;");
 		//Abbasso tutte le y di 20
 		login.setLayoutX(540);
 		login.setLayoutY(125);
@@ -62,6 +76,12 @@ public class Interface {
 		description.setEditable(false);
 		description.setWrapText(true);
 		
+		message.setLayoutX(130);
+		message.setLayoutY(400);
+		message.setMaxWidth(480);
+		message.setMaxHeight(90);
+		message.setEditable(false);
+		message.setWrapText(true);
 		//description.setOnKeyPressed(new EventHandler<KeyEvent>(){
 			//public void handle(KeyEvent event) {
 				
