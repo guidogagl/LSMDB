@@ -189,20 +189,11 @@ public class DepositoDati {
 		
 		Connect conn = new Connect();
 		
-		List<Vector<String>> list = conn.query(sql, 5);
-		
-		if( list == null )
-			return new Vector<String>();
-		
-		Vector<String> vett = list.get(0);
+		Vector<String> vett = conn.query(sql, 5).get(0);
 		
 		conn.close();
 		
 		Vector<String> ret = new Vector<String>();
-		
-		if( vett.get(0) == "0" )
-			return null;
-		
 		for(int i = 0; i < 5; i++)
 			ret.add(vett.get(i).toString());
 		
