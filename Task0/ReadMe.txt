@@ -1,2 +1,0 @@
-All'interno della cartella Task0 sono presenti il dump del database (database.sql), il codice per riempire le relative tabelle 
-(fillDatabase.sql), la documentazione e la cartella FundracingProject contenente il progetto.
