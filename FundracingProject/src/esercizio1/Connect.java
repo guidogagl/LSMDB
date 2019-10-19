@@ -25,10 +25,7 @@ public class Connect {
 
 	private List<Vector<String>> fetchRows(ResultSet result, int num) throws SQLException {
 		ArrayList<Vector<String>> list = new ArrayList<Vector<String>>();
-		
-		if(!result.next())
-			return null;
-		
+
 		while(result.next()) {
             Vector<String> v = new Vector<String>();
 			
@@ -108,7 +105,6 @@ public class Connect {
 					pstmt.setInt(j, Integer.parseInt( data.get(i) ) );
 				else
 					pstmt.setString(j, data.get(i));	
-
 			pstmt.execute();
 			
 			if( numColumns == 0 ) {
