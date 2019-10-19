@@ -57,19 +57,19 @@ public class DepositoDati {
 		List<Vector<String>> resultSet;
 		
 		if(v != null)
-			resultSet = conn.query(sql, 5, v);
+			resultSet = conn.query(sql, 4, v);
 		else
-			resultSet = conn.query(sql, 5);
+			resultSet = conn.query(sql, 4);
 
 		
 		for(int i = 0; i < resultSet.size(); i++) {
 			Vector<String> val = resultSet.get(i);
 			
-			RowTableMessage row = new RowTableMessage( 	Integer.parseInt(val.get(0)), //id
-														val.get(1), //data
-														val.get(2), //mittente
-														val.get(3), //messaggio
-														Integer.parseInt(val.get(4))//stake
+			RowTableMessage row = new RowTableMessage( 	Integer.parseInt(val.get(0)), 
+														val.get(1), 
+														val.get(2), 
+														val.get(3),
+														Integer.parseInt(val.get(4))
 														); 
 			ret.add(row);
 		}
@@ -80,23 +80,6 @@ public class DepositoDati {
 		
 		return ret;		
 	}
-	
-	
-	public String getDescriptionMessage(int id_message) {
-		
-			conn = new Connect();
-			
-			String sql = "select	m.testo\n" + 
-					"from	messaggio m\n" + 
-					"where 	m.id = " + id_message;
-			
-			List<Vector<String>> val = conn.query(sql, 1);
-						
-						
-			conn.close();
-			
-			return val.get(0).toString();
-		}
 	
 		
 	public List<RowTableProjects> getProjects(String agencyName){
@@ -272,6 +255,20 @@ public class DepositoDati {
 		
 		return val.get(0).get(0).toString();
 	}
+	
+	public String getDescriptionMessage(int id_message) {
+			
+		String sql = "SELECT testo FROM messaggio WHERE id ="+ id_message +";";
+		
+		conn = new Connect();
+		
+		List<Vector<String>> val = conn.query(sql, 1);
+		
+		conn.close();
+		
+		return val.get(0).get(0).toString();
+		}
+	
 		
 	public void deleteMyStake(int projectId,String agencyName) {
 		String sql = "DELETE FROM finanziamento WHERE progetto = "+ projectId +" and azienda = '"+ agencyName + "';";
