@@ -83,6 +83,44 @@ return fetchedRows;
 ```
 Nel caso in cui si voglia effettuare una chiamata con statement di tipo PreparedStatement, Connection riconosce il tipo della variabile da settare attraverso la direttiva StringUtils.isStriclyNumeric(), per questo motivo in tutta l'applicazione devono essere effettuati dei controlli sui tipi per evitare che compilando campi corrispondenti a stringhe, l'utente inserisca valori numerici, che verrebbero riconosciuti erroneamente da Connection e provocherebbero errori nel database.
 
+## Code Explanation
+### Connect
+Attributi
+- username : String = root
+- password : String = root
+- SSL : String =  &requireSSL=true
+- connStr: String
+- conn : Connection = null
+
+Metodi
+- fetchRows(Result, int) : List<Vector<String>> 
+- Connect
+- close()
+- query(String, int): List<Vector<String>>
+- query(String, int, Vector<String>): List<Vector<String>>
+
+
+### DepositoDati
+Attributi
+- conn : Connect = null
+
+Metodi
+- getRowTableProjects(String, Vector<string>):List<RowTableProjects>
+- getRowTableMessage(String, Vector<string>):List<RowTableMessage>
+- getProjects(String, Vector<string>):List<RowTableProjects>
+- getMessage(String, Vector<string>):List<RowTableMessage>
+- getDescriptionMessage(int):String
+- getSommaStakes(int):int
+- getProgress(int):double
+- getProjectsWithoutStake:List<RowTableProjects>
+- insertProject(Vector<String> val): void
+- iAmOwner(int, String): boolean
+- myStake(String, int): Boolean
+- deleteProject(int):void
+- getAgency(String, String): Vector<String>
+- getDescriptionProject(int): String
+- deleteMyStake(int, String): void
+- updateStake(int, String, int): void
 
 
 
