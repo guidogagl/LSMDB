@@ -57,9 +57,9 @@ public class DepositoDati {
 		List<Vector<String>> resultSet;
 		
 		if(v != null)
-			resultSet = conn.query(sql, 4, v);
+			resultSet = conn.query(sql, 5, v);
 		else
-			resultSet = conn.query(sql, 4);
+			resultSet = conn.query(sql, 5);
 
 		
 		for(int i = 0; i < resultSet.size(); i++) {
@@ -80,6 +80,23 @@ public class DepositoDati {
 		
 		return ret;		
 	}
+	
+	
+	public String getDescriptionMessage(int id_message) {
+		
+			conn = new Connect();
+			
+			String sql = "select	m.testo\n" + 
+					"from	messaggio m\n" + 
+					"where 	m.id = " + id_message;
+			
+			List<Vector<String>> val = conn.query(sql, 1);
+						
+						
+			conn.close();
+			
+			return val.get(0).toString();
+		}
 	
 		
 	public List<RowTableProjects> getProjects(String agencyName){

@@ -63,6 +63,7 @@ public class Connect {
 		}
 	}
 
+	//query sul db senza parametri
 	public List<Vector<String>> query(String queryString, int numColumns) {
 		System.out.print("in esecuzione la query: \n" + queryString + "\n");		
 		
