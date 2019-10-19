@@ -6,6 +6,6 @@
 # Software Architecture
 La realizzazione della classe Connect e il seguente restauro della classe DepositoDati è avvenuto per dividere logicamente Middle-Layer e Back-end come in figura.
 
-[[  https://github.com/guidogagl/LSMDB/arch_diagram.png | alt=architetture diagram ]]
+[[https://github.com/guidogagl/LSMDB/arch_diagram.png|alt=architetturediagram]]
 
 ## 
