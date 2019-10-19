@@ -9,14 +9,15 @@ import javafx.scene.image.*;
 public class TableMessage extends TableView<RowTableMessage> {
 
 	private ObservableList<RowTableMessage> messagesList;
+	//rivate ObservableList<LogoImage> logoList;
 	
 	public TableMessage() {
 		
 		setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		
-		TableColumn idMessage = new TableColumn("ID Message"); 
-		idMessage.setCellValueFactory(new PropertyValueFactory<>("id"));
-		//idMessage.setVisible(false);
+		/*TableColumn Image = new TableColumn<>("Image");
+		Image.setCellValueFactory(new PropertyValueFactory<>("logo_mittente"));
+		Image.setStyle("-fx-alignment: CENTER;");*/
     	
     	TableColumn Mittente = new TableColumn("Azienda Mittente"); 
     	Mittente.setCellValueFactory(new PropertyValueFactory<>("mittente")); 
@@ -36,7 +37,7 @@ public class TableMessage extends TableView<RowTableMessage> {
     	
     	messagesList = FXCollections.observableArrayList();
     	setItems(messagesList);
-        getColumns().addAll(idMessage, Mittente, Data, Messaggio, Stake);
+        getColumns().addAll(Mittente, Data, Messaggio, Stake);
 	}
 	
 	public void updateMessages(List<RowTableMessage> messages) {

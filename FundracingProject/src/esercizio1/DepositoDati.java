@@ -50,16 +50,16 @@ public class DepositoDati {
 	}
 	
 	private List<RowTableMessage> getRowTableMessage(String sql, Vector<String> v) {
-		conn = new Connect();
+conn = new Connect();
 		
 		List<RowTableMessage> ret = new ArrayList<RowTableMessage>();
 		
 		List<Vector<String>> resultSet;
 		
 		if(v != null)
-			resultSet = conn.query(sql, 4, v);
+			resultSet = conn.query(sql, 5, v);
 		else
-			resultSet = conn.query(sql, 4);
+			resultSet = conn.query(sql, 5);
 
 		
 		for(int i = 0; i < resultSet.size(); i++) {
@@ -78,7 +78,7 @@ public class DepositoDati {
 		
 		System.out.print("Connessione con il database chiusa correttamente \n");
 		
-		return ret;		
+		return ret;	
 	}
 	
 		
@@ -124,6 +124,19 @@ public class DepositoDati {
 		
 		return ret;
 	}
+	
+	public String getDescriptionMessage(int id_message) {
+		
+		String sql = "SELECT testo FROM messaggio WHERE id ="+ id_message +";";
+		
+		conn = new Connect();
+		
+		List<Vector<String>> val = conn.query(sql, 1);
+		
+		conn.close();
+		
+		return val.get(0).get(0).toString();
+		}
 	
 	
 	public int getSommaStakes(int selectedProjectID){		
@@ -255,20 +268,6 @@ public class DepositoDati {
 		
 		return val.get(0).get(0).toString();
 	}
-	
-	public String getDescriptionMessage(int id_message) {
-			
-		String sql = "SELECT testo FROM messaggio WHERE id ="+ id_message +";";
-		
-		conn = new Connect();
-		
-		List<Vector<String>> val = conn.query(sql, 1);
-		
-		conn.close();
-		
-		return val.get(0).get(0).toString();
-		}
-	
 		
 	public void deleteMyStake(int projectId,String agencyName) {
 		String sql = "DELETE FROM finanziamento WHERE progetto = "+ projectId +" and azienda = '"+ agencyName + "';";
