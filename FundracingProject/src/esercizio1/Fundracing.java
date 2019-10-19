@@ -52,6 +52,7 @@ public class Fundracing extends Application{
 	private int selectedMessagetId = 0;
 	private int selectedStake=0;
 	private int selectedTotalBudget=0;
+	private int selectedMessageStake = 0;
 	private Label name_agency = new Label("");
 	private Label address_agency = new Label("");
 	private Label site_agency = new Label("");
@@ -123,7 +124,8 @@ public class Fundracing extends Application{
 		
 		
 		accept.setOnAction((ActionEvent ev1)->{
-			
+			deposito.updateStake(selectedMessageStake, agencyName, selectedMessagetId);
+			table_message.updateMessages(deposito.getMessages(agencyName));
 		});
 		
 		
@@ -200,11 +202,6 @@ public class Fundracing extends Application{
 				} 
 			});
 			
-			
-			accept.setOnAction((ActionEvent ev1)->{
-				
-				//Dopo aver selezionato una riga della tabella messaggi, se l'utente preme 'accept', il sistema inserisce un nuovo finanziamento
-			});
 		
 		
 		
@@ -265,7 +262,7 @@ public class Fundracing extends Application{
                 selectedMessagetId = res.getId();
                 System.out.println("Message id: " + selectedMessagetId);
                 //selectedTotalBudget=res.getBudget();
-                //selectedStake=res.getStake();
+                selectedMessageStake=res.getStake();
                 description_message.setText(deposito.getDescriptionMessage(selectedMessagetId));
                 //stake.setText(Integer.toString(res.getStake()));
             }  
