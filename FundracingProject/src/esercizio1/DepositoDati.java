@@ -241,6 +241,19 @@ conn = new Connect();
 		
 	}
 	
+	
+	public void deleteMessage(int messageId) {
+		String sql="DELETE FROM messaggio WHERE id = "+ messageId + ";";
+		
+		Connect conn = new Connect();
+	  
+		conn.query(sql, 0);
+	  
+		conn.close();
+		
+	}
+	
+	
 	public Vector<String> getAgency(String agencyName,String password) {
 		
 		String sql = "SELECT * FROM azienda WHERE nomeAzienda = '"+ agencyName + "' AND password ='" + password + "';";

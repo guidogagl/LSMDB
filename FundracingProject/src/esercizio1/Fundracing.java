@@ -117,7 +117,14 @@ public class Fundracing extends Application{
 		
 		refuse.setOnAction((ActionEvent ev1)->{
 			
-		)};
+			deposito.deleteMessage(selectedMessagetId);
+			table_message.updateMessages(deposito.getMessages(agencyName));
+		});
+		
+		
+		accept.setOnAction((ActionEvent ev1)->{
+			
+		});
 		
 		
 		Interface interfaccia = new Interface(login, tf_companyName, table_title, table, 
