@@ -18,17 +18,14 @@ import com.mysql.cj.util.StringUtils;
 public class Connect {
 	private static String password = "root";
 	private static String username = "root";
-	private static String ssl = "&requireSSL=true";
+	private static String ssl = "&useSSL=true";
 	
 	private String connStr = "jdbc:mysql://localhost:3306/esercizio1?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&user=";
 	private Connection conn = null;
 
 	private List<Vector<String>> fetchRows(ResultSet result, int num) throws SQLException {
 		ArrayList<Vector<String>> list = new ArrayList<Vector<String>>();
-		
-		if(!result.next())
-			return null;
-		
+
 		while(result.next()) {
             Vector<String> v = new Vector<String>();
 			

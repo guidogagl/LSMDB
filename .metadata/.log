@@ -671,6 +671,7 @@ java.io.FileNotFoundException: C:\Users\Guido\.m2\repository\com\google\protobuf
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2019-10-18 15:57:29.312
 !MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+<<<<<<< HEAD
 
 !ENTRY org.eclipse.jdt.core 4 4 2019-10-18 16:20:41.337
 !MESSAGE Background Indexer Crash Recovery
@@ -782,3 +783,5 @@ java.lang.NegativeArraySizeException
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2019-10-18 16:50:45.678
 !MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+=======
+>>>>>>> parent of a14d809... finish connect
