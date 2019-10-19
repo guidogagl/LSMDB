@@ -15,9 +15,9 @@ public class TableMessage extends TableView<RowTableMessage> {
 		
 		setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		
-		TableColumn Image = new TableColumn<>("Image");
+		/*TableColumn Image = new TableColumn<>("Image");
 		Image.setCellValueFactory(new PropertyValueFactory<>("logo_mittente"));
-		Image.setStyle("-fx-alignment: CENTER;");
+		Image.setStyle("-fx-alignment: CENTER;");*/
     	
     	TableColumn Mittente = new TableColumn("Azienda Mittente"); 
     	Mittente.setCellValueFactory(new PropertyValueFactory<>("mittente")); 
@@ -37,7 +37,7 @@ public class TableMessage extends TableView<RowTableMessage> {
     	
     	messagesList = FXCollections.observableArrayList();
     	setItems(messagesList);
-        getColumns().addAll(Image, Mittente, Data, Messaggio, Stake);
+        getColumns().addAll(Mittente, Data, Messaggio, Stake);
 	}
 	
 	public void updateMessages(List<RowTableMessage> messages) {

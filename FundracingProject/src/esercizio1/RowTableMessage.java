@@ -1,9 +1,11 @@
 package esercizio1;
 
+import java.awt.Component;
+
 import javafx.beans.property.*;
 import javafx.scene.image.*;
 
-public class RowTableMessage {
+public class RowTableMessage extends Component{
 	
 	//private SimpleObjectProperty image;
 	private SimpleStringProperty data;

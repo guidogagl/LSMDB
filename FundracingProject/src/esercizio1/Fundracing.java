@@ -54,23 +54,12 @@ public class Fundracing extends Application{
 	private Image image;
 	private ImageView iv1 = new ImageView();
 	private TableMessage table_message = new TableMessage();
-	private JFrame frame = new JFrame();
-	private JPanel panel[][] = new JPanel[2][5];
+	
+	private Button accept = new Button("Accept");
+	private Button refuse = new Button("Refuse");
 	
 	
 	public void start(Stage stage) {
-		
-		List<RowTableMessage> list = deposito.getMessages(agencyName);
-		
-		for(int i = 0; i < 2; i++) {
-			for(int j = 0; j < 5; j++) {
-				panel[i][j] = new JPanel();
-			}
-		}
-		
-		panel[0][0].add(new JLabel(new ImageIcon(list.get(0))));
-		
-		//frame.add(panel);
 		
 		
 		table.updateProjects(deposito.getProjectsWithoutStake());
