@@ -57,19 +57,20 @@ conn = new Connect();
 		List<Vector<String>> resultSet;
 		
 		if(v != null)
-			resultSet = conn.query(sql, 5, v);
+			resultSet = conn.query(sql, 6, v);
 		else
-			resultSet = conn.query(sql, 5);
+			resultSet = conn.query(sql, 6);
 
 		
 		for(int i = 0; i < resultSet.size(); i++) {
 			Vector<String> val = resultSet.get(i);
 			
 			RowTableMessage row = new RowTableMessage( 	Integer.parseInt(val.get(0)), 
-														val.get(1), 
+														Integer.parseInt(val.get(1)),
 														val.get(2), 
-														val.get(3),
-														Integer.parseInt(val.get(4))
+														val.get(3), 
+														val.get(4),
+														Integer.parseInt(val.get(5))
 														); 
 			ret.add(row);
 		}
@@ -112,7 +113,7 @@ conn = new Connect();
 	}
 	
 	public List<RowTableMessage> getMessages(String agencyName){
-		String sqlStr="select	m.id, m.data, m.mittente,  m.testo as messaggio, m.stake\n" + 
+		String sqlStr="select	m.id, m.progetto as id_project, m.data, m.mittente,  m.testo as messaggio, m.stake\n" + 
 					"from	messaggio m\n" + 
 					"		inner join\n" + 
 					"        azienda a\n" + 

@@ -79,37 +79,45 @@ public class Fundracing extends Application{
 			
 			String urlLogo = "";
 			
-			agencyName = tf_companyName.getText();
-			String password=tf_password.getText();
-			Vector<String> result = deposito.getAgency(agencyName,password);
-			
-			//Se il nome dell'azienda è presente nel db e la password è corretta
-			if(!result.isEmpty()) {
+			if(!tf_companyName.getText().equals("") && !tf_password.getText().equals("")) {
 				
-				table.updateProjects(deposito.getProjects(agencyName));
-				table_message.updateMessages(deposito.getMessages(agencyName));
+				agencyName = tf_companyName.getText();
+				String password=tf_password.getText();
+				Vector<String> result = deposito.getAgency(agencyName,password);
 				
-				logged = true;
-				insert.setDisable(false);
-				delete.setDisable(false);
-				description.setEditable(true);
-				name_project.setEditable(true);
-				total_budget.setEditable(true);
-				stake.setEditable(true);
-				update.setDisable(false);
-				name_agency.setText(result.get(0)); 
-				address_agency.setText(result.get(3));
-				site_agency.setText(result.get(4));
-				urlLogo = result.get(1);
-				image = new Image(urlLogo);
-				iv1.setImage(image);
-				
-			} //Se il nome dell'azienda non è presente nel db
-			else {
-				JOptionPane.showMessageDialog(null, "Il nome dell'azienda è errato oppure la password è scorretta!");
+				//Se il nome dell'azienda è presente nel db e la password è corretta
+				if(!result.isEmpty()) {
+					
+					table.updateProjects(deposito.getProjects(agencyName));
+					table_message.updateMessages(deposito.getMessages(agencyName));
+					
+					logged = true;
+					insert.setDisable(false);
+					delete.setDisable(false);
+					description.setEditable(true);
+					name_project.setEditable(true);
+					total_budget.setEditable(true);
+					stake.setEditable(true);
+					update.setDisable(false);
+					name_agency.setText(result.get(0)); 
+					address_agency.setText(result.get(3));
+					site_agency.setText(result.get(4));
+					urlLogo = result.get(1);
+					image = new Image(urlLogo);
+					iv1.setImage(image);
+					
+				} //Se il nome dell'azienda non è presente nel db
+				else {
+					JOptionPane.showMessageDialog(null, "Il nome dell'azienda è errato oppure la password è scorretta!");
+				}
 			}
 			
         });
+		
+		
+		refuse.setOnAction((ActionEvent ev1)->{
+			
+		)};
 		
 		
 		Interface interfaccia = new Interface(login, tf_companyName, table_title, table, 
