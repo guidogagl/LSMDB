@@ -42,20 +42,19 @@ La classe fornisce sostazialmente due metodi pubblici in overload per effettuare
 Il modo classico di effettuare una query per Connect è quello di creare lo statement, eseguire la query, effettuare un fetch del risultato e chiudere lo statement.
 
 ```
-			Statement stmt = conn.createStatement();
-			stmt.execute(queryString);
-			ResultSet rs = stmt.getResultSet();
-					
-			if( numColumns == 0 ) {
-				stmt.close();
-				return null;
-			}
-			
-			List<Vector<String>> fetchedRows =  fetchRows(rs, numColumns);
-			
-			stmt.close();
-			
-			return fetchedRows;
+Statement stmt = conn.createStatement();
+stmt.execute(queryString);
+ResultSet rs = stmt.getResultSet();
+
+if( numColumns == 0 ) {
+	stmt.close();
+	return null;
+}
+
+List<Vector<String>> fetchedRows =  fetchRows(rs, numColumns);
+
+stmt.close();
+return fetchedRows;
 ```
 Nel caso in cui la tabella risultante fosse priva di colonne la funzione prevede un'ottimizzazione evitando di effettuare il fetch del risultato.
 
@@ -64,30 +63,23 @@ Il fetch del risultato è inserito in una lista di vettori di stringhe prima di 
 ```
 PreparedStatement pstmt = conn.prepareStatement(queryString);
 for(int i=0, j = 1; i < data.size() ; i++, j++) 
-    if(StringUtils.isStrictlyNumeric(data.get(i)))
-				   pstmt.setInt(j, Integer.parseInt( data.get(i) ) );
-				else
-					  pstmt.setString(j, data.get(i));	
-   
-   pstmt.execute();
-			
-			if( numColumns == 0 ) {
-				pstmt.close();
-				return null;
-			}
-			
-			ResultSet rs = pstmt.getResultSet();
-			
-			if( rs == null) {
-				pstmt.close();
-				return null;
-			}
-			
-			List<Vector<String>> fetchedRows =  fetchRows(rs, numColumns);
-
-			pstmt.close();		
-			
-   return fetchedRows;		
+	if(StringUtils.isStrictlyNumeric(data.get(i)))
+		pstmt.setInt(j, Integer.parseInt( data.get(i) ) );
+	else
+		pstmt.setString(j, data.get(i));	
+pstmt.execute();
+if( numColumns == 0 ) {
+	pstmt.close();
+	return null;
+}
+ResultSet rs = pstmt.getResultSet();
+if( rs == null) {
+	pstmt.close();
+	return null;
+}
+List<Vector<String>> fetchedRows =  fetchRows(rs, numColumns);
+pstmt.close();		
+return fetchedRows;		
 ```
 Nel caso in cui si voglia effettuare una chiamata con statement di tipo PreparedStatement, Connection riconosce il tipo della variabile da settare attraverso la direttiva StringUtils.isStriclyNumeric(), per questo motivo in tutta l'applicazione devono essere effettuati dei controlli sui tipi per evitare che compilando campi corrispondenti a stringhe, l'utente inserisca valori numerici, che verrebbero riconosciuti erroneamente da Connection e provocherebbero errori nel database.
 
