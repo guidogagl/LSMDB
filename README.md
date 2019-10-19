@@ -14,7 +14,12 @@ La realizzazione della classe Connect e il seguente restauro della classe Deposi
 ![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/arch_diagram.png)
 
 ## Class Modeling 
-### Class Diagram 
+
+Le classi sono state strutturate usando il linguaggio Java 
+
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/class_diagram1.png)
+
+
 
 ---
 
