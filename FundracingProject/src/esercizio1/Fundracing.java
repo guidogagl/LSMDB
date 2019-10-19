@@ -125,7 +125,7 @@ public class Fundracing extends Application{
 		
 		accept.setOnAction((ActionEvent ev1)->{
 			deposito.updateStake(selectedMessageStake, agencyName, selectedMessagetId);
-			table_message.updateMessages(deposito.getMessages(agencyName));
+			table.updateProjects(deposito.getProjects(agencyName));
 		});
 		
 		
