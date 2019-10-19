@@ -16,7 +16,7 @@ import com.mysql.cj.util.StringUtils;
 
 
 public class Connect {
-	private static String password = "root";
+	private static String password = "pavulina";
 	private static String username = "root";
 	private static String ssl = "&requireSSL=true";
 	

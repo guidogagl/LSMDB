@@ -15,10 +15,15 @@ public class Interface {
 			TextArea description, TextField name_project, TextField total_budget, Button insert, Button delete,
 			ImageView iv1, TextField stake, Button update, Label name_agency, Label address_agency, Label site_agency,PasswordField tf_password,
 			Label l_agencyName,Label l_password, TableMessage table_message, Label l_stake, Label l_description, Label l_total_budget,
-			Label l_project_name, Label messages_received, Button accept, Button refuse, Label l_description_message, TextArea description_message){
+			Label l_project_name, Label messages_received, Button accept, Button refuse, Label l_description_message, TextArea description_message, Button register){
 		
 		//Abbasso tutte le y di 20
-		login.setLayoutX(540);
+                register.setLayoutX(590);
+		register.setLayoutY(125);
+		register.setMinSize(70, 30);
+		register.setStyle("-fx-font-weight: bold;");
+
+		login.setLayoutX(510);
 		login.setLayoutY(125);
 		login.setMinSize(70, 30);
 		login.setStyle("-fx-font-weight: bold;");

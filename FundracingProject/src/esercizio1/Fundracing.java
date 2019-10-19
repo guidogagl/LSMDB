@@ -66,7 +66,8 @@ public class Fundracing extends Application{
 	private Label l_description_message = new Label("Description Message");
 	private TextArea description_message = new TextArea();
 	
-	
+	private Button register=new Button("Register");
+        private registerPanel p;
 	public void start(Stage stage) {
 		
 		
@@ -116,9 +117,12 @@ public class Fundracing extends Application{
 				description, name_project, total_budget, insert, delete, iv1, stake, update,
 				name_agency, address_agency, site_agency,tf_password,l_agencyName,l_password,
 				table_message, l_stake, l_description, l_total_budget, l_project_name, messages_received, accept, refuse,
-				l_description_message, description_message);
+				l_description_message, description_message, register);
 		
-		
+		register.setOnAction((ActionEvent ev2)->{
+			p=new registerPanel();
+					
+		        });
 		insert.setOnAction((ActionEvent ev2)->{
 					
 					String desc = description.getText(); 
@@ -197,7 +201,7 @@ public class Fundracing extends Application{
 		Group root = new Group(tf_companyName,tf_password, login, table_title, table, description,
 				name_project, total_budget, insert, delete, iv1, stake, update, 
 				name_agency, address_agency, site_agency,l_agencyName,l_password, table_message, l_stake, l_description, l_total_budget,
-				l_project_name, messages_received, accept, refuse, l_description_message, description_message);
+				l_project_name, messages_received, accept, refuse, l_description_message, description_message, register);
 		
 		
 	
