@@ -73,7 +73,7 @@ public class DepositoDati {
 			Statement stmt = conn.createStatement();
 			
 			
-			stmt.execute("select	m.data, m.mittente, a.urlLogo as logo_mittente, m.testo as messaggio, m.stake\n" + 
+			stmt.execute("select	m.id, m.data, m.mittente, m.testo as messaggio, m.stake\n" + 
 					"from	messaggio m\n" + 
 					"		inner join\n" + 
 					"        azienda a\n" + 
@@ -84,7 +84,7 @@ public class DepositoDati {
 			ResultSet rs = stmt.getResultSet();
 			
 			while(rs.next()) {
-				ret.add(new RowTableMessage(rs.getString("data"), rs.getString("mittente"), 
+				ret.add(new RowTableMessage(rs.getInt("id"), rs.getString("data"), rs.getString("mittente"), 
 						rs.getString("logo_mittente"), rs.getString("messaggio"), rs.getInt("stake")));
 			}
 
@@ -349,6 +349,33 @@ public class DepositoDati {
 	}
 	
 	
+	public String getDescriptionMessage(int id_message) {
+		
+		String desc = "";
+		
+		try {
+					Statement stmt = conn.createStatement();
+					
+					
+					stmt.execute("select	m.testo\n" + 
+							"from	messaggio m\n" + 
+							"where 	m.id = " + id_message);
+				
+					
+					ResultSet res = stmt.getResultSet();
+					
+					
+					while(res.next()) {
+						desc = res.getString("testo");
+					}
+					
+					System.out.println("Descrizione: " +desc);
+					
+				}catch(SQLException e) {
+					System.out.println(e.getMessage());
+				}
+		return desc;
+	}
 	
 	
 	

@@ -30,12 +30,17 @@ public class Fundracing extends Application{
 	protected TextField tf_companyName = new TextField();
 	protected Button login = new Button("Login");
 	protected Label table_title = new Label("NetworkProjects");
+	protected Label messages_received = new Label("Messages Received");
 	protected Label l_password=new Label("Password");
-	protected Label l_agencyName=new Label("Agenzia");
+	protected Label l_agencyName=new Label("Agency Name");
 	protected TextArea description = new TextArea();
-	protected TextField name_project = new TextField("Project Name");
-	protected TextField total_budget = new TextField("Total Budget");
-	protected TextField stake = new TextField("Stake");
+	protected TextField name_project = new TextField("");
+	protected TextField total_budget = new TextField("");
+	protected TextField stake = new TextField("");
+	private Label l_stake = new Label("Stake");
+	private Label l_description = new Label("Description");
+	private Label l_project_name = new Label("Project Name");
+	private Label l_total_budget = new Label("Total Budget");
 	protected PasswordField tf_password=new PasswordField();
 	protected Button update = new Button("Update");
 	protected Button insert = new Button("Insert");
@@ -44,6 +49,7 @@ public class Fundracing extends Application{
 	protected String agencyName = "";
 	private TableProjects table = new TableProjects();
 	private int selectedProjectId = 0;
+	private int selectedMessagetId = 0;
 	private int selectedStake=0;
 	private int selectedTotalBudget=0;
 	private Label name_agency = new Label("");
@@ -57,6 +63,8 @@ public class Fundracing extends Application{
 	
 	private Button accept = new Button("Accept");
 	private Button refuse = new Button("Refuse");
+	private Label l_description_message = new Label("Description Message");
+	private TextArea description_message = new TextArea();
 	
 	
 	public void start(Stage stage) {
@@ -65,6 +73,7 @@ public class Fundracing extends Application{
 		table.updateProjects(deposito.getProjectsWithoutStake());
 		selectTableRow();
 		
+		selectTableMessages();
 		
 		login.setOnAction((ActionEvent ev1)->{
 			
@@ -76,13 +85,6 @@ public class Fundracing extends Application{
 			
 			//Se il nome dell'azienda è presente nel db e la password è corretta
 			if(!result.isEmpty()) {
-				
-				/*Lista contenente i logo delle aziende*/
-				/* ObservableList<SenderImage> logoList = FXCollections.observableArrayList();
-				 SenderImage item_1 = new SenderImage(new ImageView(new Image("https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Tesla_Motors.svg/793px-Tesla_Motors.svg.png")));
-			     CustomImage item_2 = new CustomImage(new ImageView(new Image("Icon_EditPatient.png")));
-			     logoList.addAll(item_1);*/
-
 				
 				table.updateProjects(deposito.getProjects(agencyName));
 				table_message.updateMessages(deposito.getMessages(agencyName));
@@ -113,7 +115,8 @@ public class Fundracing extends Application{
 		Interface interfaccia = new Interface(login, tf_companyName, table_title, table, 
 				description, name_project, total_budget, insert, delete, iv1, stake, update,
 				name_agency, address_agency, site_agency,tf_password,l_agencyName,l_password,
-				table_message);
+				table_message, l_stake, l_description, l_total_budget, l_project_name, messages_received, accept, refuse,
+				l_description_message, description_message);
 		
 		
 		insert.setOnAction((ActionEvent ev2)->{
@@ -161,6 +164,7 @@ public class Fundracing extends Application{
 				}
 			});
 			
+			
 			update.setOnAction((ActionEvent ev1)->{
 				int stakeInsered=Integer.parseInt(stake.getText());
 				int totalStakes=deposito.getSommaStakes(selectedProjectId);
@@ -180,13 +184,20 @@ public class Fundracing extends Application{
 					stake.setText("");
 				} 
 			});
+			
+			
+			accept.setOnAction((ActionEvent ev1)->{
+				
+				//Dopo aver selezionato una riga della tabella messaggi, se l'utente preme 'accept', il sistema inserisce un nuovo finanziamento
+			});
 		
 		
 		
 		
 		Group root = new Group(tf_companyName,tf_password, login, table_title, table, description,
 				name_project, total_budget, insert, delete, iv1, stake, update, 
-				name_agency, address_agency, site_agency,l_agencyName,l_password, table_message);
+				name_agency, address_agency, site_agency,l_agencyName,l_password, table_message, l_stake, l_description, l_total_budget,
+				l_project_name, messages_received, accept, refuse, l_description_message, description_message);
 		
 		
 	
@@ -224,6 +235,31 @@ public class Fundracing extends Application{
         }  
         }); 
 	}
+	
+	
+	private void selectTableMessages(){
+		
+		table_message.setRowFactory(new Callback<TableView<RowTableMessage>, TableRow<RowTableMessage>>() {  
+        public TableRow<RowTableMessage> call(TableView<RowTableMessage> tableView2) {  
+            final TableRow<RowTableMessage> row = new TableRow<>();  
+            row.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {  
+                
+            public void handle(MouseEvent event) {  
+                final int index = row.getIndex(); 
+                RowTableMessage res = table_message.getItems().get(index);
+                selectedMessagetId = res.getId();
+                System.out.println("Message id: " + selectedMessagetId);
+                //selectedTotalBudget=res.getBudget();
+                //selectedStake=res.getStake();
+                description_message.setText(deposito.getDescriptionMessage(selectedMessagetId));
+                //stake.setText(Integer.toString(res.getStake()));
+            }  
+         });  
+            return row;  
+        }  
+        }); 
+	}
+	
 	
 }
 
