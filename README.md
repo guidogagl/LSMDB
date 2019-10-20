@@ -145,3 +145,35 @@ Public methods:
 .updateMessages(List<RowTableMessage> messages):void - Thisfunctionclears all the content of the table and replace it with
 the informations stored in the List passed as argument.
 
+
+## Obbiettivi del branch Matteo
+
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/class_diagramGestoreMessaggi.png)
+
+The class GestoreMessaggi has the purpose of creating a "scheduler" that will update the messages'table every 5 seconds
+
+Private attributes:
+
+- **d : DepositoDati** 
+- **tm : TableMessage**
+- **agencyName : String**
+- **timer : Timer = null**
+- **task : TimerTask = null**
+
+Public methods
+
+- **GestoreMessaggi(DepositoDati,TableMessage,String):void** -Initialize all the private fields of GestoreMessaggi inside the constructor
+- **startAggiornamentoTabella():void** -create,using the constructs Timer and TimerTask, a "scheduler" that will call every 5 seconds the function aggiornaTabellaMessaggi()
+- **endAggiornamentoTabella():void** -stop the "scheduler" previously created
+
+Private methods
+
+- **aggiornaTabellaMessaggi():void** -retrieve from the database the messages related to the agency, that previously logged in, and show them in the related table 
+
+------
+
+Update use case diagram
+
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/usecase.png)
+
+
