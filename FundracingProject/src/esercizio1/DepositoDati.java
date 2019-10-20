@@ -20,12 +20,13 @@ public class DepositoDati {
 
         Connect conn = new Connect();
 
-        Vector<String> vett = conn.query(sql, 5).get(0);
-
-        conn.close();
-        if (vett == null) {
+        try{
+            Vector<String> vett = conn.query(sql, 5).get(0);
+        }catch(java.lang.IndexOutOfBoundsException e){
             return false;
         }
+        
+        
         return true;
     }
 

@@ -120,6 +120,7 @@ public class Fundracing extends Application {
             setTitle("Network Registration Form");
             setSize(700, 500);
             setLayout(null);
+            
             nameAgency.setBounds(100, 70, 400, 30);
             name_field.setBounds(250, 70, 350, 30);
             address.setBounds(100, 110, 400, 30);
@@ -172,7 +173,7 @@ public class Fundracing extends Application {
                             JOptionPane.showMessageDialog(null, "This agency is already present!");
                             setVisible(false);
                         } else {
-                            if (!name_field.getText().isEmpty() || address_field.getText().isEmpty() || ZIP_field.getText().isEmpty()
+                            if (name_field.getText().isEmpty() || address_field.getText().isEmpty() || ZIP_field.getText().isEmpty()
                                     || password.getPassword().length == 0 || confirm_password.getPassword().length == 0 || url.getText().isEmpty() || urlLogo_field.getText().isEmpty()) {
                                 JOptionPane.showMessageDialog(null, "Beware! The registration form is incomplete");
                             } else {
