@@ -16,24 +16,13 @@ La realizzazione della classe Connect e il seguente restauro della classe Deposi
 ## Class Modeling 
 ### Class Diagram 
 
----
+## Obbiettivi del branch amaryllis 
+- It was implemented the registration mechanism, by modyfing the structure of Fundracing class as to include an inner class, RegistrationForm, existing only in the scope of the application instance and used for allowing the user to insert its data in a new frame. Both Fundracing and RegistrationForm are front-end classes which interact with the database through DepositoDati and Connect.
+Why is RegistrationFrom an inner class? Because its scope is within the cicle of life of Fundracing and because, as of Java documentation, the use of inner or nested class is recomended for enabling encapsulation and improving code readibility. A *Singleton* implementation of the registration mechanism is currently _under consideration_.
+
+*Fundracing*
+The following methods were added to Fundracing:
+- 
 
 
-
-## Obbiettivi del branch Lucia
-
-The TableMessage class has the purpose of constructing the table that will be shown on the application interface.
-
-Private attributes:
-
-.messagesList: ObservableList<RowTableMessage>
-This attribute represents a list containing all the rows present in the table. 
-
-Public methods:
-
-.TableMessage() - class constructor, inizializes the table columns and then adds them to the table
-.updateMessages(List<RowTableMessage> messages):void - Thisfunctionclears all the content of the table and replace it with
-the informations stored in the List passed as argument.
- 
-## Obbiettivi del branch amaryllis (da tradurre in inglese, ci penso io dopo)
 
