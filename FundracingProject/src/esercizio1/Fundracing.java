@@ -99,7 +99,8 @@ public class Fundracing extends Application{
 				if(!result.isEmpty()) {
 					
 					table.updateProjects(deposito.getProjects(agencyName));
-					table_message.updateMessages(deposito.getMessages(agencyName));
+					new GestoreMessaggi(deposito, table_message, agencyName).startAggiornamentoTabella();
+					//table_message.updateMessages(deposito.getMessages(agencyName));
 					
 					logged = true;
 					insert.setDisable(false);

@@ -50,6 +50,7 @@ public class DepositoDati {
 	}
 	
 	private List<RowTableMessage> getRowTableMessage(String sql, Vector<String> v) {
+
 		conn = new Connect();
 		
 		List<RowTableMessage> ret = new ArrayList<RowTableMessage>();
@@ -57,9 +58,9 @@ public class DepositoDati {
 		List<Vector<String>> resultSet;
 		
 		if(v != null)
-			resultSet = conn.query(sql, 6, v);
+			resultSet = conn.query(sql, 7, v);
 		else
-			resultSet = conn.query(sql, 6);
+			resultSet = conn.query(sql, 7);
 
 		
 		for(int i = 0; i < resultSet.size(); i++) {
@@ -67,10 +68,11 @@ public class DepositoDati {
 			
 			RowTableMessage row = new RowTableMessage( 	Integer.parseInt(val.get(0)), 
 														Integer.parseInt(val.get(1)),
-														val.get(2), 
-														val.get(3), 
-														val.get(4),
-														Integer.parseInt(val.get(5))
+														val.get(2),
+														val.get(3),
+														val.get(4), 
+														val.get(5),
+														Integer.parseInt(val.get(6))
 														); 
 			ret.add(row);
 		}
@@ -111,7 +113,7 @@ public class DepositoDati {
 	}
 	
 	public List<RowTableMessage> getMessages(String agencyName){
-		String sqlStr="select	m.id, m.progetto as id_project, m.data, m.mittente,  m.testo as messaggio, m.stake\n" + 
+		String sqlStr="select	m.id, m.progetto as id_project, m.data, m.mittente, m.destinatario, m.testo as messaggio, m.stake\n" + 
 					"from	messaggio m\n" + 
 					"		inner join\n" + 
 					"        azienda a\n" + 
