@@ -2,10 +2,14 @@ package esercizio1;
 
 
 import java.util.*;
+import javafx.collections.*;
 
-
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import javafx.scene.image.*;
 
 import javafx.application.*;
@@ -26,12 +30,17 @@ public class Fundracing extends Application{
 	protected TextField tf_companyName = new TextField();
 	protected Button login = new Button("Login");
 	protected Label table_title = new Label("NetworkProjects");
+	protected Label messages_received = new Label("Messages Received");
 	protected Label l_password=new Label("Password");
-	protected Label l_agencyName=new Label("Agenzia");
+	protected Label l_agencyName=new Label("Agency Name");
 	protected TextArea description = new TextArea();
-	protected TextField name_project = new TextField("Project Name");
-	protected TextField total_budget = new TextField("Total Budget");
-	protected TextField stake = new TextField("Stake");
+	protected TextField name_project = new TextField("");
+	protected TextField total_budget = new TextField("");
+	protected TextField stake = new TextField("");
+	private Label l_stake = new Label("Stake");
+	private Label l_description = new Label("Description");
+	private Label l_project_name = new Label("Project Name");
+	private Label l_total_budget = new Label("Total Budget");
 	protected PasswordField tf_password=new PasswordField();
 	protected Button update = new Button("Update");
 	protected Button insert = new Button("Insert");
@@ -40,8 +49,10 @@ public class Fundracing extends Application{
 	protected String agencyName = "";
 	private TableProjects table = new TableProjects();
 	private int selectedProjectId = 0;
+	private int selectedMessagetId = 0;
 	private int selectedStake=0;
 	private int selectedTotalBudget=0;
+	private int selectedMessageStake = 0;
 	private Label name_agency = new Label("");
 	private Label address_agency = new Label("");
 	private Label site_agency = new Label("");
@@ -49,51 +60,83 @@ public class Fundracing extends Application{
 	private JLabel label;
 	private Image image;
 	private ImageView iv1 = new ImageView();
+	private TableMessage table_message = new TableMessage();
+	
+	private Button accept = new Button("Accept");
+	private Button refuse = new Button("Refuse");
+	private Label l_description_message = new Label("Description Message");
+	private TextArea description_message = new TextArea();
 	
 	
 	public void start(Stage stage) {
 		
 		
-		
 		table.updateProjects(deposito.getProjectsWithoutStake());
 		selectTableRow();
+		
+		selectTableMessages();
 		
 		login.setOnAction((ActionEvent ev1)->{
 			
 			String urlLogo = "";
 			
-			agencyName = tf_companyName.getText();
-			String password=tf_password.getText();
-			Vector<String> result = deposito.getAgency(agencyName,password);
-			
-			//Se il nome dell'azienda è presente nel db e la password è corretta
-			if(!result.isEmpty()) {
-				table.updateProjects(deposito.getProjects(agencyName));
-				logged = true;
-				insert.setDisable(false);
-				delete.setDisable(false);
-				description.setEditable(true);
-				name_project.setEditable(true);
-				total_budget.setEditable(true);
-				stake.setEditable(true);
-				update.setDisable(false);
-				name_agency.setText(result.get(0)); 
-				address_agency.setText(result.get(3));
-				site_agency.setText(result.get(4));
-				urlLogo = result.get(1);
-				image = new Image(urlLogo);
-				iv1.setImage(image);
+			if(!tf_companyName.getText().equals("") && !tf_password.getText().equals("")) {
 				
-			} //Se il nome dell'azienda non è presente nel db
-			else {
-				JOptionPane.showMessageDialog(null, "Il nome dell'azienda è errato oppure la password è scorretta!");
+				agencyName = tf_companyName.getText();
+				String password=tf_password.getText();
+				Vector<String> result = deposito.getAgency(agencyName,password);
+				
+				//Se il nome dell'azienda è presente nel db e la password è corretta
+				if(!result.isEmpty()) {
+					
+					table.updateProjects(deposito.getProjects(agencyName));
+					new GestoreMessaggi(deposito,table_message,agencyName).startAggiornamentoTabella();;
+//					//table_message.updateMessages(deposito.getMessages(agencyName));
+					
+					logged = true;
+					insert.setDisable(false);
+					delete.setDisable(false);
+					description.setEditable(true);
+					name_project.setEditable(true);
+					total_budget.setEditable(true);
+					stake.setEditable(true);
+					update.setDisable(false);
+					name_agency.setText(result.get(0)); 
+					address_agency.setText(result.get(3));
+					site_agency.setText(result.get(4));
+					urlLogo = result.get(1);
+					image = new Image(urlLogo);
+					iv1.setImage(image);
+					
+				} //Se il nome dell'azienda non è presente nel db
+				else {
+					JOptionPane.showMessageDialog(null, "Il nome dell'azienda è errato oppure la password è scorretta!");
+				}
 			}
 			
         });
 		
+		
+		refuse.setOnAction((ActionEvent ev1)->{
+			
+			deposito.deleteMessage(selectedMessagetId);
+			table_message.updateMessages(deposito.getMessages(agencyName));
+		});
+		
+		
+		accept.setOnAction((ActionEvent ev1)->{
+			deposito.updateStake(selectedMessageStake, agencyName, selectedMessagetId);
+			deposito.deleteMessage(selectedMessagetId);
+			table_message.updateMessages(deposito.getMessages(agencyName));
+			table.updateProjects(deposito.getProjects(agencyName));
+		});
+		
+		
 		Interface interfaccia = new Interface(login, tf_companyName, table_title, table, 
 				description, name_project, total_budget, insert, delete, iv1, stake, update,
-				name_agency, address_agency, site_agency,tf_password,l_agencyName,l_password);
+				name_agency, address_agency, site_agency,tf_password,l_agencyName,l_password,
+				table_message, l_stake, l_description, l_total_budget, l_project_name, messages_received, accept, refuse,
+				l_description_message, description_message);
 		
 		
 		insert.setOnAction((ActionEvent ev2)->{
@@ -141,6 +184,7 @@ public class Fundracing extends Application{
 				}
 			});
 			
+			
 			update.setOnAction((ActionEvent ev1)->{
 				int stakeInsered=Integer.parseInt(stake.getText());
 				int totalStakes=deposito.getSommaStakes(selectedProjectId);
@@ -160,17 +204,19 @@ public class Fundracing extends Application{
 					stake.setText("");
 				} 
 			});
+			
 		
 		
 		
 		
 		Group root = new Group(tf_companyName,tf_password, login, table_title, table, description,
 				name_project, total_budget, insert, delete, iv1, stake, update, 
-				name_agency, address_agency, site_agency,l_agencyName,l_password);
+				name_agency, address_agency, site_agency,l_agencyName,l_password, table_message, l_stake, l_description, l_total_budget,
+				l_project_name, messages_received, accept, refuse, l_description_message, description_message);
 		
 		
 	
-		Scene scene = new Scene(root, 750, 650);
+		Scene scene = new Scene(root, 1300,650);
         stage.setTitle("My Fundracing Project");
         stage.setScene(scene);
         stage.show();
@@ -204,6 +250,31 @@ public class Fundracing extends Application{
         }  
         }); 
 	}
+	
+	
+	private void selectTableMessages(){
+		
+		table_message.setRowFactory(new Callback<TableView<RowTableMessage>, TableRow<RowTableMessage>>() {  
+        public TableRow<RowTableMessage> call(TableView<RowTableMessage> tableView2) {  
+            final TableRow<RowTableMessage> row = new TableRow<>();  
+            row.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {  
+                
+            public void handle(MouseEvent event) {  
+                final int index = row.getIndex(); 
+                RowTableMessage res = table_message.getItems().get(index);
+                selectedMessagetId = res.getId();
+                System.out.println("Message id: " + selectedMessagetId);
+                //selectedTotalBudget=res.getBudget();
+                selectedMessageStake=res.getStake();
+                description_message.setText(deposito.getDescriptionMessage(selectedMessagetId));
+                //stake.setText(Integer.toString(res.getStake()));
+            }  
+         });  
+            return row;  
+        }  
+        }); 
+	}
+	
 	
 }
 
