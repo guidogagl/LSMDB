@@ -145,6 +145,7 @@ Public methods:
 .updateMessages(List<RowTableMessage> messages):void - Thisfunctionclears all the content of the table and replace it with
 the informations stored in the List passed as argument.
 
+
 ## Obbiettivi del branch Matteo
 
 ![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/class_diagramGestoreMessaggi.png)
@@ -174,3 +175,5 @@ Private methods
 Update use case diagram
 
 ![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/usecase.png)
+
+
