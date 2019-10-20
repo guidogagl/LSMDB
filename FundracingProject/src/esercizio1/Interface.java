@@ -15,7 +15,9 @@ public class Interface {
 			TextArea description, TextField name_project, TextField total_budget, Button insert, Button delete,
 			ImageView iv1, TextField stake, Button update, Label name_agency, Label address_agency, Label site_agency,PasswordField tf_password,
 			Label l_agencyName,Label l_password, TableMessage table_message, Label l_stake, Label l_description, Label l_total_budget,
-			Label l_project_name, Label messages_received, Button accept, Button refuse, Label l_description_message, TextArea description_message){
+			Label l_project_name, Label messages_received, Button accept, Button refuse, Label l_description_message, TextArea description_message,
+			TextField stake_message, TextField project_message, Label l_stake_message, Label l_project_message, Button send,
+			ChoiceBox choice_agency, Label message_receiver){
 		
 		//Abbasso tutte le y di 20
 		login.setLayoutX(540);
@@ -141,5 +143,30 @@ public class Interface {
 	    
 	    description_message.setLayoutX(730);
 	    description_message.setLayoutY(270);
+	    description_message.setMaxWidth(330);
+	    description_message.setMaxHeight(90);
+	    
+	    message_receiver.setLayoutX(730);
+	    message_receiver.setLayoutY(370);
+	    
+	    choice_agency.setLayoutX(730);
+	    choice_agency.setLayoutY(400);
+	    
+	    //Abbasso di 50 e poi di 30
+	    
+	    l_stake_message.setLayoutX(730);
+	    l_stake_message.setLayoutY(450);
+	    
+	    stake_message.setLayoutX(730);
+	    stake_message.setLayoutY(480);
+	    
+	    l_project_message.setLayoutX(900);
+	    l_project_message.setLayoutY(450);
+	    
+	    project_message.setLayoutX(900);
+	    project_message.setLayoutY(480);
+	    
+	    send.setLayoutX(730);
+	    send.setLayoutY(530);
 	}
 }

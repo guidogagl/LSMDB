@@ -66,6 +66,13 @@ public class Fundracing extends Application{
 	private Button refuse = new Button("Refuse");
 	private Label l_description_message = new Label("Description Message");
 	private TextArea description_message = new TextArea();
+	private TextField stake_message = new TextField();
+	private Label l_stake_message = new Label("Stake");
+	private TextField project_message = new TextField();
+	private Label l_project_message = new Label("ID Project");
+	private Button send = new Button("Send");
+	private ChoiceBox choice_agency = new ChoiceBox();
+	private Label message_receiver = new Label("Message receiver");
 	
 	
 	public void start(Stage stage) {
@@ -75,6 +82,8 @@ public class Fundracing extends Application{
 		selectTableRow();
 		
 		selectTableMessages();
+		
+		inizializeChoiceBox();
 		
 		login.setOnAction((ActionEvent ev1)->{
 			
@@ -125,7 +134,9 @@ public class Fundracing extends Application{
 		
 		accept.setOnAction((ActionEvent ev1)->{
 			deposito.updateStake(selectedMessageStake, agencyName, selectedMessagetId);
+			deposito.deleteMessage(selectedMessagetId);
 			table.updateProjects(deposito.getProjects(agencyName));
+			table_message.updateMessages(deposito.getMessages(agencyName));
 		});
 		
 		
@@ -133,7 +144,8 @@ public class Fundracing extends Application{
 				description, name_project, total_budget, insert, delete, iv1, stake, update,
 				name_agency, address_agency, site_agency,tf_password,l_agencyName,l_password,
 				table_message, l_stake, l_description, l_total_budget, l_project_name, messages_received, accept, refuse,
-				l_description_message, description_message);
+				l_description_message, description_message, stake_message, project_message,
+				l_stake_message, l_project_message, send, choice_agency, message_receiver);
 		
 		
 		insert.setOnAction((ActionEvent ev2)->{
@@ -202,6 +214,31 @@ public class Fundracing extends Application{
 				} 
 			});
 			
+			
+			
+			send.setOnAction((ActionEvent ev1)->{
+				String description = description_message.getText();
+				String stake = stake_message.getText();
+				String project = project_message.getText();
+				String receiver = choice_agency.getValue().toString();
+				System.out.println("Receiver selected: "+receiver);
+				
+				if(!description.equals("") && !stake.equals("") && !project.equals("") && !receiver.equals("")) {
+					
+					Vector<String> vector = new Vector<String>(4);
+					
+					vector.add(agencyName);	//mittente
+					vector.add(receiver);	//destinatario
+					vector.add(project);	//progetto
+					vector.add(description);	//testo
+					vector.add(stake);	//stake
+					deposito.insertMessage(vector);
+					
+				}else {
+					JOptionPane.showMessageDialog(null, "Non hai compilato correttamente tutti i campi!");
+				}
+			});
+			
 		
 		
 		
@@ -209,7 +246,8 @@ public class Fundracing extends Application{
 		Group root = new Group(tf_companyName,tf_password, login, table_title, table, description,
 				name_project, total_budget, insert, delete, iv1, stake, update, 
 				name_agency, address_agency, site_agency,l_agencyName,l_password, table_message, l_stake, l_description, l_total_budget,
-				l_project_name, messages_received, accept, refuse, l_description_message, description_message);
+				l_project_name, messages_received, accept, refuse, l_description_message, description_message, stake_message, project_message,
+				l_stake_message, l_project_message, send, choice_agency, message_receiver);
 		
 		
 	
@@ -272,6 +310,15 @@ public class Fundracing extends Application{
         }); 
 	}
 	
+	public void inizializeChoiceBox() {
+		List<String> agencyList = deposito.getListAgency();
+		
+		choice_agency.setItems(FXCollections.observableArrayList(agencyList));
+		
+		for(int i = 0; i < agencyList.size(); i++) {
+			System.out.println("agency " + i + " : " + agencyList.get(i));
+		}
+	}	
 	
 }
 
