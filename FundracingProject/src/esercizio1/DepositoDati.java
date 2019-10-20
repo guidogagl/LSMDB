@@ -15,7 +15,8 @@ public class DepositoDati {
 	
 
 	private Connect conn = null;
-	public Boolean agencyAlreadyPresent(String agencyName) {
+	
+        public Boolean agencyAlreadyPresent(String agencyName) {
 		
 		String sql = "SELECT * FROM azienda WHERE nomeAzienda = '"+ agencyName + "';";
 		
@@ -28,6 +29,7 @@ public class DepositoDati {
                     return false;
                 return true;
 	}
+        
 	private List<RowTableProjects> getRowTableProjects(String sql, Vector<String> v) {
 		conn = new Connect();
 		
