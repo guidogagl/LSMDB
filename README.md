@@ -173,4 +173,4 @@ Private methods
 
 Update use case diagram
 
-https://github.com/guidogagl/LSMDB/blob/master/usecase.png
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/usecase.png)
