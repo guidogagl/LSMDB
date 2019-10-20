@@ -86,10 +86,10 @@ Nel caso in cui si voglia effettuare una chiamata con statement di tipo Prepared
 ## Code Explanation
 ### Connect
 Attributi privati
-- **username : String = root 
-- **password : String = root
-- **SSL : String =  &requireSSL=true
-- **connStr: String
+- **username : String = root** 
+- **password : String = root**
+- **SSL : String =  &requireSSL=true**
+- **connStr: String**
 - **conn : Connection = null**
 
 Metodi privati
@@ -103,12 +103,14 @@ Metodi pubblici
 
 
 ### DepositoDati
-Attributi
-- conn : Connect = null
+Attributi privati
+- **conn : Connect = null**
 
-Metodi
-- getRowTableProjects(String, Vector<string>):List<RowTableProjects>
-- getRowTableMessage(String, Vector<string>):List<RowTableMessage>
+Metodi privati
+- **getRowTableProjects(String, Vector<string>):List<RowTableProjects>** 
+- **getRowTableMessage(String, Vector<string>):List<RowTableMessage>**
+
+Metodi pubblici
 - getProjects(String, Vector<string>):List<RowTableProjects>
 - getMessage(String, Vector<string>):List<RowTableMessage>
 - getDescriptionMessage(int):String
@@ -123,9 +125,6 @@ Metodi
 - getDescriptionProject(int): String
 - deleteMyStake(int, String): void
 - updateStake(int, String, int): void
-
-
-
 
 ---
 
