@@ -73,6 +73,7 @@ public class Fundracing extends Application{
 	private Button send = new Button("Send");
 	private ChoiceBox choice_agency = new ChoiceBox();
 	private Label message_receiver = new Label("Message receiver");
+	private GestoreMessaggi gm = null;
 	
 	
 	public void start(Stage stage) {
@@ -99,7 +100,8 @@ public class Fundracing extends Application{
 				if(!result.isEmpty()) {
 					
 					table.updateProjects(deposito.getProjects(agencyName));
-					new GestoreMessaggi(deposito, table_message, agencyName).startAggiornamentoTabella();
+					gm = new GestoreMessaggi(deposito, table_message, agencyName);
+					gm.startAggiornamentoTabella();
 					//table_message.updateMessages(deposito.getMessages(agencyName));
 					
 					logged = true;
@@ -241,6 +243,11 @@ public class Fundracing extends Application{
 			});
 			
 		
+			stage.setOnCloseRequest((WindowEvent we)->{
+				if(gm != null) {
+					gm.endAggiornamentoTabella();
+				}
+			});
 		
 		
 		

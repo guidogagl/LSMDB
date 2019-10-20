@@ -8,6 +8,8 @@ public class GestoreMessaggi {
 	private DepositoDati d;
 	private TableMessage tm;
 	private String agencyName;
+	private Timer timer = null;
+	private TimerTask task = null;
 	public GestoreMessaggi( DepositoDati d,TableMessage tm,String agencyName)
 	{
 		this.d=d;
@@ -18,8 +20,8 @@ public class GestoreMessaggi {
 	public void startAggiornamentoTabella() {
 		//while(true) {
 		
-			Timer timer = new Timer();
-			TimerTask task = new TimerTask() {
+			timer = new Timer();
+			task = new TimerTask() {
 				public void run() {
 					
 					aggiornaTabellaMessaggi();
@@ -45,5 +47,11 @@ public class GestoreMessaggi {
 	private void aggiornaTabellaMessaggi() {
 		List<RowTableMessage> messaggiDaAggiungere = d.getMessages(agencyName);
 		tm.updateMessages(messaggiDaAggiungere);
+	}
+	
+	
+	public void endAggiornamentoTabella() {
+		timer.cancel();
+		timer.purge();
 	}
 }
