@@ -15,7 +15,19 @@ public class DepositoDati {
 	
 
 	private Connect conn = null;
-	
+	public Boolean agencyAlreadyPresent(String agencyName) {
+		
+		String sql = "SELECT * FROM azienda WHERE nomeAzienda = '"+ agencyName + "';";
+		
+		Connect conn = new Connect();
+		
+		Vector<String> vett = conn.query(sql, 5).get(0);
+		
+		conn.close();
+                if (vett==null)
+                    return false;
+                return true;
+	}
 	private List<RowTableProjects> getRowTableProjects(String sql, Vector<String> v) {
 		conn = new Connect();
 		
@@ -189,6 +201,15 @@ conn = new Connect();
 	  Connect conn = new Connect();
 	  
 	  conn.query(insertProject, 0, val);
+	  
+	  conn.close();
+	}
+        public void insertAgency(Vector<String>val) {
+	  String insertAgency="INSERT INTO azienda (nomeAzienda,urlLogo,urlSito,indirizzo, cap, password) values ((?),(?),(?),(?),(?),(?))";
+	   
+	  Connect conn = new Connect();
+	  
+	  conn.query(insertAgency, 0, val);
 	  
 	  conn.close();
 	}

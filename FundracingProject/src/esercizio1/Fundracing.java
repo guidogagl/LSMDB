@@ -1,6 +1,8 @@
 package esercizio1;
 
 
+import java.awt.Choice;
+import java.awt.event.ActionListener;
 import java.util.*;
 import javafx.collections.*;
 
@@ -22,6 +24,9 @@ import javafx.scene.input.*;
 
 import javafx.stage.*;
 import javafx.util.*;
+import javax.swing.JButton;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 
 
@@ -60,14 +65,123 @@ public class Fundracing extends Application{
 	private Image image;
 	private ImageView iv1 = new ImageView();
 	private TableMessage table_message = new TableMessage();
-	
+	private Choice choiceAgency=new Choice();
 	private Button accept = new Button("Accept");
 	private Button refuse = new Button("Refuse");
 	private Label l_description_message = new Label("Description Message");
 	private TextArea description_message = new TextArea();
 	
 	private Button register=new Button("Register");
-        private registerPanel p;
+        class RegistrationForm extends JFrame{
+            private  Boolean filled= false;
+            private JLabel nameAgency= new JLabel("Agency Name:");
+            private JLabel address= new JLabel ("Address:");
+            private JLabel ZIP= new JLabel("ZIP code:");
+            private  JPasswordField password= new JPasswordField(16);
+            private  JPasswordField confirm_password= new JPasswordField(16);
+            private  JTextField name_field= new JTextField();
+            private JTextField address_field= new JTextField();
+            private JTextField ZIP_field= new JTextField();
+            private JTextField url=new JTextField();
+            private JLabel insertPassword=new JLabel("Password:");
+            private JLabel insertUrl=new JLabel("Web Site:");
+            private JLabel urlLogo= new JLabel("Logo: ");
+            private JTextField urlLogo_field= new JTextField();
+            private  JButton submit=new JButton("Submit");
+            private   JButton discard=new JButton("Discard");
+            public Boolean getFilled(){return filled;}
+    public String getnameAgency(){return this.name_field.getText();}
+    public String getaddress(){return this.address_field.getText();}
+    public String getAgencyPassword(){return new String(password.getPassword());}
+    public String getAgencyField(){return ZIP_field.getText();}
+    public String getAgencyWebSite(){return url.getText();}
+    public RegistrationForm() {
+        setVisible(true);
+        setTitle("Network Registration Form");
+        setSize(700, 700);
+        setLayout(null);
+        this.nameAgency.setBounds(100, 30, 400, 30);
+        this.name_field.setBounds(250, 30, 350, 30);
+        this.address.setBounds(100, 70, 400, 30);
+        this.address_field.setBounds(250, 70, 350, 30);
+        this.ZIP.setBounds(100, 110, 400, 30);
+        this.ZIP_field.setBounds(250, 110, 350, 30);
+        this.insertPassword.setBounds(100, 150, 400, 30);
+        this.password.setBounds(250, 150, 350, 30);
+        JLabel confirmPasswordLabel=new JLabel("Confirm Password:");
+        confirmPasswordLabel.setBounds(100, 190, 400, 30);
+        this.confirm_password.setBounds(250, 190, 350, 30);
+        this.insertUrl.setBounds(100, 230, 400, 30);
+        this.url.setBounds(250, 230, 350, 30);
+        submit.setBounds(200, 300, 140, 30);
+        discard.setBounds(400, 300, 140, 30);
+        this.urlLogo.setBounds(100, 260, 400, 30);
+        this.urlLogo_field.setBounds(250,  260, 400, 30);
+        add(nameAgency);
+        add(name_field);
+        add(address);
+        add(address_field);
+        add(ZIP);
+        add(ZIP_field);
+        add(insertPassword);
+        add(password);
+        add(confirmPasswordLabel);
+        add(confirm_password);
+        add(url);
+        add(insertUrl);
+        add(urlLogo);
+        add(urlLogo_field);
+        add(submit);
+        add(discard);
+        discard.addActionListener(new ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent e)
+      {     
+          setVisible(false);
+            }
+      
+    });
+      submit.addActionListener(new ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent e)
+      {   if(!Arrays.equals(password.getPassword(), confirm_password.getPassword()) ){
+            JOptionPane.showMessageDialog(null, "The two passwords do not coincide!");
+            password=new JPasswordField();
+            confirm_password=new JPasswordField();
+            }
+      
+      else{
+         if(deposito.agencyAlreadyPresent(name_field.getText())){
+             JOptionPane.showMessageDialog(null, "This agency is already present!");
+             setVisible(false);
+         }
+         else{
+             if(!name_field.getText().isEmpty() || address_field.getText().isEmpty() || ZIP_field.getText().isEmpty() 
+                     || password.getPassword().length ==0 || confirm_password.getPassword().length==0 || url.getText().isEmpty() || urlLogo_field.getText().isEmpty()){
+                 JOptionPane.showMessageDialog(null, "Beware! The registration form is incomplete");
+             }
+             else{
+                 Vector<String> val= new Vector<String>();
+                 val.addElement(name_field.getText());
+                 val.addElement(urlLogo_field.getText());
+                 val.addElement(url.getText());
+                 val.addElement(address_field.getText());
+                 val.addElement(ZIP_field.getText());
+                 //password passata in chiaro!!!
+                 val.addElement(new String(password.getPassword()));
+   
+                 deposito.insertAgency(val);
+                
+                
+             }
+         }
+         
+      }
+      
+      }
+      }
+            );}
+           
+    
+        }
 	public void start(Stage stage) {
 		
 		
@@ -120,8 +234,7 @@ public class Fundracing extends Application{
 				l_description_message, description_message, register);
 		
 		register.setOnAction((ActionEvent ev2)->{
-			p=new registerPanel();
-					
+                    RegistrationForm f=new RegistrationForm();
 		        });
 		insert.setOnAction((ActionEvent ev2)->{
 					

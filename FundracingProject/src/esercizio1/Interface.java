@@ -1,5 +1,6 @@
 package esercizio1;
 
+import java.awt.Choice;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JPasswordField;
@@ -22,7 +23,7 @@ public class Interface {
 		register.setLayoutY(125);
 		register.setMinSize(70, 30);
 		register.setStyle("-fx-font-weight: bold;");
-
+                
 		login.setLayoutX(510);
 		login.setLayoutY(125);
 		login.setMinSize(70, 30);
@@ -57,7 +58,7 @@ public class Interface {
 		messages_received.setLayoutX(830);
 		messages_received.setLayoutY(10);
 		messages_received.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
-		
+                
 		table_title.setLayoutX(300);
 		table_title.setLayoutY(160);
 		table_title.setStyle("-fx-font-weight: bold; -fx-font-size: 18px;");
@@ -140,7 +141,7 @@ public class Interface {
 	    
 	    refuse.setLayoutX(850);
 	    refuse.setLayoutY(200);
-	    
+
 	    l_description_message.setLayoutX(730);
 	    l_description_message.setLayoutY(250);
 	    
