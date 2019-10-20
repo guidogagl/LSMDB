@@ -1,6 +1,8 @@
 package esercizio1;
 
 import java.awt.Choice;
+import java.awt.Frame;
+import java.awt.Panel;
 import java.awt.event.ActionListener;
 import java.util.*;
 import javafx.collections.*;
@@ -70,7 +72,7 @@ public class Fundracing extends Application {
 
     private Button register = new Button("Register");
 
-    class RegistrationForm extends JFrame {
+    class RegistrationForm extends Frame {
 
         private Boolean filled = false;
         private JLabel nameAgency = new JLabel("Agency Name:");
@@ -116,25 +118,26 @@ public class Fundracing extends Application {
         public RegistrationForm() {
             setVisible(true);
             setTitle("Network Registration Form");
-            setSize(700, 700);
+            setSize(700, 500);
             setLayout(null);
-            this.nameAgency.setBounds(100, 30, 400, 30);
-            this.name_field.setBounds(250, 30, 350, 30);
-            this.address.setBounds(100, 70, 400, 30);
-            this.address_field.setBounds(250, 70, 350, 30);
-            this.ZIP.setBounds(100, 110, 400, 30);
-            this.ZIP_field.setBounds(250, 110, 350, 30);
-            this.insertPassword.setBounds(100, 150, 400, 30);
-            this.password.setBounds(250, 150, 350, 30);
+            nameAgency.setBounds(100, 70, 400, 30);
+            name_field.setBounds(250, 70, 350, 30);
+            address.setBounds(100, 110, 400, 30);
+            address_field.setBounds(250, 110, 350, 30);
+            ZIP.setBounds(100, 150, 400, 30);
+            ZIP_field.setBounds(250, 150, 350, 30);
+            insertPassword.setBounds(100, 190, 400, 30);
+            password.setBounds(250, 190, 350, 30);
             JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
-            confirmPasswordLabel.setBounds(100, 190, 400, 30);
-            this.confirm_password.setBounds(250, 190, 350, 30);
-            this.insertUrl.setBounds(100, 230, 400, 30);
-            this.url.setBounds(250, 230, 350, 30);
-            submit.setBounds(200, 300, 140, 30);
-            discard.setBounds(400, 300, 140, 30);
-            this.urlLogo.setBounds(100, 260, 400, 30);
-            this.urlLogo_field.setBounds(250, 260, 400, 30);
+            confirmPasswordLabel.setBounds(100, 230, 400, 30);
+            confirm_password.setBounds(250, 230, 350, 30);
+            insertUrl.setBounds(100, 270, 400, 30);
+            url.setBounds(250, 270, 350, 30);
+            urlLogo.setBounds(100, 310, 400, 30);
+            urlLogo_field.setBounds(250, 310, 350, 30);
+            submit.setBounds(200, 360, 140, 30);
+            discard.setBounds(400, 360, 140, 30);
+            
             add(nameAgency);
             add(name_field);
             add(address);
@@ -151,6 +154,7 @@ public class Fundracing extends Application {
             add(urlLogo_field);
             add(submit);
             add(discard);
+            
             discard.addActionListener(new ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     setVisible(false);
@@ -242,7 +246,8 @@ public class Fundracing extends Application {
                 l_description_message, description_message, register);
 
         register.setOnAction((ActionEvent ev2) -> {
-            RegistrationForm f = new RegistrationForm();
+            RegistrationForm form= new RegistrationForm();
+            
         });
         insert.setOnAction((ActionEvent ev2) -> {
 
