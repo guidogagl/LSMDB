@@ -85,19 +85,21 @@ Nel caso in cui si voglia effettuare una chiamata con statement di tipo Prepared
 
 ## Code Explanation
 ### Connect
-Attributi
-- username : String = root
-- password : String = root
-- SSL : String =  &requireSSL=true
-- connStr: String
-- conn : Connection = null
+Attributi privati
+- **username : String = root 
+- **password : String = root
+- **SSL : String =  &requireSSL=true
+- **connStr: String
+- **conn : Connection = null**
 
-Metodi
-- fetchRows(Result, int) : List<Vector<String>> 
-- Connect
-- close()
-- query(String, int): List<Vector<String>>
-- query(String, int, Vector<String>): List<Vector<String>>
+Metodi privati
+- **fetchRows(Result, int) : List<Vector<String>>** - prende il result set di una query insieme al numero di colonne della tabella di result ed esegue il fetch del risultato su una lista che restituisce 
+
+Metodi pubblici
+- **Connect()** - costruttore, crea una connessione di tipo Connection con il database che assegna all'attributo privato conn
+- **close()** - chiude la connessione istanziata dall'attributo privato conn
+- **query(String, int): List<Vector<String>>** - esegue una query passata per argomento e restituisce il result set in una lista. Il numero di colonne della tabella del result è passato come argomento.
+- **query(String, int, Vector<String>): List<Vector<String>>** - metodo in overload con il precedente che esegue una query attraverso un preparedStatement. I dati da assegnare al prepared statement sono passati come argomento.
 
 
 ### DepositoDati
