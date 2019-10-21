@@ -177,18 +177,85 @@ Metodi pubblici
 
 ## Obbiettivi del branch Lucia
 
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/ClassiTableMessage.png)
+
+### TableMessage
 The TableMessage class has the purpose of constructing the table that will be shown on the application interface.
 
 Private attributes:
 
-.messagesList: ObservableList<RowTableMessage>
+- **messagesList: ObservableList\<RowTableMessage>**
 This attribute represents a list containing all the rows present in the table. 
 
 Public methods:
 
-.TableMessage() - class constructor, inizializes the table columns and then adds them to the table
-.updateMessages(List<RowTableMessage> messages):void - Thisfunctionclears all the content of the table and replace it with
+- **TableMessage()** - class constructor, inizializes the table columns and then adds them to the table
+- **updateMessages(List\<RowTableMessage> messages):void** - Thisfunctionclears all the content of the table and replace it with
 the informations stored in the List passed as argument.
+	
+### RowTableMessage
+This class is the data representation of the rows in the message table.
+
+Public attributes:
+
+- **id:SimpleIntegerProperty**
+- **id_project:SimpleIntegerProperty**
+- **data:SimpleStringProperty**
+- **mittente:SimpleStringProperty**
+- **destinatario:SimpleStringProperty**
+- **messaggio:SimpleStringProperty**
+- **stake:SimpleIntegerProperty**
+
+Each attribute is a column in the table.
+
+Public methods:
+
+- **RowTableMessage(int id, int id_project, String data, String mittente, String destinatario, String messaggio,
+	int stake)** - class constructor, it converts the attribute passed as argument in SimpleItsProperty, where Its is the type of the argument
+- **getId():int** - returns the private field 'id' of the class
+- **getId_project():int** - returns the private field 'id_project' of the class
+- **getData():String** - returns the private field 'data' of the class
+- **getMittente():String** - returns the private field 'mittente' of the class
+- **getDestinatario():String** - returns the private field 'destinatario' of the class
+- **getMessaggio():String** - returns the private field 'messaggio' of the class
+- **getStake():int** - returns the private field 'stake' of the class
+
+
+### Fundracing
+
+The following changes have been made to this class.
+
+Private attributes:
+
+- **accept:Button**
+- **refuse:Button**
+- **l_description_message:Label**
+- **description_message:TextArea**
+- **stake_message:TextField**
+- **l_stake_message:Label**
+- **project_message:TextField**
+- **l_project_message:Label**
+- **send:Button**
+- **choice_agency:ChoiceBox**
+- **message_receiver:Label**
+- **gm:GestoreMessaggi**
+- **l_password:Label**
+- **l_agencyName:Label**
+- **messages_received:Label**
+- **l_stake:Label**
+- **l_description:Label**
+- **l_project_name:Label**
+- **l_total_budget:Label**
+
+Public methods:
+
+- **selectTableRow():void** - the function uses a handle, able to detect the selection of a row table, in order to return the information
+ contained in that row
+- **selectTableMessages():void** - the function uses a handle, able to detect the selection of a row table, in order to return the information
+ contained in that row
+- **inizializeChoiceBox():void** - the function initializes the drop-down menu with the list of companies in the database
+
+
 
 
 ## Obbiettivi del branch Matteo
@@ -208,69 +275,17 @@ Private attributes:
 Public methods
 
 - **GestoreMessaggi(DepositoDati,TableMessage,String):void** -Initialize all the private fields of GestoreMessaggi inside the constructor
-
-- **startAggiornamentoTabella():void** -create, using the constructs Timer and TimerTask, a "scheduler" that will call every 5 seconds the function aggiornaTabellaMessaggi()
-
-```
-timer = new Timer();
-task = new TimerTask() 
-{
-	public void run() 
-	{
-					
-		aggiornaTabellaMessaggi();
-					
-	}
-};
-timer.schedule(task, 0, 5000);
-
-```
-
+- **startAggiornamentoTabella():void** -create,using the constructs Timer and TimerTask, a "scheduler" that will call every 5 seconds the function aggiornaTabellaMessaggi()
 - **endAggiornamentoTabella():void** -stop the "scheduler" previously created
-
-```
-
-{
-	timer.cancel();
-	timer.purge();
-}
-
-```
 
 Private methods
 
 - **aggiornaTabellaMessaggi():void** -retrieve from the database the messages related to the agency, that previously logged in, and show them in the related table 
-
-```
-
-{
-	List<RowTableMessage> messaggiDaAggiungere = d.getMessages(agencyName);
-	tm.updateMessages(messaggiDaAggiungere);
-}
-
-```
 
 ------
 
 Update use case diagram
 
 ![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/usecase.png)
-
-
-The main actor of the application is an agency chef. The application provides to the user six different main functionalities:
-
-**1)Login** The user can, by inserting the username and password, confirm its identity and access to private informations
-
-**2)Registration** By filling in a predeterminated form, the user can register its agency inside the network and from now on have an active part in financing other projects and receive founds for its own
-
-**3)View Projects List** The chief agency will see,in a table, all the projects previously insered by the companies part of the network. If it's interested, by clicking a row, it will automatically receive additional informations, namely 
-the description and the stake insered until then, and also it can update the stake of a project or delete the projects itself,if it's the owner of it, or just the investment made, if it's not.
-
-**4)Add Project** The user can insert a new project requiring founds to start, and it will automatically be seen in the table.
-
-**5)Add Request** The user can ask to other agency chiefs present in the network to fund one of its projects. That request will be automatically be seen by the receiver.
-
-**6)View Messages** The chief agency will see, in a table, all the requests made to it. If it's interested, by clicking a row, it will automatically receive the additional information of the description, and also it can accept or decline
- the request.
 
 
