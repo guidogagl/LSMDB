@@ -9,7 +9,7 @@ Ciao questa è la wiki del progetto di LSMDB
 ## Software Architecture
 La realizzazione della classe Connect e il seguente restauro della classe DepositoDati è avvenuto per dividere logicamente Middle-Layer e Back-end come in figura.
 
-![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/arch_diagram.png)
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/arch_diagram.png)
 
 ## Database Modeling
 Lo schema ER in figura mostra la struttura relazionare del database implementato dal Mysql server dell'applicazione
@@ -61,7 +61,7 @@ In seguito sono riportate quattro tabelle con la spiegazione nel dettaglio dei l
 
 Le classi sono state strutturate usando il linguaggio Java 
 
-![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/class_diagram1.png)
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/class_diagram1.png)
 
 Il meccanismo software è stato implementato così per nascondere del tutto a DepositoDati qualsiasi informazione relativa al database e nascondergli il back-end che è lasciato così unicamente a Connect.
 
@@ -193,7 +193,7 @@ the informations stored in the List passed as argument.
 
 ## Obbiettivi del branch Matteo
 
-![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/class_diagramGestoreMessaggi.png)
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/class_diagramGestoreMessaggi.png)
 
 The class GestoreMessaggi has the purpose of creating a "scheduler" that will update the messages'table every 5 seconds
 
@@ -219,6 +219,6 @@ Private methods
 
 Update use case diagram
 
-![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/usecase.png)
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/usecase.png)
 
 
