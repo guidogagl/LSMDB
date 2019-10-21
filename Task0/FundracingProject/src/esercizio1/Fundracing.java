@@ -53,6 +53,7 @@ public class Fundracing extends Application{
 	private int selectedStake=0;
 	private int selectedTotalBudget=0;
 	private int selectedMessageStake = 0;
+	private int selectedProjectMessageId = 0;
 	private Label name_agency = new Label("");
 	private Label address_agency = new Label("");
 	private Label site_agency = new Label("");
@@ -141,7 +142,7 @@ public class Fundracing extends Application{
 		
 		
 		accept.setOnAction((ActionEvent ev1)->{
-			deposito.updateStake(selectedMessageStake, agencyName, selectedMessagetId);
+			deposito.updateStake(selectedMessageStake, agencyName, selectedProjectMessageId, true);
 			deposito.deleteMessage(selectedMessagetId);
 			table.updateProjects(deposito.getProjects(agencyName));
 			table_message.updateMessages(deposito.getMessages(agencyName));
@@ -216,7 +217,7 @@ public class Fundracing extends Application{
 						newStake=(selectedStake+(selectedTotalBudget-totalStakes)); //quanto ho messo più quanto manca per il max
 					else //altrimenti il nuovo stake sarà semplicemente quello inserito
 						newStake=stakeInsered;
-					deposito.updateStake(newStake,agencyName,selectedProjectId);
+					deposito.updateStake(newStake,agencyName,selectedProjectId, false);
 					table.updateProjects(deposito.getProjects(agencyName));
 					stake.setText("");
 				} 
@@ -230,19 +231,22 @@ public class Fundracing extends Application{
 				String project = project_message.getText();
 				String receiver = choice_agency.getValue().toString();
 				System.out.println("Receiver selected: "+receiver);
-				
+
 				if(!description.equals("") && !stake.equals("") && !project.equals("") && !receiver.equals("")) {
-					
-					Vector<String> vector = new Vector<String>(4);
-					
-					vector.add(agencyName);	//mittente
-					vector.add(receiver);	//destinatario
-					vector.add(project);	//progetto
-					vector.add(description);	//testo
-					vector.add(stake);	//stake
-					deposito.insertMessage(vector);
-					
-				}else {
+				
+					if(deposito.getProject(Integer.parseInt(project)).isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Il progetto selezionato non esiste");
+					} else {
+						Vector<String> vector = new Vector<String>();
+						
+						vector.add(agencyName);	//mittente
+						vector.add(receiver);	//destinatario
+						vector.add(project);	//progetto
+						vector.add(description);	//testo
+						vector.add(stake);	//stake
+						deposito.insertMessage(vector);
+					}
+				} else {
 					JOptionPane.showMessageDialog(null, "Non hai compilato correttamente tutti i campi!");
 				}
 			});
@@ -314,6 +318,7 @@ public class Fundracing extends Application{
                 System.out.println("Message id: " + selectedMessagetId);
                 //selectedTotalBudget=res.getBudget();
                 selectedMessageStake=res.getStake();
+                selectedProjectMessageId = res.getId_project();
                 description_message.setText(deposito.getDescriptionMessage(selectedMessagetId));
                 //stake.setText(Integer.toString(res.getStake()));
             }  

@@ -301,8 +301,7 @@ public class DepositoDati {
 		conn.close();
 	}
 	
-	public void updateStake(int stakeBudget,String agencyName,int idProgetto) {
-		
+	public void updateStake(int stakeBudget,String agencyName,int idProgetto, boolean add) {
 		boolean stakePresent = myStake(agencyName, idProgetto);
 		
 		Vector<String> val = new Vector<String>();
@@ -311,19 +310,40 @@ public class DepositoDati {
 		val.add(Integer.toString(idProgetto));
 		
 		conn = new Connect();
+		
 		String sql = "";
 		
 		//Se non esiste un finanziamento per il progetto selezionato da parte dell'azienda che ha fatto il login
 		if(!stakePresent) 
 			sql = "INSERT INTO finanziamento (budget, azienda, progetto) values((?), (?), (?));";
-		else
+		else if (!add)
 			sql = "UPDATE finanziamento SET budget = (?) WHERE azienda = (?) and progetto = (?);";
-		
+		else
+			sql = "UPDATE finanziamento SET budget = budget + (?) WHERE azienda = (?) and progetto = (?);";
+
 		conn.query(sql, 0, val);
 		
 		conn.close();
 	}
+	
+	public List<Vector<String>> getProject(int idProgetto){
+		String sql = "SELECT * FROM progetto WHERE id =" + idProgetto + ";";
+		
+		Connect conn = new Connect();
+		
+		List<Vector<String>> project = conn.query(sql, 5);
+		
+		if(project == null) {
+			conn.close();
+			return new ArrayList<Vector<String>>();
+		}
+		
+		conn.close();
 
+		return project;
+	}
+	
+	
 	public List<String> getListAgency(){
 		
 		List<String> val = new ArrayList<String>();
