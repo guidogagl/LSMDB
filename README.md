@@ -1,8 +1,6 @@
 ﻿# LSMDB
 Ciao questa è la wiki del progetto di LSMDB
 
-
-
 ## Obbiettivi del branch Guido1
  - [x] Creazione della classe Connect e ristrutturazione di DepositoDati per la realizzazione di Middle-Layer e Back-end con un database Mysql per il progetto MyFundrasing Project (Task1).
  - [ ] Implementazione e utilizzo di JPA (Task2).
@@ -12,6 +10,20 @@ Ciao questa è la wiki del progetto di LSMDB
 La realizzazione della classe Connect e il seguente restauro della classe DepositoDati è avvenuto per dividere logicamente Middle-Layer e Back-end come in figura.
 
 ![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/arch_diagram.png)
+
+## Database Modeling
+Lo schema ER in figura mostra la struttura relazionare del database implementato dal Mysql server dell'applicazione
+![ER diagram](https://github.com/guidogagl/LSMDB/blob/master/ER.png)
+
+Tale struttura è implementata mediante l'utilizzo di quattro tabelle 
+- **Azienda**
+- **Progetto**
+- **Finanziamento**
+- **Messaggio**
+
+illustrate nel modello sottostante
+![ER diagram](https://github.com/guidogagl/LSMDB/blob/master/er_details.png)
+
 
 ## Class Modeling 
 
@@ -125,6 +137,7 @@ Metodi pubblici
 - getDescriptionProject(int): String
 - deleteMyStake(int, String): void
 - updateStake(int, String, int): void
+
 
 ---
 
