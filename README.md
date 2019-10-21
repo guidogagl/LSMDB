@@ -259,8 +259,10 @@ Public methods:
 ---
 
 ## Use Case
+
 At the opening, the application shows the interface rapresented in the figure below.
 
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/StartingInterface.PNG)
 
 
 ## Obbiettivi del branch Matteo
