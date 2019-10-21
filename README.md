@@ -21,8 +21,40 @@ Tale struttura è implementata mediante l'utilizzo di quattro tabelle
 - **Finanziamento**
 - **Messaggio**
 
-illustrate nel modello sottostante
+illustrate in dettaglio nel modello sottostante
 ![ER diagram](https://github.com/guidogagl/LSMDB/blob/master/er_details.png)
+
+In seguito sono riportate quattro tabelle con la spiegazione nel dettaglio dei loro campi.
+
+### Azienda
+- **nomeAzienda** - chiave primaria, si suppone che ogni azienda abbia un nome diverso.
+- **urlLogo** - rappresenta il riferimento ( relativo o assoluto ) al logo dell'a-zione che viene visualizzato nell'applicazione.
+- **urlSito** - rappresenta il riferimento al sito web dell'azienda.
+- **indirizzo** 
+- **cap**
+- **password** 
+
+### Progetto
+- **id** - chiave primaria, identifica univocamente il progetto nel database
+- **nome** - nome del progetto assegnato dall'azienda che lo crea ( possono esistere più progetti con lo stesso nome )
+- **budget** - somma di denaro che l'azienda che crea il progetto vuole ottenere attraverso l'applicazione per finanziare interamente il progetto.
+- **descrizione** - descrizione descrittiva del progetto
+- **azienda** - nome (nomeAzienda) dell'azienda che ha creato il progetto.
+
+### Finanziamento
+- **id** - chiave primaria, identifica univocamente il finanziamento nel database.
+- **budget** - somma di denaro che l'azienda finanziatrice ha deciso di investire nel progetto finanziato.
+- **azienda** - nome ( nomeAzienda ) dell'azienda che ha creato il finanziamento.
+- **progetto** - identificativo ( id ) del progetto che si intende finanziare
+
+### Messaggio
+- **id** - chiave primaria, identifica univocamente il messaggio nel database.
+- **mittente** - nome dell'azienda ( nomeAzienda ) che scrive (crea) il messaggio.
+- **destinatario** - nome dell'azienda ( nomeAzienda ) che riceve il messaggio.
+- **progetto** - identificativo ( id ) del progetto per il quale si intende chiedere un finanziamento attraverso il messaggio.
+- **stake** - somma di denaro che si richiede per finanziare il progetto oggetto del messaggio.
+- **data** - data di invio del messaggio.
+
 
 
 ## Class Modeling 
