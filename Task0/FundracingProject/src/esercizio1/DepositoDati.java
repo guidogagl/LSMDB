@@ -49,9 +49,43 @@ public class DepositoDati {
 		return ret;		
 	}
 	
-	public DepositoDati() {
+	private List<RowTableMessage> getRowTableMessage(String sql, Vector<String> v) {
+
+		conn = new Connect();
 		
+		
+		List<Vector<String>> resultSet;
+		
+		resultSet = conn.query(sql, 7, v);
+		
+		if(resultSet == null){
+			conn.close();
+			return new ArrayList<RowTableMessage>();
+		}
+		
+		List<RowTableMessage> ret = new ArrayList<RowTableMessage>();
+		
+		for(int i = 0; i < resultSet.size(); i++) {
+			Vector<String> val = resultSet.get(i);
+			
+			RowTableMessage row = new RowTableMessage( 	Integer.parseInt(val.get(0)), 
+														Integer.parseInt(val.get(1)),
+														val.get(2),
+														val.get(3),
+														val.get(4), 
+														val.get(5),
+														Integer.parseInt(val.get(6))
+														); 
+			ret.add(row);
+		}
+
+		conn.close();
+		
+		System.out.print("Connessione con il database chiusa correttamente \n");
+		
+		return ret;	
 	}
+	
 		
 	public List<RowTableProjects> getProjects(String agencyName){
 		String sqlStr = "select f1.id_project, f1.nome,case when f2.progress is null then 0 else f2.progress end as progress, f1.budget, f1.stake, f1.azienda\r\n" + 
@@ -68,19 +102,45 @@ public class DepositoDati {
 				"    (\r\n" + 
 				"		select  p.id, 100*sum(f.budget)/p.budget as progress\r\n" + 
 				"        from progetto p inner join finanziamento f on p.id = f.progetto\r\n" + 
-				"        where p.azienda = (?)\r\n" + 
 				"        group by p.id\r\n" + 
 				"    ) as f2 on f1.id_project = f2.id\r\n" + 
 				"    ;";
 		
 		Vector<String> d = new Vector<String>();		
 		d.add(agencyName);
-		d.add(agencyName);
 		
 		List<RowTableProjects> ret = getRowTableProjects(sqlStr, d);
 		
 		return ret;
 	}
+	
+	public List<RowTableMessage> getMessages(String agencyName){
+		String sqlStr="select	m.id, m.progetto as id_project, m.data, m.mittente, m.destinatario, m.testo as messaggio, m.stake\n" + 
+					"from	messaggio m\n" + 
+					"		inner join\n" + 
+					"        azienda a\n" + 
+					"        on m.mittente = a.nomeAzienda\n" + 
+					"where 	m.destinatario =  (?) ;";
+		Vector<String> d = new Vector<String>();	
+		d.add(agencyName);
+		List<RowTableMessage> ret = getRowTableMessage(sqlStr, d);
+		
+		return ret;
+	}
+	
+	public String getDescriptionMessage(int id_message) {
+		
+		String sql = "SELECT testo FROM messaggio WHERE id ="+ id_message +";";
+		
+		conn = new Connect();
+		
+		List<Vector<String>> val = conn.query(sql, 1);
+		
+		conn.close();
+		
+		return val.get(0).get(0).toString();
+		}
+	
 	
 	public int getSommaStakes(int selectedProjectID){		
 		String sql="SELECT sum(f.budget) as somma "
@@ -183,26 +243,36 @@ public class DepositoDati {
 		
 	}
 	
+	
+	public void deleteMessage(int messageId) {
+		String sql="DELETE FROM messaggio WHERE id = "+ messageId + ";";
+		
+		Connect conn = new Connect();
+	  
+		conn.query(sql, 0);
+	  
+		conn.close();
+		
+	}
+	
+	
 	public Vector<String> getAgency(String agencyName,String password) {
 		
 		String sql = "SELECT * FROM azienda WHERE nomeAzienda = '"+ agencyName + "' AND password ='" + password + "';";
 		
 		Connect conn = new Connect();
 		
-		List<Vector<String>> list = conn.query(sql, 5);
-		
-		if( list == null )
+		List<Vector<String>> res = conn.query(sql, 5);
+		if(res == null) {
+			conn.close();
 			return new Vector<String>();
+		}
 		
-		Vector<String> vett = list.get(0);
+		Vector<String> vett = res.get(0);
 		
 		conn.close();
 		
 		Vector<String> ret = new Vector<String>();
-		
-		if( vett.get(0) == "0" )
-			return null;
-		
 		for(int i = 0; i < 5; i++)
 			ret.add(vett.get(i).toString());
 		
@@ -253,5 +323,46 @@ public class DepositoDati {
 		
 		conn.close();
 	}
+
+	public List<String> getListAgency(){
+		
+		List<String> val = new ArrayList<String>();
+		
+		
+		String str = "select	nomeAzienda\n" + 
+				"from	azienda;";
+		
+		conn = new Connect();
+		
+		List<Vector<String>> resultSet = conn.query(str, 1);
+		
+		for(int i = 0; i < resultSet.size(); i++) {
+			
+			val.add(resultSet.get(i).get(0));
+			System.out.println(val.get(i));
+		}
+		
+		conn.close();
+		
+		System.out.print("Connessione con il database chiusa correttamente \n");
+		
+		return val;
+	}
+	
+	
+	public void insertMessage(Vector<String>val) {
+		
+		  String insertProject="INSERT INTO messaggio (mittente,destinatario,progetto,testo,stake) values ((?),(?),(?),(?),(?))";
+		   
+		  Connect conn = new Connect();
+		  
+		  conn.query(insertProject, 0, val);
+		  
+		  conn.close();
+		}
+	
+	
+	
+	
 	
 }
