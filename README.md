@@ -13,7 +13,7 @@ La realizzazione della classe Connect e il seguente restauro della classe Deposi
 
 ## Database Modeling
 Lo schema ER in figura mostra la struttura relazionare del database implementato dal Mysql server dell'applicazione
-![ER diagram](https://github.com/guidogagl/LSMDB/blob/master/ER.png)
+![ER diagram](https://github.com/guidogagl/LSMDB/blob/master/img/ER.png)
 
 Tale struttura è implementata mediante l'utilizzo di quattro tabelle 
 - **Azienda**
@@ -22,7 +22,7 @@ Tale struttura è implementata mediante l'utilizzo di quattro tabelle
 - **Messaggio**
 
 illustrate in dettaglio nel modello sottostante
-![ER diagram](https://github.com/guidogagl/LSMDB/blob/master/er_details.png)
+![ER diagram](https://github.com/guidogagl/LSMDB/blob/master/img/er_details.png)
 
 In seguito sono riportate quattro tabelle con la spiegazione nel dettaglio dei loro campi.
 
