@@ -50,17 +50,23 @@ public class DepositoDati {
 	}
 	
 	private List<RowTableMessage> getRowTableMessage(String sql, Vector<String> v) {
-conn = new Connect();
+		conn = new Connect();
 		
-		List<RowTableMessage> ret = new ArrayList<RowTableMessage>();
 		
 		List<Vector<String>> resultSet;
 		
+		// perchè questo if?
 		if(v != null)
 			resultSet = conn.query(sql, 5, v);
 		else
 			resultSet = conn.query(sql, 5);
-
+		
+		if(resultSet == null) {
+			conn.close();
+			return new ArrayList<RowTableMessage>();
+		}
+		
+		List<RowTableMessage> ret = new ArrayList<RowTableMessage>();
 		
 		for(int i = 0; i < resultSet.size(); i++) {
 			Vector<String> val = resultSet.get(i);
@@ -120,6 +126,7 @@ conn = new Connect();
 					"where 	m.destinatario =  (?) ;";
 		Vector<String> d = new Vector<String>();	
 		d.add(agencyName);
+				
 		List<RowTableMessage> ret = getRowTableMessage(sqlStr, d);
 		
 		return ret;
@@ -246,7 +253,12 @@ conn = new Connect();
 		
 		Connect conn = new Connect();
 		
-		Vector<String> vett = conn.query(sql, 5).get(0);
+		List<Vector<String>> res = conn.query(sql, 5);
+		
+		if( res == null )
+			return new Vector<String>();
+		
+		Vector<String> vett = res.get(0);
 		
 		conn.close();
 		

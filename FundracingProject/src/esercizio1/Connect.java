@@ -24,9 +24,12 @@ public class Connect {
 	private Connection conn = null;
 
 	private List<Vector<String>> fetchRows(ResultSet result, int num) throws SQLException {
+		if( result.next() == false )
+			return null;
+		
 		ArrayList<Vector<String>> list = new ArrayList<Vector<String>>();
-
-		while(result.next()) {
+		
+		do {
             Vector<String> v = new Vector<String>();
 			
             for(int i=1; i <= num; i++)
@@ -36,7 +39,7 @@ public class Connect {
             		v.add(result.getObject(i).toString());
             
             list.add(v);
-        }
+        }while(result.next());
 		
 		return list;
 	}
@@ -70,12 +73,11 @@ public class Connect {
 			Statement stmt = conn.createStatement();
 			stmt.execute(queryString);
 			ResultSet rs = stmt.getResultSet();
-					
-			if( numColumns == 0 ) {
+			if(rs == null || numColumns == 0) {
 				stmt.close();
 				return null;
 			}
-			
+					
 			List<Vector<String>> fetchedRows =  fetchRows(rs, numColumns);
 			
 			stmt.close();
@@ -107,14 +109,9 @@ public class Connect {
 					pstmt.setString(j, data.get(i));	
 			pstmt.execute();
 			
-			if( numColumns == 0 ) {
-				pstmt.close();
-				return null;
-			}
-			
 			ResultSet rs = pstmt.getResultSet();
 			
-			if( rs == null) {
+			if( rs == null || numColumns == 0) {
 				pstmt.close();
 				return null;
 			}
