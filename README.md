@@ -192,6 +192,14 @@ Public methods:
 - **TableMessage()** - class constructor, inizializes the table columns and then adds them to the table
 - **updateMessages(List\<RowTableMessage> messages):void** - Thisfunctionclears all the content of the table and replace it with
 the informations stored in the List passed as argument.
+
+```
+public void updateMessages(List<RowTableMessage> messages) {
+	messagesList.clear();
+	messagesList.addAll(messages);
+}
+
+```
 	
 ### RowTableMessage
 This class is the data representation of the rows in the message table.
@@ -212,6 +220,22 @@ Public methods:
 
 - **RowTableMessage(int id, int id_project, String data, String mittente, String destinatario, String messaggio,
 	int stake)** - class constructor, it converts the attribute passed as argument in SimpleItsProperty, where Its is the type of the argument
+	
+```
+public RowTableMessage(int id, int id_project, String data, String mittente, String destinatario, String messaggio,
+			int stake) {
+		
+	this.id = new SimpleIntegerProperty(id);
+	this.id_project = new SimpleIntegerProperty(id_project);
+	this.data = new SimpleStringProperty(data);
+	this.mittente = new SimpleStringProperty(mittente);
+	this.destinatario = new SimpleStringProperty(destinatario);
+	this.messaggio = new SimpleStringProperty(messaggio);
+	this.stake = new SimpleIntegerProperty(stake);
+}
+
+```
+	
 - **getId():int** - returns the private field 'id' of the class
 - **getId_project():int** - returns the private field 'id_project' of the class
 - **getData():String** - returns the private field 'data' of the class
