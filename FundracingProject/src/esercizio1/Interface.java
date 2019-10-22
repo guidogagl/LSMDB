@@ -145,7 +145,7 @@ public class Interface {
         description_message.setLayoutY(270);
     }
     
-    public void setRegistration(RegistrationForm form){
+    public Interface(RegistrationForm form){
             JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
 
             form.setTitle("Network Registration Form");
