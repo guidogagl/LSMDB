@@ -38,7 +38,6 @@ public class AziendaEntity {
     )
     private List<MessaggioEntity> ricevuti = null;
 
-
     @Id
     @Column(name = "nomeAzienda", nullable = false, length = 500)
     public String getNomeAzienda() {
