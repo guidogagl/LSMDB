@@ -40,27 +40,66 @@ The main aim of class RegistrationForm is to provide the user with a mechanism t
 # attributi privati
 
 
-- **nameAgency:JLabel
-- address:JLabel
-- ZIP: JLabel 
-- insertPassword:JLabel
-- urlLogo:JLabel
-- insertUrl:JLabel
-- url:JTextField
-- name_field:JTextField
-- address_field:JTextField
-- ZIP_field:JTextField
-- url:JTextField
-- urlLogo_field:JTextField
-- password:JPasswordField
-- confirm_password: JPasswordField
-- submit: JButton
-- discard: JButton**
-
+- **nameAgency:JLabel**
+- **address:JLabel**
+- **ZIP: JLabel**
+- **insertPassword:JLabel**
+- **urlLogo:JLabel**
+- **insertUrl:JLabel**
+- **url:JTextField**
+- **name_field:JTextField**
+- **address_field:JTextField**
+- **ZIP_field:JTextField**
+- **url:JTextField**
+- **urlLogo_field:JTextField**
+- **password:JPasswordField**
+- **confirm_password: JPasswordField**
+- **submit: JButton**
+- **discard: JButton**
+- **interface:Interface**
+- **deposito:DepositoDati**
 
 Metodi pubblici
 
--  *public RegistrationForm()*
+-  **public RegistrationForm()** - the constructors sets the events associated with the _submit_ and _discard_ buttons and delegates the setting of its view to its instance of class _Interface_. 
+
+Button _submit_ deals with the check of data correcteness
+
+
+'''
+ submit.addActionListener(new ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    if (!Arrays.equals(password.getPassword(), confirm_password.getPassword())) {
+                        JOptionPane.showMessageDialog(null, "The two passwords do not coincide!");
+                        password = new JPasswordField();
+                        confirm_password = new JPasswordField();
+                    } else {
+                        if ((deposito.getAgency(name_field.getText()).isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "This agency is already present!");
+                            setVisible(false);
+                        } else {
+                            if (name_field.getText().isEmpty() || address_field.getText().isEmpty() || ZIP_field.getText().isEmpty()
+                                    || password.getPassword().length == 0 || confirm_password.getPassword().length == 0 || url.getText().isEmpty() || urlLogo_field.getText().isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "Beware! The registration form is incomplete");
+                            } else {
+                                Vector<String> val = new Vector<String>();
+                                val.addElement(name_field.getText());
+                                val.addElement(urlLogo_field.getText());
+                                val.addElement(url.getText());
+                                val.addElement(address_field.getText());
+                                val.addElement(ZIP_field.getText());
+                                //password passata in chiaro!!!
+                                val.addElement(new String(password.getPassword()));
+                                deposito.insertAgency(val);
+                            }
+                        }
+
+                    }
+
+                }
+            }
+            );
+ '''
 
 
 
