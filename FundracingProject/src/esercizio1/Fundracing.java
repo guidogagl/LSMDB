@@ -123,7 +123,9 @@ public class Fundracing extends Application {
                 l_description_message, description_message, register);
 
         register.setOnAction((ActionEvent ev2) -> {
-            form= new RegistrationForm(new Interface());
+            form= new RegistrationForm();
+            form.getInterface()=new Interface(form);
+            form.setVisible(true);
             
         });
         insert.setOnAction((ActionEvent ev2) -> {
