@@ -79,6 +79,7 @@ class RegistrationForm extends Frame {
         public JTextField geturlLogo_field(){return urlLogo_field;}
         public JButton submit(){return submit;}
         public JButton discard(){return discard;}
+        public getInterfaccia(){return interfaccia;}
 
   }
   
