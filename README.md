@@ -63,11 +63,10 @@ Metodi pubblici
 
 -  **public RegistrationForm()** - the constructors sets the events associated with the _submit_ and _discard_ buttons and delegates the setting of its view to its instance of class _Interface_. 
 
-Button _submit_ deals with the check of data correcteness
+Button _submit_ deals with the correctness check of the inserted data, following the criteria illustrated above. If the controls are successful, it delegates the insert of the agency in the database to its reference _deposito_ of class _DepositoDati_.
 
 
-''' java
-submit.addActionListener(new ActionListener() {
+```submit.addActionListener(new ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     if (!Arrays.equals(password.getPassword(), confirm_password.getPassword())) {
                         JOptionPane.showMessageDialog(null, "The two passwords do not coincide!");
@@ -98,7 +97,7 @@ submit.addActionListener(new ActionListener() {
                 }
             });
  '''
-
+ 
 
 
 
