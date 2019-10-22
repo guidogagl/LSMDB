@@ -21,23 +21,28 @@ E' stato aggiunto un evento al bottone register: Button tale per cui, quando vie
 ### Implementation of _Registration Form_
 ##main idea
 La classe RegistrationForm ha come compito principale il reperimento delle informazioni sulle aziende che intendono registrarsi al network. Trasmette poi queste informazioni, se corrette, al database. Estende la classe _Frame_ della libreria _java.awt_.
-#attributi privati
+## Schema della Classe
+
+# attributi privati
 I campi statici:
 - nameAgency:JLabel
 - address:JLabel
 - ZIP: JLabel 
 - insertPassword:JLabel
 - urlLogo:JLabel
-I seguiti campi di inserimento dati
+I seguiti campi di inserimento dati:
 - insertUrl:JTextField
+//
 I due campi per l'inserimento delle password:
 - password:JPasswordField
 - confirm_password: JPasswordField
 I due bottoni:
 - submit: JButton
 - discard: JButton
-##Schema della Classe
-#attributi 
+# metodi pubblici
+- Metodi getter per gli attributi sovramenzionati
+
+
 
 
 
