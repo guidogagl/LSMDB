@@ -355,7 +355,7 @@ Update use case diagram
 ![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/usecase.png)
 
 
-The main actor of the application is an agency chef. The application provides to the user six different main functionalities:
+The main actor of the application is an agency chief. The application provides to the user six different main functionalities:
 
 **1)Login** The user can, by inserting the username and password, confirm its identity and access to private informations
 
