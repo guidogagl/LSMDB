@@ -35,7 +35,8 @@ The main aim of class RegistrationForm is to provide the user with a mechanism t
 - All fields must be filled before submitting the form.
 
 
-## Schema della Classe
+# RegistrationForm
+![Class RegistrationForm](https://github.com/guidogagl/LSMDB/blob/Amaryllis/Untitled%20Diagram.jpg)
 
 # attributi privati
 
@@ -96,8 +97,8 @@ Button _submit_ deals with the correctness check of the inserted data, following
 
                 }
             });
- '''
- 
+            
+```
 
 
 
