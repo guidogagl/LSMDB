@@ -26,11 +26,18 @@ form.setVisible(true);
 
 ### Implementation of _Registration Form_
 ## main idea
-La classe RegistrationForm ha come compito principale il reperimento delle informazioni sulle aziende che intendono registrarsi al network. Trasmette poi queste informazioni, se corrette, al database. Estende la classe _Frame_ della libreria _java.awt_.
+The main aim of class RegistrationForm is to provide the user with a mechanism to insert all the information concerning its agency, in order to joint the foundraising scheme. Checks are performed on all the inserted data before allowing the insert, that is:
+
+
+- The agency musn't already be enrolled with the same business name in the network.
+- The entered information regarding the password, in fields _password_ and _confirm password_ of the form, must coincide. In return, the class will provide the user with a mechanism to insert the password without showing the single characters;
+- The ZIP code, as for the specifi constraints given to attribute _cap_ in the scheme of table _Agenzia_, must be a numeric sequence.
+- All fields must be filled before submitting the form.
+
+
 ## Schema della Classe
 
 # attributi privati
-I campi statici:
 
 
 - nameAgency:JLabel
@@ -38,31 +45,23 @@ I campi statici:
 - ZIP: JLabel 
 - insertPassword:JLabel
 - urlLogo:JLabel
-
-
-I seguiti campi di inserimento dati:
-
-
-- insertUrl:JTextField
-
-
-I due campi per l'inserimento delle password:
-
+- insertUrl:JLabel
+- url:JTextField
+- name_field:JTextField
+- address_field:JTextField
+- ZIP_field:JTextField
+- url:JTextField
+- urlLogo_field:JTextField
 
 - password:JPasswordField
 - confirm_password: JPasswordField
-
-
-I due bottoni:
-
-
 - submit: JButton
 - discard: JButton
 
 
-# metodi pubblici
+Metodi pubblici
 
-- Metodi getter per gli attributi sovramenzionati
+-  *public RegistrationForm()*
 
 
 
