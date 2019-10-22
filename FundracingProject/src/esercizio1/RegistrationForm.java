@@ -1,7 +1,4 @@
 
-import javax.swing.JButton;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 package esercizio1;
 
 import java.awt.Frame;
