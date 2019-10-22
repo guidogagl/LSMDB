@@ -9,6 +9,14 @@ Why is RegistrationFrom an inner class? Because its scope is within the cicle of
 
 ### Implementation of _Fundracing_
 
+##Schema della classe
+
+E' stato aggiunto un evento al bottone register: Button tale per cui, quando viene cliccato, viene inizializzato il campo privato form:RegistrationForm. Tramite un meccanismo di callback, Fundracing si occupa di inizializzare l'attributo privato interface:Interfaccia della propria istanza di RegistrationForm.
+
+### Implementation of _Registration Form_
+##Schema della Classe
+#attributi 
+
 
 
  
