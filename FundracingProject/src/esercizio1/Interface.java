@@ -1,6 +1,6 @@
 package esercizio1;
 
-import java.awt.Choice;
+
 import java.awt.event.KeyEvent;
 
 import javax.swing.JPasswordField;
@@ -145,5 +145,45 @@ public class Interface {
         description_message.setLayoutY(270);
     }
     
-   
-}
+    public void setRegistration(RegistrationForm form){
+            JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
+
+            form.setTitle("Network Registration Form");
+            form.setSize(700, 500);
+            form.setLayout(null);
+            
+            form.getnameAgency.setBounds(100, 70, 400, 30);
+            form.getname_field.setBounds(250, 70, 350, 30);
+            form.getaddress.setBounds(100, 110, 400, 30);
+            form.getddress_field.setBounds(250, 110, 350, 30);
+            form.getZIP.setBounds(100, 150, 400, 30);
+            form.getZIP_field.setBounds(250, 150, 350, 30);
+            form.getinsertPassword.setBounds(100, 190, 400, 30);
+            form.getpassword.setBounds(250, 190, 350, 30);
+            confirmPasswordLabel.setBounds(100, 230, 400, 30);
+            form.getconfirm_password.setBounds(250, 230, 350, 30);
+            form.getinsertUrl.setBounds(100, 270, 400, 30);
+            form.geturl.setBounds(250, 270, 350, 30);
+            form.geturlLogo.setBounds(100, 310, 400, 30);
+            form.geturlLogo_field.setBounds(250, 310, 350, 30);
+            form.getsubmit.setBounds(200, 360, 140, 30);
+            form.getdiscard.setBounds(400, 360, 140, 30);
+            
+            add(nameAgency);
+            add(name_field);
+            add(address);
+            add(address_field);
+            add(ZIP);
+            add(ZIP_field);
+            add(insertPassword);
+            add(password);
+            add(confirmPasswordLabel);
+            add(confirm_password);
+            add(url);
+            add(insertUrl);
+            add(urlLogo);
+            add(urlLogo_field);
+            add(submit);
+            add(discard);
+        }
+    }
