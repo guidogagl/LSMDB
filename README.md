@@ -67,7 +67,7 @@ Button _submit_ deals with the check of data correcteness
 
 
 '''
- submit.addActionListener(new ActionListener() {
+submit.addActionListener(new ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     if (!Arrays.equals(password.getPassword(), confirm_password.getPassword())) {
                         JOptionPane.showMessageDialog(null, "The two passwords do not coincide!");
@@ -88,7 +88,6 @@ Button _submit_ deals with the check of data correcteness
                                 val.addElement(url.getText());
                                 val.addElement(address_field.getText());
                                 val.addElement(ZIP_field.getText());
-                                //password passata in chiaro!!!
                                 val.addElement(new String(password.getPassword()));
                                 deposito.insertAgency(val);
                             }
@@ -97,8 +96,7 @@ Button _submit_ deals with the check of data correcteness
                     }
 
                 }
-            }
-            );
+            });
  '''
 
 
