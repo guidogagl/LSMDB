@@ -63,5 +63,25 @@ class RegistrationForm extends Frame {
             );
           
     }
+    //getter methods
+    
+
+
+        public JTextField getname_field() {return name_field;}
+        public JLabel getnameAgency() {return nameAgency;}
+        public JTextField getddress_field() {return address_field;}
+        public JLabel getAddress() {return address;}
+        public JLabel getZIP() {return ZIP;}
+        public JTextField getZIP_field() {return ZIPfield;}
+        public JLabel getinsertPassword() {return insertPassword;}
+        public JTextField getpassword(){return password;}
+        public JTextField getconfirm_password(){return confirm_password;}
+        public JLabel getinsertUrl(){return insertUrl;}
+        public JTextField geturl(){return url;}
+        public JLabel urlLogo(){return urlLogo;}
+        public JTextField geturlLogo_field(){return urlLogo_field;}
+        public JButton submit(){return submit;}
+        public JButton discard(){return discard;}
+
   }
   
