@@ -2,6 +2,7 @@ package jpaEntities;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -11,6 +12,25 @@ public class MessaggioEntity {
     private String testo;
     private int stake;
     private Date data;
+
+    @ManyToOne(
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(
+            name = "nomeAzienda",
+            nullable = false
+    )
+    private AziendaEntity aziendaDestinataria;
+
+    @ManyToOne(
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(
+            name = "id",
+            nullable = false
+    )
+    private ProgettoEntity progetto;
+
 
     @Id
     @Column(name = "id", nullable = false)

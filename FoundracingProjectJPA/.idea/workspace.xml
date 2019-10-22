@@ -1,52 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e589b3f-37ec-48ff-9c34-d113413867fe" name="Default Changelist" comment="" />
+    <list default="true" id="4271c21a-8c18-4199-9fef-cf61e4fb1bb1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/$PRODUCT_WORKSPACE_FILE$" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/$PRODUCT_WORKSPACE_FILE$" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c83f5848-d24c-4df8-b8c9-2ab9a104499f.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c83f5848-d24c-4df8-b8c9-2ab9a104499f/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoundracingProjectJPA.iml" beforeDir="false" afterPath="$PROJECT_DIR$/FoundracingProjectJPA.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/Connect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/Connect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jpaEntities/AziendaEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaEntities/AziendaEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jpaEntities/FinanziamentoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaEntities/FinanziamentoEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jpaEntities/MessaggioEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaEntities/MessaggioEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jpaEntities/ProgettoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaEntities/ProgettoEntity.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DatabaseView">
-    <option name="SHOW_INTERMEDIATE" value="true" />
-    <option name="GROUP_DATA_SOURCES" value="true" />
-    <option name="GROUP_SCHEMA" value="true" />
-    <option name="GROUP_CONTENTS" value="false" />
-    <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <option name="HIDDEN_KINDS">
-      <set />
-    </option>
-    <expand />
-    <select />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectId" id="1SZ0A7xKZTOTV3PZHNQhzhuqSaG" />
+  <component name="ProjectId" id="1SZ61xgTJ0cfn07yNHxaSbsFUmL" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
-    <property name="DatabaseDriversLRU" value="mysql" />
-    <property name="JPA.DatabaseSchemaImportDialog" value="c83f5848-d24c-4df8-b8c9-2ab9a104499f" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-  </component>
-  <component name="RecentsManager">
-    <key name="ImportMappingsDialog.RecentPackages">
-      <recent name="jpaEntities" />
-    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -85,12 +67,12 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="8e589b3f-37ec-48ff-9c34-d113413867fe" name="Default Changelist" comment="" />
-      <created>1571755663856</created>
+      <changelist id="4271c21a-8c18-4199-9fef-cf61e4fb1bb1" name="Default Changelist" comment="" />
+      <created>1571758560897</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1571755663856</updated>
-      <workItem from="1571755677042" duration="1612000" />
+      <updated>1571758560897</updated>
+      <workItem from="1571758586604" duration="4289000" />
     </task>
     <servers />
   </component>

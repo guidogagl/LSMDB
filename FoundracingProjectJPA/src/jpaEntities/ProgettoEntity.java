@@ -1,6 +1,7 @@
 package jpaEntities;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -10,6 +11,33 @@ public class ProgettoEntity {
     private String nome;
     private Integer budget;
     private String descrizione;
+
+    @ManyToOne(
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(
+            name = "nomeAzienda",
+            nullable = false
+    )
+    private AziendaEntity aziendaOwner;
+
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY,
+            mappedBy = "progetto"
+    )
+    private List<FinanziamentoEntity> stakes = null;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY,
+            mappedBy = "progetto"
+    )
+    private List<ProgettoEntity> messaggi = null;
+
 
     @Id
     @Column(name = "id", nullable = false)

@@ -9,6 +9,24 @@ public class FinanziamentoEntity {
     private int id;
     private Integer budget;
 
+    @ManyToOne(
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(
+            name = "nomeAzienda",
+            nullable = false
+    )
+    private AziendaEntity stakeHolder;
+
+    @ManyToOne(
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(
+            name = "id",
+            nullable = false
+    )
+    private ProgettoEntity stakedProject;
+
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {

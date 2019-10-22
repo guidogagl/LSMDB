@@ -1,6 +1,7 @@
 package jpaEntities;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +13,31 @@ public class AziendaEntity {
     private String indirizzo;
     private Integer cap;
     private String password;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY,
+            mappedBy = "stakeHolder"
+    )
+    private List<FinanziamentoEntity> finanziamento = null;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY,
+            mappedBy = "aziendaOwner"
+    )
+    private List<ProgettoEntity> myProjects = null;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY,
+            mappedBy = "aziendaDestinataria"
+    )
+    private List<MessaggioEntity> ricevuti = null;
+
 
     @Id
     @Column(name = "nomeAzienda", nullable = false, length = 500)
