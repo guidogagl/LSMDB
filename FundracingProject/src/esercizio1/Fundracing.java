@@ -72,130 +72,6 @@ public class Fundracing extends Application {
 
     private Button register = new Button("Register");
 
-    class RegistrationForm extends Frame {
-
-        private Boolean filled = false;
-        private JLabel nameAgency = new JLabel("Agency Name:");
-        private JLabel address = new JLabel("Address:");
-        private JLabel ZIP = new JLabel("ZIP code:");
-        private JPasswordField password = new JPasswordField(16);
-        private JPasswordField confirm_password = new JPasswordField(16);
-        private JTextField name_field = new JTextField();
-        private JTextField address_field = new JTextField();
-        private JTextField ZIP_field = new JTextField();
-        private JTextField url = new JTextField();
-        private JLabel insertPassword = new JLabel("Password:");
-        private JLabel insertUrl = new JLabel("Web Site:");
-        private JLabel urlLogo = new JLabel("Logo: ");
-        private JTextField urlLogo_field = new JTextField();
-        private JButton submit = new JButton("Submit");
-        private JButton discard = new JButton("Discard");
-
-        public Boolean getFilled() {
-            return filled;
-        }
-
-        public String getnameAgency() {
-            return this.name_field.getText();
-        }
-
-        public String getaddress() {
-            return this.address_field.getText();
-        }
-
-        public String getAgencyPassword() {
-            return new String(password.getPassword());
-        }
-
-        public String getAgencyField() {
-            return ZIP_field.getText();
-        }
-
-        public String getAgencyWebSite() {
-            return url.getText();
-        }
-
-        public RegistrationForm() {
-            setVisible(true);
-            setTitle("Network Registration Form");
-            setSize(700, 500);
-            setLayout(null);
-            
-            nameAgency.setBounds(100, 70, 400, 30);
-            name_field.setBounds(250, 70, 350, 30);
-            address.setBounds(100, 110, 400, 30);
-            address_field.setBounds(250, 110, 350, 30);
-            ZIP.setBounds(100, 150, 400, 30);
-            ZIP_field.setBounds(250, 150, 350, 30);
-            insertPassword.setBounds(100, 190, 400, 30);
-            password.setBounds(250, 190, 350, 30);
-            JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
-            confirmPasswordLabel.setBounds(100, 230, 400, 30);
-            confirm_password.setBounds(250, 230, 350, 30);
-            insertUrl.setBounds(100, 270, 400, 30);
-            url.setBounds(250, 270, 350, 30);
-            urlLogo.setBounds(100, 310, 400, 30);
-            urlLogo_field.setBounds(250, 310, 350, 30);
-            submit.setBounds(200, 360, 140, 30);
-            discard.setBounds(400, 360, 140, 30);
-            
-            add(nameAgency);
-            add(name_field);
-            add(address);
-            add(address_field);
-            add(ZIP);
-            add(ZIP_field);
-            add(insertPassword);
-            add(password);
-            add(confirmPasswordLabel);
-            add(confirm_password);
-            add(url);
-            add(insertUrl);
-            add(urlLogo);
-            add(urlLogo_field);
-            add(submit);
-            add(discard);
-            
-            discard.addActionListener(new ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    setVisible(false);
-                }
-
-            });
-            submit.addActionListener(new ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    if (!Arrays.equals(password.getPassword(), confirm_password.getPassword())) {
-                        JOptionPane.showMessageDialog(null, "The two passwords do not coincide!");
-                        password = new JPasswordField();
-                        confirm_password = new JPasswordField();
-                    } else {
-                        if (deposito.agencyAlreadyPresent(name_field.getText())) {
-                            JOptionPane.showMessageDialog(null, "This agency is already present!");
-                            setVisible(false);
-                        } else {
-                            if (name_field.getText().isEmpty() || address_field.getText().isEmpty() || ZIP_field.getText().isEmpty()
-                                    || password.getPassword().length == 0 || confirm_password.getPassword().length == 0 || url.getText().isEmpty() || urlLogo_field.getText().isEmpty()) {
-                                JOptionPane.showMessageDialog(null, "Beware! The registration form is incomplete");
-                            } else {
-                                Vector<String> val = new Vector<String>();
-                                val.addElement(name_field.getText());
-                                val.addElement(urlLogo_field.getText());
-                                val.addElement(url.getText());
-                                val.addElement(address_field.getText());
-                                val.addElement(ZIP_field.getText());
-                                //password passata in chiaro!!!
-                                val.addElement(new String(password.getPassword()));
-                                deposito.insertAgency(val);
-                            }
-                        }
-
-                    }
-
-                }
-            }
-            );
-        }
-    }
 
     public void start(Stage stage) {
 
@@ -212,7 +88,7 @@ public class Fundracing extends Application {
             String password = tf_password.getText();
             Vector<String> result = deposito.getAgency(agencyName, password);
 
-            //Se il nome dell'azienda è presente nel db e la password è corretta
+            //Se il nome dell'azienda Ã¨ presente nel db e la password Ã¨ corretta
             if (!result.isEmpty()) {
 
                 table.updateProjects(deposito.getProjects(agencyName));
@@ -233,9 +109,9 @@ public class Fundracing extends Application {
                 image = new Image(urlLogo);
                 iv1.setImage(image);
 
-            } //Se il nome dell'azienda non è presente nel db
+            } //Se il nome dell'azienda non Ã¨ presente nel db
             else {
-                JOptionPane.showMessageDialog(null, "Il nome dell'azienda è errato oppure la password è scorretta!");
+                JOptionPane.showMessageDialog(null, "Il nome dell'azienda Ã¨ errato oppure la password Ã¨ scorretta!");
             }
 
         });
@@ -297,16 +173,16 @@ public class Fundracing extends Application {
         update.setOnAction((ActionEvent ev1) -> {
             int stakeInsered = Integer.parseInt(stake.getText());
             int totalStakes = deposito.getSommaStakes(selectedProjectId);
-            //se ho già raggiunto l'obiettivo
+            //se ho giÃ  raggiunto l'obiettivo
             if (totalStakes >= selectedTotalBudget) {
-                JOptionPane.showMessageDialog(null, "Ti ringraziamo per la tua generosità, ma abbiamo già raggiunto l'obiettivo prefissato!");
+                JOptionPane.showMessageDialog(null, "Ti ringraziamo per la tua generositÃ , ma abbiamo giÃ  raggiunto l'obiettivo prefissato!");
             } //se non ho raggiunto l'obiettivo e voglio aggiungere soldi
             else {
                 int newStake = 0;
-                //se voglio mettere più soldi di quelli necessari,metto solo quelli che mi servono per raggiungere il budget prefisso
+                //se voglio mettere piÃ¹ soldi di quelli necessari,metto solo quelli che mi servono per raggiungere il budget prefisso
                 if ((totalStakes - selectedStake + stakeInsered) > selectedTotalBudget) {
-                    newStake = (selectedStake + (selectedTotalBudget - totalStakes)); //quanto ho messo più quanto manca per il max
-                } else //altrimenti il nuovo stake sarà semplicemente quello inserito
+                    newStake = (selectedStake + (selectedTotalBudget - totalStakes)); //quanto ho messo piÃ¹ quanto manca per il max
+                } else //altrimenti il nuovo stake sarÃ  semplicemente quello inserito
                 {
                     newStake = stakeInsered;
                 }
