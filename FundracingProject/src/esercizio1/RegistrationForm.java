@@ -36,7 +36,7 @@ class RegistrationForm extends Frame {
                         password = new JPasswordField();
                         confirm_password = new JPasswordField();
                     } else {
-                        if (deposito.agencyAlreadyPresent(name_field.getText())) {
+                        if (deposito.getAgency(name_field.getText()).isEmpty()) {
                             JOptionPane.showMessageDialog(null, "This agency is already present!");
                             setVisible(false);
                         } else {
