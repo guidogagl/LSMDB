@@ -1,3 +1,20 @@
+
+import javax.swing.JButton;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+package esercizio1;
+
+import java.awt.Frame;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Vector;
+import javax.swing.*;
+
+/**
+ *
+ * @author Utente
+ */
+
 class RegistrationForm extends Frame {
 
         private JLabel nameAgency = new JLabel("Agency Name:");
@@ -33,7 +50,7 @@ class RegistrationForm extends Frame {
                         password = new JPasswordField();
                         confirm_password = new JPasswordField();
                     } else {
-                        if (deposito.getAgency(name_field.getText()).isEmpty()) {
+                        if ((deposito.getAgency(name_field.getText()).isEmpty()) {
                             JOptionPane.showMessageDialog(null, "This agency is already present!");
                             setVisible(false);
                         } else {
@@ -63,13 +80,12 @@ class RegistrationForm extends Frame {
     //getter methods
     
 
-
         public JTextField getname_field() {return name_field;}
         public JLabel getnameAgency() {return nameAgency;}
         public JTextField getddress_field() {return address_field;}
         public JLabel getAddress() {return address;}
         public JLabel getZIP() {return ZIP;}
-        public JTextField getZIP_field() {return ZIPfield;}
+        public JTextField getZIP_field() {return ZIP_field;}
         public JLabel getinsertPassword() {return insertPassword;}
         public JTextField getpassword(){return password;}
         public JTextField getconfirm_password(){return confirm_password;}
@@ -79,7 +95,7 @@ class RegistrationForm extends Frame {
         public JTextField geturlLogo_field(){return urlLogo_field;}
         public JButton submit(){return submit;}
         public JButton discard(){return discard;}
-        public getInterfaccia(){return interfaccia;}
+        public Interface getInterfaccia(){return interfaccia;}
 
   }
   
