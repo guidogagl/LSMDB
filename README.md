@@ -305,7 +305,7 @@ The second table shows all the messages received by the agency that logged in. (
 !["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/AfterLogin.PNG)
 *Fig. 3: The picture represents an example of how the interface will appear after a successfull login*
 
-
+ 
 If the user wants to insert a new project in the network, it must specify the description, the project name and the total budget, and then click the 'Insert' button, as shown in the Fig. 4.
 
 
