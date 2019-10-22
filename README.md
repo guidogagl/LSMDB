@@ -40,7 +40,7 @@ The main aim of class RegistrationForm is to provide the user with a mechanism t
 # attributi privati
 
 
-- nameAgency:JLabel
+- **nameAgency:JLabel
 - address:JLabel
 - ZIP: JLabel 
 - insertPassword:JLabel
@@ -52,11 +52,10 @@ The main aim of class RegistrationForm is to provide the user with a mechanism t
 - ZIP_field:JTextField
 - url:JTextField
 - urlLogo_field:JTextField
-
 - password:JPasswordField
 - confirm_password: JPasswordField
 - submit: JButton
-- discard: JButton
+- discard: JButton**
 
 
 Metodi pubblici
