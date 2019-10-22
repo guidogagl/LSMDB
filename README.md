@@ -7,25 +7,9 @@ Why is RegistrationFrom an inner class? Because its scope is within the cicle of
 - (discarded, as already solved in Lucia's branch, _code available upon need and request_) the implementation of a choice menu to select the receiver of the stake request. Class Choice from java.awt was used in the discarded solution, implementing a callback mechanism (applying an Observer pull methodology) in order to keep it up-to-date with the registration of new companies to the network.
 - (to be done, as not clear if it can be simplified by exploiting Guido's work) a Listener thread to store and retrieve messages from a shared UnifiedQueue<String>.
 
-### Implementation of _Fundracing_
-
-## Schema della classe
-
-## descrizione delle modifiche
-E' stato aggiunto un evento al bottone register: Button tale per cui, quando viene cliccato, viene inizializzato il campo privato form:RegistrationForm. Tramite un meccanismo di callback, Fundracing si occupa di inizializzare l'attributo privato interface:Interfaccia della propria istanza di RegistrationForm.
-
-```
-form= new RegistrationForm();
-form.getInterface()=new Interface(form);
-form.setVisible(true);
-```
-#attributi privati nuovi
-- form:RegistrationForm
-- register:Button
 
 
-### Implementation of _Registration Form_
-## main idea
+
 The main aim of class RegistrationForm is to provide the user with a mechanism to insert all the information concerning its agency, in order to joint the foundraising scheme. Checks are performed on all the inserted data before allowing the insert, that is:
 
 
@@ -34,40 +18,20 @@ The main aim of class RegistrationForm is to provide the user with a mechanism t
 - The ZIP code, as for the specifi constraints given to attribute _cap_ in the scheme of table _Agenzia_, must be a numeric sequence.
 - All fields must be filled before submitting the form.
 
-
-# RegistrationForm
-![Class RegistrationForm](https://github.com/guidogagl/LSMDB/blob/Amaryllis/Untitled%20Diagram.jpg)
-
-# attributi privati
-
-
-- **nameAgency:JLabel**
-- **address:JLabel**
-- **ZIP: JLabel**
-- **insertPassword:JLabel**
-- **urlLogo:JLabel**
-- **insertUrl:JLabel**
-- **url:JTextField**
-- **name_field:JTextField**
-- **address_field:JTextField**
-- **ZIP_field:JTextField**
-- **url:JTextField**
-- **urlLogo_field:JTextField**
-- **password:JPasswordField**
-- **confirm_password: JPasswordField**
-- **submit: JButton**
-- **discard: JButton**
-- **interface:Interface**
-- **deposito:DepositoDati**
-
-Metodi pubblici
-
--  **public RegistrationForm()** - the constructors sets the events associated with the _submit_ and _discard_ buttons and delegates the setting of its view to its instance of class _Interface_. 
-
-Button _submit_ deals with the correctness check of the inserted data, following the criteria illustrated above. If the controls are successful, it delegates the insert of the agency in the database to its reference _deposito_ of class _DepositoDati_.
+Class Fundracing, through a **register:Button** button, offers the possibility to enroll new agencies in the network. It also takes the responsability to instantiate the interface of its reference **form:RegistrationForm** to class _RegistrationForm_. In order to do so neatly, the constructor of class _Interface_ was made polymorphic, offering different kinds of layout setting depending on the arguments passend. Let us note that the **interface:Interface** of class RegistrationForm and the  **interface:Interface** of class Fundraising are two different objects in memory, per default features of the implementation.
+Here the call-back mechanism inside method **start()** of class Fundracing:
+```
+form= new RegistrationForm();
+form.getInterface()=new Interface(form);
+form.setVisible(true);
+```
 
 
-```submit.addActionListener(new ActionListener() {
+Throgh button _submit_ RegistrationForm performs a correctness check of the inserted data, following the criteria illustrated above. If the controls are successful, it delegates the insert of the agency in the database to its reference _deposito_ of class _DepositoDati_.
+
+
+```
+submit.addActionListener(new ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     if (!Arrays.equals(password.getPassword(), confirm_password.getPassword())) {
                         JOptionPane.showMessageDialog(null, "The two passwords do not coincide!");
@@ -101,10 +65,41 @@ Button _submit_ deals with the correctness check of the inserted data, following
 ```
 
 
+# RegistrationForm
+![Class RegistrationForm](https://github.com/guidogagl/LSMDB/blob/Amaryllis/Untitled%20Diagram.jpg)
+
+# attributi privati
 
 
- 
- 
+- **nameAgency:JLabel**
+- **address:JLabel**
+- **ZIP: JLabel**
+- **insertPassword:JLabel**
+- **urlLogo:JLabel**
+- **insertUrl:JLabel**
+- **url:JTextField**
+- **name_field:JTextField**
+- **address_field:JTextField**
+- **ZIP_field:JTextField**
+- **url:JTextField**
+- **urlLogo_field:JTextField**
+- **password:JPasswordField**
+- **confirm_password: JPasswordField**
+- **submit: JButton**
+- **discard: JButton**
+- **interface:Interface**
+- **deposito:DepositoDati**
+
+Metodi pubblici
+
+-  **public RegistrationForm()** - the constructors sets the events associated with the _submit_ and _discard_ buttons and delegates the setting of its view to its instance of class _Interface_. 
+
+# Fundracing
+
+
+Attributi privati nuovi
+- **form:RegistrationForm**
+- **register:Button**
  
  
 
