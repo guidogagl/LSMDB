@@ -13,7 +13,9 @@ import java.util.Vector;
 public class DepositoDati {
 
     private Connect conn = null;
-
+    
+    
+    // change name in getAgency for overload ! - GUIDO
     public Vector<String> agencyAlreadyPresent(String agencyName) {
 
         String sql = "SELECT * FROM azienda WHERE nomeAzienda = '" + agencyName + "';";
@@ -22,7 +24,11 @@ public class DepositoDati {
         List<Vector<String> vett = conn.query(sql, 5);
         conn.close();
         
-        if(vett==null){return null;}
+        // debug - GUIDO
+        if(vett==null){
+            return new Vector<String>();
+        }
+        
         else return vett.get(0);        
     }
 
