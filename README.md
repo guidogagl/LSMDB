@@ -14,9 +14,11 @@ Why is RegistrationFrom an inner class? Because its scope is within the cicle of
 ##descrizione delle modifiche
 E' stato aggiunto un evento al bottone register: Button tale per cui, quando viene cliccato, viene inizializzato il campo privato form:RegistrationForm. Tramite un meccanismo di callback, Fundracing si occupa di inizializzare l'attributo privato interface:Interfaccia della propria istanza di RegistrationForm.
 
+
 #attributi privati nuovi
 - form:RegistrationForm
 - register:Button
+
 
 ### Implementation of _Registration Form_
 ##main idea
@@ -25,21 +27,37 @@ La classe RegistrationForm ha come compito principale il reperimento delle infor
 
 # attributi privati
 I campi statici:
+
+
 - nameAgency:JLabel
 - address:JLabel
 - ZIP: JLabel 
 - insertPassword:JLabel
 - urlLogo:JLabel
+
+
 I seguiti campi di inserimento dati:
+
+
 - insertUrl:JTextField
-//
+
+
 I due campi per l'inserimento delle password:
+
+
 - password:JPasswordField
 - confirm_password: JPasswordField
+
+
 I due bottoni:
+
+
 - submit: JButton
 - discard: JButton
+
+
 # metodi pubblici
+
 - Metodi getter per gli attributi sovramenzionati
 
 
