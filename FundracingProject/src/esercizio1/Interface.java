@@ -169,21 +169,21 @@ public class Interface {
             form.getsubmit.setBounds(200, 360, 140, 30);
             form.getdiscard.setBounds(400, 360, 140, 30);
             
-            add(nameAgency);
-            add(name_field);
-            add(address);
-            add(address_field);
-            add(ZIP);
-            add(ZIP_field);
-            add(insertPassword);
-            add(password);
-            add(confirmPasswordLabel);
-            add(confirm_password);
-            add(url);
-            add(insertUrl);
-            add(urlLogo);
-            add(urlLogo_field);
-            add(submit);
-            add(discard);
+            form.add(nameAgency);
+            form.add(name_field);
+            form.add(address);
+            form.add(address_field);
+            form.add(ZIP);
+            form.add(ZIP_field);
+            form.add(insertPassword);
+            form.add(password);
+            form.add(confirmPasswordLabel);
+            form.add(confirm_password);
+            form.add(url);
+            form.add(insertUrl);
+            form.add(urlLogo);
+            form.add(urlLogo_field);
+            form.add(submit);
+            form.add(discard);
         }
     }
