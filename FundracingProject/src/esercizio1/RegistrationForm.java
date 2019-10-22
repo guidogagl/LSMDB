@@ -19,12 +19,10 @@ class RegistrationForm extends Frame {
         private DepositoDati deposito=new DepositoDati();
 
 
-        public RegistrationForm(Interfaccia interface) {
-           this.interfaccia=interfaccia;
-          
-           this.interfaccia.setRegistration(this);
+        public RegistrationForm(Interface interfaccia) {
+           interfaccia=new Interfaccia();
            discard.addActionListener(new ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
+           public void actionPerformed(java.awt.event.ActionEvent e) {
                     setVisible(false);
                 }
 
