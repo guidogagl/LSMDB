@@ -14,20 +14,16 @@ public class DepositoDati {
 
     private Connect conn = null;
 
-    public Boolean agencyAlreadyPresent(String agencyName) {
+    public Vector<String> agencyAlreadyPresent(String agencyName) {
 
         String sql = "SELECT * FROM azienda WHERE nomeAzienda = '" + agencyName + "';";
 
         Connect conn = new Connect();
-
-        try{
-            Vector<String> vett = conn.query(sql, 5).get(0);
-        }catch(java.lang.IndexOutOfBoundsException e){
-            return false;
-        }
+        List<Vector<String> vett = conn.query(sql, 5);
+        conn.close();
         
-        
-        return true;
+        if(vett==null){return null;}
+        else return vett.get(0);        
     }
 
     private List<RowTableProjects> getRowTableProjects(String sql, Vector<String> v) {
