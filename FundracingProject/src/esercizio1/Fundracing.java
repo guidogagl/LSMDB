@@ -69,7 +69,7 @@ public class Fundracing extends Application {
     private Button refuse = new Button("Refuse");
     private Label l_description_message = new Label("Description Message");
     private TextArea description_message = new TextArea();
-
+    private RegistrationForm form;
     private Button register = new Button("Register");
 
 
@@ -123,7 +123,7 @@ public class Fundracing extends Application {
                 l_description_message, description_message, register);
 
         register.setOnAction((ActionEvent ev2) -> {
-            RegistrationForm form= new RegistrationForm();
+            form= new RegistrationForm(new Interface());
             
         });
         insert.setOnAction((ActionEvent ev2) -> {
