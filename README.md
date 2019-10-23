@@ -68,7 +68,7 @@ submit.addActionListener(new ActionListener() {
 # RegistrationForm
 ![Class RegistrationForm](https://github.com/guidogagl/LSMDB/blob/Amaryllis/Untitled%20Diagram.jpg)
 
-# attributi privati
+Attributi privati
 
 
 - **nameAgency:JLabel**
@@ -98,9 +98,18 @@ Metodi pubblici
 - **getaddress(void):JLabel**
 - **getnameAgency(void):JLabel** 
 - **getZIP(void):JLabel** 
+- **getinsertUrl(void):JLabel**
 - **getpassword(void):JPasswordField** 
 - **getconfirm_password(void):JPasswordField** 
-
+- **geturl:JTextField**
+- **getname_field:JTextField**
+- **getaddress_field:JTextField**
+- **getZIP_field:JTextField**
+- **geturl:JTextField**
+- **geturlLogo_field:JTextField**
+- **getsubmit:JButton**
+- **getdiscard:JButton**
+- **getInterface:Interface** - used for the call-back setup mechanism.
 
 # Fundracing
 
