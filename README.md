@@ -185,12 +185,12 @@ The TableMessage class has the purpose of constructing the table that will be sh
 Private attributes:
 
 - **messagesList: ObservableList\<RowTableMessage>**
-This attribute represents a list containing all the rows present in the table. 
+This attribute represents a list containing all the rows in the table. 
 
 Public methods:
 
 - **TableMessage()** - class constructor, inizializes the table columns and then adds them to the table
-- **updateMessages(List\<RowTableMessage> messages):void** - Thisfunctionclears all the content of the table and replace it with
+- **updateMessages(List\<RowTableMessage> messages):void** - This function clears all the content of the table and replaces it with
 the informations stored in the List passed as argument.
 
 ```
@@ -219,7 +219,7 @@ Each attribute is a column in the table.
 Public methods:
 
 - **RowTableMessage(int id, int id_project, String data, String mittente, String destinatario, String messaggio,
-	int stake)** - class constructor, it converts the attribute passed as argument in SimpleItsProperty, where Its is the type of the argument
+	int stake)** - class constructor, it converts the attribute passed as argument in SimpleXProperty, where X is the type of the argument
 	
 ```
 public RowTableMessage(int id, int id_project, String data, String mittente, String destinatario, String messaggio,
@@ -273,7 +273,7 @@ Private attributes:
 
 Public methods:
 
-- **selectTableRow():void** - the function uses a handle, able to detect the selection of a row table, in order to return the information
+- **selectTableRow():void** - the function uses a handler, able to detect the selection of a row table, in order to return the information
  contained in that row
 - **selectTableMessages():void** - the function uses a handle, able to detect the selection of a row table, in order to return the information
  contained in that row
@@ -284,7 +284,7 @@ Public methods:
 
 ## Use Case
 
-At the opening, the application shows the interface represented in the Fig. 1.
+At the opening, the application shows the interface as represented in the Fig. 1.
 
 
 !["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/StartingInterface.PNG)
@@ -299,46 +299,46 @@ The user can access to its private informations by inserting its credentials (us
 *Fig. 2: The picture represents an example of login, using the credentials of the Tesla agency*
 
 
-After a successful login, the text fields and buttons become active and within the 'NetworkProjects' and 'MessagesReceived' tables the user can see its own information. In particular, the first table shows the various information relating to the projects in the network: the total budget, required to start the project; the progress, which highlights the funding received over the total budget; the name of the project; the name of the project owner and the stake invested in that project by the company that logged in. 
+After a successfull login, the text fields and buttons become active and within the 'NetworkProjects' and 'MessagesReceived' tables the user can see its information. In particular, the first table shows the various data related to the projects in the network: the total budget, required to start the project; the progress, which represents the percentage of the funding received over the total budget; the name of the project; the project owner and the stake invested in that project by the company that logged in. 
 The second table shows all the messages received by the agency that logged in. (Fig. 3)
 
 !["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/AfterLogin.PNG)
 *Fig. 3: The picture represents an example of how the interface will appear after a successfull login*
 
  
-If the user wants to insert a new project in the network, it must specify the description, the project name and the total budget, and then click the 'Insert' button, as shown in the Fig. 4.
+If the user wants to insert a new project in the network, it must specify the description, the project name and the total budget, and then click the 'Insert' button as shown in the Fig. 4.
 
 
 !["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/BeforeInserting.PNG)
 *Fig. 4: The picture represents an example of insertion of a new project*
 
 
-After the insertion of a new project, it will appear in the NetworkProjects table, as shown in the figure Fig. 5.
+After the insertion of a new project, it will appear in the NetworkProjects table as shown in the figure Fig. 5.
 
 !["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/AfterInsertion.PNG)
 *Fig. 5: The picture represents how the interface will appear after inserting a new project*
 
 
-When the user wants to delete one of its own project, it has to click on the corresponding row of the 'NetworkProjects' table and then click the 'Delete' button as in the figure below. If the user tries to delete a project of which he is not the owner, but for which he had made a financing, the click of the 'Delete' button will only cause the reset of his stake for that project. If the user wants to delete a project that is not his own and for which he has not made any financing, an alert window will be displayed.
+When the user wants to delete one of its project, it has to click on the corresponding row of the 'NetworkProjects' table and then the 'Delete' button as in the figure below. If the user tries to delete a project of which he is not the owner, but for which he had made a financing, the click of the 'Delete' button will only cause the reset of its stake for it. If the user wants to delete a project that is not its own and for which it has not made any financing, an alert window will be displayed.
 
 
 !["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/DeleteProject.PNG)
 *Fig. 6: The picture represents how the interface will appear before deleting a project*
 
 
-If the user wants to update its stake for a project, it has to click on the corresponding row of the table, inserts the new stake in its field, and then clicks the 'Update' button, as in Fig. 7.
+If the user wants to update its stake for a project, it has to click on the corresponding row of the table, inserts the new stake, and then clicks the 'Update' button, as in Fig. 7.
 
 
 !["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/DeleteProject.PNG)
 *Fig. 7: The picture represents how the interface will appear before updating a stake*
 
 
-For both messages and projects, clicking on the corresponding row in the table, the description will appear in the 'Description' text field below.
+For both messages and projects, by clicking on the corresponding row in the table the description will appear in their corresponding 'Description' text field .
 As shown in the Fig. 7.
 
 
-Finally, a user can accept or reject a message received from another company and can send a new one. 
-By selecting the row of the table 'MessagesReceived' and pressing the button 'Accept', the user agrees to make a new financing equal to the value of stake expressed in the message. The images below show the application interface before and after pressing the 'Accept' button.
+Finally, a user can accept or reject a message received from another company and send a new one. 
+By selecting the row of the table 'MessagesReceived' and pressing the button 'Accept', the user agrees to make a new financing equal to the value of the stake expressed in the message. The images below show the application interface before and after pressing the 'Accept' button.
 
 
 !["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/BeforeAccepting.PNG)
@@ -352,7 +352,7 @@ By selecting the row of the table 'MessagesReceived' and pressing the button 'Ac
 
 The user can decide to refuse a received message by selecting the corresponding row of the table and pressing the 'Refuse' button.
 
-Finally, the user can send a new message to a company by entering a text in the description field, entering the stake, the id of the project to which the message refers and selecting the company receiving the message.
+Finally, the user can send a new message to a company by entering a text, a stake and the id of the project to which the message refers, in their corresponding fields, and selecting the company receiving the message.
 
 
 ## Obbiettivi del branch Matteo
