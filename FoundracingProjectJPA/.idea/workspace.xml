@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4271c21a-8c18-4199-9fef-cf61e4fb1bb1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/jpaConnect/FundracingManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/validation.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jpaConnect/FundracingEntityManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jpaConnect/EntityManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jpaConnect/FundracingManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaConnect/FundracingManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jpaEntities/AziendaEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaEntities/AziendaEntity.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,6 +42,13 @@
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="esercizio1: schema" type="76f4a085:MysqlImplModel$Schema" />
       </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="MySQL - esercizio1@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="esercizio1: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="azienda: table" type="285a2a93:MysqlImplModel$Table" />
+      </path>
     </expand>
     <select />
   </component>
@@ -60,7 +69,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="settings.editor.selected.configurable" value="project.validation" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -119,8 +128,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1571758560897</updated>
-      <workItem from="1571758586604" duration="7243000" />
+      <workItem from="1571758586604" duration="11653000" />
     </task>
+    <task id="LOCAL-00001" summary="update FundracingManager">
+      <created>1571815295706</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1571815295706</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -136,5 +153,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="update FundracingManager" />
+    <option name="LAST_COMMIT_MESSAGE" value="update FundracingManager" />
   </component>
 </project>

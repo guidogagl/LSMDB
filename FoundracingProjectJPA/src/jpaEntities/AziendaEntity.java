@@ -1,6 +1,7 @@
 package jpaEntities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +38,42 @@ public class AziendaEntity {
             mappedBy = "aziendaDestinataria"
     )
     private List<MessaggioEntity> ricevuti = null;
+
+    public AziendaEntity(String _nomeAzienda,
+                         String _urlLogo,
+                         String _urlSito,
+                         String _indirizzo,
+                         Integer _cap,
+                         String _password){
+        this.nomeAzienda = _nomeAzienda;
+        this.urlLogo = _urlLogo;
+        this.urlSito = _urlSito;
+        this.indirizzo = _indirizzo;
+        this.cap = _cap;
+        this.password = _password;
+    }
+
+    public void addFinanziamentiEffettuati( FinanziamentoEntity newFinanziamento ){
+        if(finanziamentiEffettuati == null )
+            finanziamentiEffettuati =  new ArrayList<FinanziamentoEntity>();
+
+        finanziamentiEffettuati.add( newFinanziamento );
+    }
+
+    public void addProject( ProgettoEntity newProject ){
+        if(myProjects == null )
+            myProjects =  new ArrayList<ProgettoEntity>();
+
+        myProjects.add( newProject );
+    }
+
+    public void addMessage( MessaggioEntity newMessage ){
+        if( ricevuti == null )
+            ricevuti = new ArrayList<MessaggioEntity>();
+
+        ricevuti.add(newMessage);
+    }
+
 
     @Id
     @Column(name = "nomeAzienda", nullable = false, length = 500)
