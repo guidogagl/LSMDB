@@ -94,16 +94,21 @@ Metodi pubblici
 
 -  **public RegistrationForm()** - the constructors sets the events associated with the _submit_ and _discard_ buttons and delegates the setting of its view to its instance of class _Interface_. 
 - **getname_field(void) : JTextField** - the _getter_ method for the prospective agency's name.
-- **getZIP_field(void) : JTextField** 
+- **getZIP_field(void) : JTextField** -  the _getter_ method for the prospective agency's ZIP code.
+- **getaddress(void):JLabel**
+- **getnameAgency(void):JLabel** 
+- **getZIP(void):JLabel** 
+- **getpassword(void):JPasswordField** 
+- **getconfirm_password(void):JPasswordField** 
 
-(finire di copiare)
+
 # Fundracing
 
 
 Attributi privati nuovi
 - **form:RegistrationForm**
 - **reister:Button**
- -
+ 
  
 
 
