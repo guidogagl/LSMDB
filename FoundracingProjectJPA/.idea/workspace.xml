@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4271c21a-8c18-4199-9fef-cf61e4fb1bb1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jpaEntities/AziendaEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaEntities/AziendaEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jpaEntities/FinanziamentoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaEntities/FinanziamentoEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jpaEntities/MessaggioEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaEntities/MessaggioEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/META-INF/persistence.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,6 +40,13 @@
     </expand>
     <select />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -55,6 +57,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="settings.editor.selected.configurable" value="settings.github" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -74,7 +77,7 @@
       <module name="FoundracingProjectJPA" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="application.*" />
+          <option name="PATTERN" value="mysqlConnect.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -118,7 +121,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1571758560897</updated>
-      <workItem from="1571758586604" duration="5584000" />
+      <workItem from="1571758586604" duration="6785000" />
     </task>
     <servers />
   </component>

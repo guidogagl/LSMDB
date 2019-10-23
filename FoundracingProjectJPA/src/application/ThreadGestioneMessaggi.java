@@ -1,5 +1,7 @@
 package application;
 
+import mysqlConnect.DepositoDati;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class ThreadGestioneMessaggi extends Thread{
 		
 		
 		synchronized(listaMessaggi)
-		{	//prendo il lock su listaMessaggi; se il messaggio che trovo scorrendo è mio,lo levo dalla lista comune e lo uso per aggiornare
+		{	//prendo il lock su listaMessaggi; se il messaggio che trovo scorrendo ï¿½ mio,lo levo dalla lista comune e lo uso per aggiornare
 			//la mia tabella
 			List<RowTableMessage>listaPersonale=new ArrayList<RowTableMessage>();
 			
