@@ -295,7 +295,7 @@ of the application*
 The user can access to its private informations by inserting its credentials (username and password) and clicking on the 'Login' button.
 
 
-!["dominating_sets_example3"](https://github.com/guidogagl/LSMDB/blob/master/imgUseCaseImages/Login.PNG)
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/Login.PNG)
 *Fig. 2: The picture represents an example of login, using the credentials of the Tesla agency*
 
 
