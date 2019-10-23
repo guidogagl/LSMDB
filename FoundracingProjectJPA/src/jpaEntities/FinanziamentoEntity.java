@@ -28,11 +28,10 @@ public class FinanziamentoEntity {
     private ProgettoEntity stakedProject;
     
     
-    public FinanziamentoEntity(	int _id,
+    public FinanziamentoEntity(
     							Integer _budget,
     							AziendaEntity _azienda,
     							ProgettoEntity _progetto) {
-    	this.id = _id;
     	this.budget = _budget;
     	this.stakeHolder = _azienda;
     	this.stakedProject = _progetto;

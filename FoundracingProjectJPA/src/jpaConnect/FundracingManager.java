@@ -6,11 +6,10 @@ import jpaEntities.FinanziamentoEntity;
 import jpaEntities.MessaggioEntity;
 import jpaEntities.ProgettoEntity;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.GenerationType;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
+
 
 public class FundracingManager {
     private EntityManagerFactory factory = null;
@@ -34,7 +33,7 @@ public class FundracingManager {
 
     }
 
-    private <T> T update(Class<T> classTable, int id){
+    private <T> T update(Class<T> classTable, int id, T newEntity){
         T ret = select(classTable, id);
         if(ret == null)
             return null;
@@ -45,7 +44,7 @@ public class FundracingManager {
             return null;
         }
 
-        ret = fem.update(ret);
+        ret = fem.update(newEntity);
         fem.close();
 
         if (ret == null)
@@ -94,6 +93,52 @@ public class FundracingManager {
 
     public FundracingManager(){
         this.setup();
+    }
+
+    public Boolean isSetup(){
+        if(factory == null)
+            return false;
+        else
+            return true;
+    }
+
+    public <T> List<T> query(Class<T> tableClass, String sql ){
+        fem = new FundracingEntityManager(factory);
+        if(!fem.isSetup())
+            return null;
+
+        List<T> res = fem.query( tableClass, sql);
+
+        fem.close();
+
+        return res;
+    }
+
+    public int executeUpdateQuery( String sql ){
+        fem = new FundracingEntityManager(factory);
+        if(!fem.isSetup())
+            return -1;
+
+        int res = fem.queryExecuteQuery( sql);
+
+        fem.close();
+
+        if( res < 0 )
+            System.out.print("DELETE OR UPDATE FAILED \n");
+
+        return res;
+    }
+
+    public <T> T singleReturnQuery(Class<T> tableClass, String sql ){
+        fem = new FundracingEntityManager(factory);
+        if(!fem.isSetup())
+            return null;
+
+        T res = fem.singleResultQuery( tableClass, sql );
+
+        fem.close();
+
+        return res;
     }
 
     public AziendaEntity createAgency(String nomeAzienda,
@@ -158,7 +203,7 @@ public class FundracingManager {
         return ret;
     }
 
-    public AziendaEntity updateAgency(String nomeAzienda){
+    public AziendaEntity updateAgency(String nomeAzienda, AziendaEntity newAzienda){
         AziendaEntity ret = selectAgency(nomeAzienda);
         if(ret == null)
             return null;
@@ -169,7 +214,7 @@ public class FundracingManager {
             return null;
         }
 
-        ret = fem.update(ret);
+        ret = fem.update(newAzienda);
         fem.close();
 
         if (ret == null)
@@ -177,11 +222,11 @@ public class FundracingManager {
         return ret;
     }
 
-    public FinanziamentoEntity createFinanziamento(int id,
+    public FinanziamentoEntity createFinanziamento(
                                                    Integer budget,
                                                    AziendaEntity azienda,
                                                    ProgettoEntity progetto){
-        FinanziamentoEntity newFinanziamento = new FinanziamentoEntity(id, budget, azienda, progetto);
+        FinanziamentoEntity newFinanziamento = new FinanziamentoEntity(budget, azienda, progetto);
         return create(newFinanziamento);
     }
 
@@ -189,8 +234,8 @@ public class FundracingManager {
         return delete(FinanziamentoEntity.class, id);
     }
 
-    public FinanziamentoEntity updateFinanziamento(int id){
-        return update(FinanziamentoEntity.class, id);
+    public FinanziamentoEntity updateFinanziamento(int id, FinanziamentoEntity newFinanziamento){
+        return update(FinanziamentoEntity.class, id, newFinanziamento);
     }
 
     public FinanziamentoEntity selectFinanziamento(int id){
@@ -198,13 +243,12 @@ public class FundracingManager {
     }
 
 
-    public MessaggioEntity createMessage(int _id,
-                                         String _testo,
+    public MessaggioEntity createMessage(String _testo,
                                          int _stake,
                                          Date _data,
                                          AziendaEntity _azienda,
                                          ProgettoEntity _progetto){
-        MessaggioEntity newMessage = new MessaggioEntity(_id,
+        MessaggioEntity newMessage = new MessaggioEntity(
                                                      _testo,
                                                      _stake,
                                                      _data,
@@ -217,20 +261,19 @@ public class FundracingManager {
         return delete(MessaggioEntity.class, id);
     }
 
-    public MessaggioEntity updateMessaggio(int id){
-        return update(MessaggioEntity.class, id);
+    public MessaggioEntity updateMessaggio(int id, MessaggioEntity newMessaggio){
+        return update(MessaggioEntity.class, id, newMessaggio);
     }
 
     public MessaggioEntity selectMessaggio(int id){
         return select(MessaggioEntity.class, id);
     }
 
-    public ProgettoEntity createProject(int id,
-                                        String nome,
+    public ProgettoEntity createProject(String nome,
                                         Integer budget,
                                         String descrizione,
                                         AziendaEntity aziendaOwner){
-        ProgettoEntity newProject = new ProgettoEntity(id,
+        ProgettoEntity newProject = new ProgettoEntity(
                                                         nome,
                                                         budget,
                                                         descrizione,
@@ -242,14 +285,13 @@ public class FundracingManager {
         return delete(ProgettoEntity.class, id);
     }
 
-    public ProgettoEntity updateProject(int id){
-        return update(ProgettoEntity.class, id);
+    public ProgettoEntity updateProject(int id, ProgettoEntity newProgetto){
+        return update(ProgettoEntity.class, id, newProgetto);
     }
 
     public ProgettoEntity selectProject(int id){
         return select(ProgettoEntity.class, id);
     }
-
 
     public void exit(){
         if (factory == null){

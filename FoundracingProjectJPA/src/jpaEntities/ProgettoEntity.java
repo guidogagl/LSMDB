@@ -40,14 +40,13 @@ public class ProgettoEntity {
     )
     private List<ProgettoEntity> messaggi = null;
     
-    public ProgettoEntity(	int id,
+    public ProgettoEntity(
     					  	String nome,
     					  	Integer budget,
     					  	String descrizione,
     					    AziendaEntity aziendaOwner
     					  ) 
     {
-    	this.id = id;
     	this.nome = nome;
     	this.budget = budget;
     	this.descrizione = descrizione;
@@ -109,6 +108,12 @@ public class ProgettoEntity {
 
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
+    }
+
+    @Basic
+    @Column(name = "azienda", nullable = true, length = 500)
+    public String getOwner() {
+        return aziendaOwner.getNomeAzienda();
     }
 
     @Override

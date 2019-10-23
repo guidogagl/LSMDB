@@ -3,7 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="4271c21a-8c18-4199-9fef-cf61e4fb1bb1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/Fundracing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/Fundracing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/GestoreMessaggi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/GestoreMessaggi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jpaConnect/DepositoDati.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaConnect/DepositoDati.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jpaConnect/FundracingEntityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaConnect/FundracingEntityManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jpaConnect/FundracingManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaConnect/FundracingManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jpaEntities/FinanziamentoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaEntities/FinanziamentoEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jpaEntities/MessaggioEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaEntities/MessaggioEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jpaEntities/ProgettoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaEntities/ProgettoEntity.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -44,6 +51,20 @@
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="esercizio1: schema" type="76f4a085:MysqlImplModel$Schema" />
         <item name="azienda: table" type="285a2a93:MysqlImplModel$Table" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="MySQL - esercizio1@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="esercizio1: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="messaggio: table" type="285a2a93:MysqlImplModel$Table" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="MySQL - esercizio1@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="esercizio1: schema" type="76f4a085:MysqlImplModel$Schema" />
+        <item name="progetto: table" type="285a2a93:MysqlImplModel$Table" />
       </path>
     </expand>
     <select />
@@ -124,7 +145,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1571758560897</updated>
-      <workItem from="1571758586604" duration="17537000" />
+      <workItem from="1571758586604" duration="32117000" />
     </task>
     <task id="LOCAL-00001" summary="update FundracingManager">
       <created>1571815295706</created>

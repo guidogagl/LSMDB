@@ -19,7 +19,7 @@ import javafx.scene.input.*;
 
 import javafx.stage.*;
 import javafx.util.*;
-import mysqlConnect.DepositoDati;
+import jpaConnect.DepositoDati;
 
 
 public class Fundracing extends Application{
@@ -195,7 +195,7 @@ public class Fundracing extends Application{
 					table.updateProjects(deposito.getProjects(agencyName));
 				}//Se non sono il proprietario ma voglio levare il mio stake
 				else if(deposito.iAmOwner(selectedProjectId, agencyName)==false &&
-						deposito.myStake(agencyName, selectedProjectId) == true) {
+						deposito.isMyStake(agencyName, selectedProjectId) == true) {
 					deposito.deleteMyStake(selectedProjectId, agencyName);
 					table.updateProjects(deposito.getProjects(agencyName));
 				}//Se cerco di eliminare il progetto o lo stake di un altro

@@ -5,9 +5,13 @@ import jpaEntities.AziendaEntity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class FundracingEntityManager {
     private EntityManager em = null;
+
+
 
     public FundracingEntityManager(EntityManagerFactory emf){
         try{
@@ -19,8 +23,46 @@ public class FundracingEntityManager {
         }
     }
 
+    public Boolean isSetup(){
+        if(em == null)
+            return false;
+        return true;
+    }
+
     public void close(){
         if( em != null ) em.close();
+    }
+
+    public <T> List<T>  query( Class<T> tableClass, String sql) {
+        if (!isSetup()) {
+            return null;
+        }
+
+        TypedQuery<T> query = em.createQuery( sql, tableClass );
+
+        List<T> results = query.getResultList();
+
+        return results;
+    }
+
+    public <T> T  singleResultQuery( Class<T> tableClass, String sql) {
+        if (!isSetup()) {
+            return null;
+        }
+
+        TypedQuery<T> query = em.createQuery( sql, tableClass );
+
+        T results = query.getSingleResult();
+
+        return results;
+    }
+
+    public int queryExecuteQuery(String sql){
+        if (!isSetup()) {
+            return (-1);
+        }
+
+        return  em.createQuery( sql ).executeUpdate();
     }
 
     public <T> T create( T entity ){

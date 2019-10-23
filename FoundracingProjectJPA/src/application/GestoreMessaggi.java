@@ -1,6 +1,6 @@
 package application;
 
-import mysqlConnect.DepositoDati;
+import jpaConnect.DepositoDati;
 
 import java.util.List;
 import java.util.Timer;

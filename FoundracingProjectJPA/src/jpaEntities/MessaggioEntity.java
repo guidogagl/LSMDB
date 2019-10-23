@@ -32,13 +32,12 @@ public class MessaggioEntity {
     private ProgettoEntity progetto;
     
     
-    public MessaggioEntity(	int _id,
+    public MessaggioEntity(
     						String _testo,
     						int _stake,
     						Date _data,
     						AziendaEntity _azienda,
     						ProgettoEntity _progetto) {
-    	this.id = _id;
     	this.testo = _testo;
     	this.stake = _stake;
     	this.data = _data;
@@ -76,6 +75,18 @@ public class MessaggioEntity {
 
     public void setStake(int stake) {
         this.stake = stake;
+    }
+
+    @Basic
+    @Column(name = "progetto", nullable = false)
+    public int getProject() {
+        return progetto.getId();
+    }
+
+    @Basic
+    @Column(name = "destinatario", nullable = false)
+    public String getDestinatario() {
+        return aziendaDestinataria.getNomeAzienda();
     }
 
     @Basic
