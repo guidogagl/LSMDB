@@ -20,7 +20,7 @@ public class AziendaEntity {
             fetch = FetchType.LAZY,
             mappedBy = "stakeHolder"
     )
-    private List<FinanziamentoEntity> finanziamento = null;
+    private List<FinanziamentoEntity> finanziamentiEffettuati = null;
 
     @OneToMany(
             cascade = CascadeType.ALL,
