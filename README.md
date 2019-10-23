@@ -180,7 +180,17 @@ Metodi pubblici
 ![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/ClassiTableMessage.png)
 
 ### TableMessage
-The TableMessage class has the purpose of constructing the table that will be shown on the application interface.
+The TableMessage class has the purpose of constructing the table that will be shown on the application interface. This class also aims to keep the contents of the table up to date using the **updateMessages** function.
+
+
+```
+public void updateMessages(List<RowTableMessage> messages) {
+	messagesList.clear();
+	messagesList.addAll(messages);
+}
+
+```
+
 
 Private attributes:
 
@@ -193,16 +203,28 @@ Public methods:
 - **updateMessages(List\<RowTableMessage> messages):void** - This function clears all the content of the table and replaces it with
 the informations stored in the List passed as argument.
 
+
+	
+### RowTableMessage
+This class is the data representation of the rows in the message table. It uses a constructor that has the aims to convert the attribute passed as argument in SimpleXProperty, where X is the type of the argument.
+
+
 ```
-public void updateMessages(List<RowTableMessage> messages) {
-	messagesList.clear();
-	messagesList.addAll(messages);
+public RowTableMessage(int id, int id_project, String data, String mittente, String destinatario, String messaggio,
+			int stake) {
+		
+	this.id = new SimpleIntegerProperty(id);
+	this.id_project = new SimpleIntegerProperty(id_project);
+	this.data = new SimpleStringProperty(data);
+	this.mittente = new SimpleStringProperty(mittente);
+	this.destinatario = new SimpleStringProperty(destinatario);
+	this.messaggio = new SimpleStringProperty(messaggio);
+	this.stake = new SimpleIntegerProperty(stake);
 }
 
 ```
-	
-### RowTableMessage
-This class is the data representation of the rows in the message table.
+
+
 
 Public attributes:
 
@@ -220,22 +242,6 @@ Public methods:
 
 - **RowTableMessage(int id, int id_project, String data, String mittente, String destinatario, String messaggio,
 	int stake)** - class constructor, it converts the attribute passed as argument in SimpleXProperty, where X is the type of the argument
-	
-```
-public RowTableMessage(int id, int id_project, String data, String mittente, String destinatario, String messaggio,
-			int stake) {
-		
-	this.id = new SimpleIntegerProperty(id);
-	this.id_project = new SimpleIntegerProperty(id_project);
-	this.data = new SimpleStringProperty(data);
-	this.mittente = new SimpleStringProperty(mittente);
-	this.destinatario = new SimpleStringProperty(destinatario);
-	this.messaggio = new SimpleStringProperty(messaggio);
-	this.stake = new SimpleIntegerProperty(stake);
-}
-
-```
-	
 - **getId():int** - returns the private field 'id' of the class
 - **getId_project():int** - returns the private field 'id_project' of the class
 - **getData():String** - returns the private field 'data' of the class
@@ -421,22 +427,20 @@ Update use case diagram
 ![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/usecase.png)
 
 
-The main actor of the application is an agency chief. The application provides to the user seven different main functionalities:
+The main actor of the application is an agency chief. The application provides to the user six different main functionalities:
 
 **1)Login** The user can, by inserting the username and password, confirm its identity and access to private informations
 
 **2)Registration** By filling in a predeterminated form, the user can register its agency inside the network and from now on have an active part in financing other projects and receive founds for its own
 
-**3)View Agencies** The user can read all the agencies present in the network
-
-**4)View Projects List** The chief agency will see,in a table, all the projects previously insered by the companies part of the network. If it's interested, by clicking a row, it will automatically receive additional informations, namely 
+**3)View Projects List** The chief agency will see,in a table, all the projects previously insered by the companies part of the network. If it's interested, by clicking a row, it will automatically receive additional informations, namely 
 the description and the stake insered until then, and also it can update the stake of a project or delete the projects itself,if it's the owner of it, or just the investment made, if it's not.
 
-**5)Add Project** The user can insert a new project requiring founds to start, and it will automatically be seen in the table.
+**4)Add Project** The user can insert a new project requiring founds to start, and it will automatically be seen in the table.
 
-**6)Add Request** The user can ask to other agency chiefs present in the network to fund one of its projects. That request will be automatically be seen by the receiver.
+**5)Add Request** The user can ask to other agency chiefs present in the network to fund one of its projects. That request will be automatically be seen by the receiver.
 
-**7)View Messages** The chief agency will see, in a table, all the requests made to it. If it's interested, by clicking a row, it will automatically receive the additional information of the description, and also it can accept or decline
+**6)View Messages** The chief agency will see, in a table, all the requests made to it. If it's interested, by clicking a row, it will automatically receive the additional information of the description, and also it can accept or decline
  the request.
 
 
