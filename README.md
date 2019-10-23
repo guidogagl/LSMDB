@@ -28,7 +28,7 @@ form.setVisible(true);
 
 
 Throgh button _submit_ RegistrationForm performs a correctness check of the inserted data, following the criteria illustrated above. If the controls are successful, it delegates the insert of the agency in the database to its reference _deposito_ of class _DepositoDati_.
-
+Let us note that method **getAgency** of class _DepositoDati_ is overridden as to check wheter the agency - whose business name is a primary key in the _Agenzia_ table - is already registred in the network.
 
 ```
 submit.addActionListener(new ActionListener() {
@@ -63,7 +63,20 @@ submit.addActionListener(new ActionListener() {
             });
             
 ```
+If the user decides not to go through with the registration, button **discard:Button** allows them to close the form.
 
+
+The method **insertAgency** is invocked on the deposito:DepositoDati reference in order to insert the data in the database, through the **query()** method of class _Connect_.
+```public void insertAgency(Vector<String> val) {
+        String insertAgency = "INSERT INTO azienda (nomeAzienda,urlLogo,urlSito,indirizzo, cap, password) values ((?),(?),(?),(?),(?),(?))";
+
+        Connect conn = new Connect();
+
+        conn.query(insertAgency, 0, val);
+
+        conn.close();
+    }
+```
 
 # RegistrationForm
 ![Class RegistrationForm](https://github.com/guidogagl/LSMDB/blob/Amaryllis/Untitled%20Diagram.jpg)
@@ -113,10 +126,9 @@ Metodi pubblici
 
 # Fundracing
 
-
-Attributi privati nuovi
+Attributi privati 
 - **form:RegistrationForm**
-- **reister:Button**
+- **register:Button**
  
  
 
