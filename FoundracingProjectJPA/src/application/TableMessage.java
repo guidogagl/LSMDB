@@ -17,8 +17,7 @@ public class TableMessage extends TableView<RowTableMessage> {
 		TableColumn Id_Project = new TableColumn("ID Project"); 
 		Id_Project.setCellValueFactory(new PropertyValueFactory<>("id_project")); 
 		Id_Project.setStyle("-fx-alignment: CENTER;");
-		Id_Project.setVisible(false);
-    	
+		
     	TableColumn Id_Message = new TableColumn("ID Message"); 
     	Id_Message.setCellValueFactory(new PropertyValueFactory<>("id")); 
     	Id_Message.setStyle("-fx-alignment: CENTER;");
