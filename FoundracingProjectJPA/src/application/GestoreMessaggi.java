@@ -1,5 +1,7 @@
 package application;
 
+import mysqlConnect.DepositoDati;
+
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
