@@ -46,8 +46,6 @@ public class MessaggioEntity {
     	this.progetto = _progetto;
     }
     
-    public MessaggioEntity() {}
-
 
     @Id
     @Column(name = "id", nullable = false)
