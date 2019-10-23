@@ -30,6 +30,23 @@ public class MessaggioEntity {
             nullable = false
     )
     private ProgettoEntity progetto;
+    
+    
+    public MessaggioEntity(	int _id,
+    						String _testo,
+    						int _stake,
+    						Date _data,
+    						AziendaEntity _azienda,
+    						ProgettoEntity _progetto) {
+    	this.id = _id;
+    	this.testo = _testo;
+    	this.stake = _stake;
+    	this.data = _data;
+    	this.aziendaDestinataria = _azienda;
+    	this.progetto = _progetto;
+    }
+    
+    public MessaggioEntity() {}
 
 
     @Id
