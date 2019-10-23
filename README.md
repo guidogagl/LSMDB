@@ -335,12 +335,18 @@ When the user wants to delete one of its project, it has to click on the corresp
 If the user wants to update its stake for a project, it has to click on the corresponding row of the table, inserts the new stake, and then clicks the 'Update' button, as in Fig. 7.
 
 
-!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/DeleteProject.PNG)
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/UpdateStake.PNG)
 *Fig. 7: The picture represents how the interface will appear before updating a stake*
 
 
 For both messages and projects, by clicking on the corresponding row in the table the description will appear in their corresponding 'Description' text field .
-As shown in the Fig. 7.
+As shown in the Fig. 8 and in the Fig. 9.
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/DescriptionMessage.PNG)
+*Fig. 8: The picture represents how the interface will appear after clicking on a row of the Messages Received table*
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/DescriptionProject.PNG)
+*Fig. 9: The picture represents how the interface will appear after clicking on a row of the NetworkProjects table*
 
 
 Finally, a user can accept or reject a message received from another company and send a new one. 
@@ -348,17 +354,23 @@ By selecting the row of the table 'MessagesReceived' and pressing the button 'Ac
 
 
 !["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/BeforeAccepting.PNG)
-*Fig. 8: The picture represents how the interface will appear before accepting a received message*
+*Fig. 10: The picture represents how the interface will appear before accepting a received message*
 
 
 
 !["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/AfterAccept.PNG)
-*Fig. 8: The picture represents how the interface will appear after accepting a received message*
+*Fig. 11: The picture represents how the interface will appear after accepting a received message*
 
 
 The user can decide to refuse a received message by selecting the corresponding row of the table and pressing the 'Refuse' button.
 
-Finally, the user can send a new message to a company by entering a text, a stake and the id of the project to which the message refers, in their corresponding fields, and selecting the company receiving the message.
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/DeleteMessage.PNG)
+*Fig. 12: The picture represents how the interface will appear before deleting a received message*
+
+Finally, the user can send a new message to a company by entering a text, a stake and the id of the project to which the message refers, in their corresponding fields, and selecting the company receiving the message, Fig. 13.
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/SendMessage.PNG)
+*Fig. 12: The picture represents how the interface will appear before sending a new message*
 
 
 ## Obbiettivi del branch Matteo
