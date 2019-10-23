@@ -23,77 +23,73 @@ public class FundracingEntityManager {
         if( em != null ) em.close();
     }
 
-    public Boolean create(Object o){
-        if( o == null || em == null)
-            return false;
+    public <T> T create( T entity ){
+        if( entity == null || em == null)
+            return null;
 
         try {
             em.getTransaction().begin();
-            em.persist(o);
+            em.persist(entity);
             em.getTransaction().commit();
-            return true;
+            return entity;
         } catch(Exception ex){
             ex.printStackTrace();
-            return false;
+            return null;
         }
     }
 
-    public Boolean update(Object o){
-        if( o == null || em == null )
-            return false;
+    public <T> T update(T entity){
+        if( entity == null || em == null )
+            return null;
 
         try{
             em.getTransaction().begin();
-            em.merge(o);
+            T result  = em.merge(entity);
             em.getTransaction().commit();
-            return true;
+            return result;
         }catch(Exception ex){
             ex.printStackTrace();
-            return false;
+            return null;
         }
     }
 
-    public Object read(Class<?> type, String id) {
+    public <T> T read(Class<T> tableClass, String id) {
         if (em == null)
             return null;
         try {
             em.getTransaction().begin();
-            Object o = em.find(type.getClass(), id);
-            if (o == null)
-                return new Object();
-            return o;
+            T result  =  em.find(tableClass, id);
+            return result;
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
     }
 
-    public Object read(Class<?> type, int id) {
+    public <T> T read(Class<T> tableClass, int id) {
         if (em == null)
             return null;
         try {
             em.getTransaction().begin();
-            Object o = em.find(type.getClass(), id);
-            if( o == null)
-                return new Object();
-            return o;
+            T result  =  em.find(tableClass, id);
+            return null;
         }catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
     }
 
-    public Boolean delete(Class<?> type, int id) {
+    public <T> T delete(Class<T> type, int id) {
         if (em == null)
             return null;
         try {
             em.getTransaction().begin();
-            Object old = em.getReference(type.getClass(), id);
+            T old = em.getReference(type, id);
             em.remove( old );
             em.getTransaction().commit();
-            return true;
+            return old;
         }catch(EntityNotFoundException ex){
-            return false;
+            return null;
         }
         catch (Exception ex) {
             ex.printStackTrace();
@@ -101,22 +97,22 @@ public class FundracingEntityManager {
         }
     }
 
-    public Boolean delete(Class<?> type, String id) {
+    public <T> T delete(Class<T> type, String id) {
         if (em == null)
             return null;
         try {
             em.getTransaction().begin();
-            Object old = em.getReference(type.getClass(), id);
+            T old = em.getReference(type, id);
             em.remove( old );
             em.getTransaction().commit();
-            return true;
+            return old;
         }
         catch(EntityNotFoundException ex){
-            return false;
+            return null;
         }
         catch (Exception ex) {
             ex.printStackTrace();
-            return false;
+            return null;
         }
     }
 

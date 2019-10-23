@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4271c21a-8c18-4199-9fef-cf61e4fb1bb1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/validation.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jpaConnect/FundracingEntityManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jpaConnect/FundracingEntityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaConnect/FundracingEntityManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jpaConnect/FundracingManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaConnect/FundracingManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jpaEntities/AziendaEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jpaEntities/AziendaEntity.java" afterDir="false" />
     </list>
@@ -128,7 +126,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1571758560897</updated>
-      <workItem from="1571758586604" duration="11653000" />
+      <workItem from="1571758586604" duration="15874000" />
     </task>
     <task id="LOCAL-00001" summary="update FundracingManager">
       <created>1571815295706</created>
@@ -137,7 +135,14 @@
       <option name="project" value="LOCAL" />
       <updated>1571815295706</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="update FundracingManager">
+      <created>1571819560114</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1571819560114</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

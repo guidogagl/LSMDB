@@ -53,6 +53,8 @@ public class AziendaEntity {
         this.password = _password;
     }
 
+    public AziendaEntity(){};
+
     public void addFinanziamentiEffettuati( FinanziamentoEntity newFinanziamento ){
         if(finanziamentiEffettuati == null )
             finanziamentiEffettuati =  new ArrayList<FinanziamentoEntity>();

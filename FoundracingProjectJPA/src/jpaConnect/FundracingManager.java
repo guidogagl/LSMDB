@@ -20,7 +20,7 @@ public class FundracingManager {
         this.setup();
     }
 
-    public Boolean createAgency(String nomeAzienda,
+    public AziendaEntity createAgency(String nomeAzienda,
                         String urlLogo,
                         String urlSito,
                         String indirizzo,
@@ -33,13 +33,71 @@ public class FundracingManager {
                                                     cap,
                                                     password);
         fem = new FundracingEntityManager(factory);
-        if(fem == null)
-            return false;
+        if(fem == null){
+            System.out.print("Impossibile costruire connessione con il database");
+            return null;
+        }
 
-        Boolean ret = fem.create(newAzienda);
+        AziendaEntity ret = fem.create(newAzienda);
 
         fem.close();
 
+        if (ret == null)
+            System.out.print("Elemento non trovato nel database");
+
+        return ret;
+    }
+
+    public AziendaEntity deleteAgency(String nomeAzienda){
+        fem = new FundracingEntityManager(factory);
+        if(fem == null){
+            System.out.print("Impossibile costruire connessione con il database");
+            return null;
+        }
+
+        AziendaEntity ret = fem.delete(AziendaEntity.class, nomeAzienda);
+
+        fem.close();
+
+        if (ret == null)
+            System.out.print("Elemento non trovato nel database");
+
+        return ret;
+    }
+
+    public AziendaEntity selectAgency(String nomeAzienda){
+        fem = new FundracingEntityManager(factory);
+        if(fem == null){
+            System.out.print("Impossibile costruire connessione con il database");
+            return null;
+        }
+
+        AziendaEntity ret = fem.read(AziendaEntity.class, nomeAzienda);
+
+        fem.close();
+
+        if (ret == null)
+            System.out.print("Elemento non trovato nel database");
+
+        return ret;
+    }
+
+    public AziendaEntity updateAgency(String nomeAzienda){
+        AziendaEntity ret = selectAgency(nomeAzienda);
+        if(ret == null)
+            return null;
+
+        fem = new FundracingEntityManager(factory);
+        if(fem == null){
+            System.out.print("Impossibile costruire connessione con il database");
+            return null;
+        }
+
+        ret = fem.update(ret);
+        fem.close();
+
+        if (ret == null)
+            System.out.print("Elemento non trovato nel database");
         return ret;
     }
 
