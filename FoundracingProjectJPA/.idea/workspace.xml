@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4271c21a-8c18-4199-9fef-cf61e4fb1bb1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jpaConnect/DepositoDati.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jpaConnect/EntityManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/Connect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mysqlConnect/Connect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/DepositoDati.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mysqlConnect/DepositoDati.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/Fundracing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/Fundracing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/GestoreMessaggi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/GestoreMessaggi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/ThreadGestioneMessaggi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/ThreadGestioneMessaggi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/META-INF/persistence.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -129,7 +121,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1571758560897</updated>
-      <workItem from="1571758586604" duration="6365000" />
+      <workItem from="1571758586604" duration="6785000" />
     </task>
     <servers />
   </component>
