@@ -26,6 +26,19 @@ public class FinanziamentoEntity {
             nullable = false
     )
     private ProgettoEntity stakedProject;
+    
+    
+    public FinanziamentoEntity(	int _id,
+    							Integer _budget,
+    							AziendaEntity _azienda,
+    							ProgettoEntity _progetto) {
+    	this.id = _id;
+    	this.budget = _budget;
+    	this.stakeHolder = _azienda;
+    	this.stakedProject = _progetto;
+    }
+    
+    
 
     @Id
     @Column(name = "id", nullable = false)

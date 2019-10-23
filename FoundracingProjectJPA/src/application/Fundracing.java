@@ -76,7 +76,6 @@ public class Fundracing extends Application{
 	
 	public void start(Stage stage) {
 		
-		
 		table.updateProjects(deposito.getProjectsWithoutStake());
 		selectTableRow();
 		
@@ -121,6 +120,12 @@ public class Fundracing extends Application{
 					urlLogo = result.get(1);
 					image = new Image(urlLogo);
 					iv1.setImage(image);
+					accept.setDisable(false);
+					refuse.setDisable(false);
+					send.setDisable(false);
+					description_message.setEditable(true);
+					stake_message.setEditable(true);
+					project_message.setEditable(true);
 					
 				} //Se il nome dell'azienda non � presente nel db
 				else {
@@ -334,6 +339,8 @@ public class Fundracing extends Application{
 			System.out.println("agency " + i + " : " + agencyList.get(i));
 		}
 	}	
+	
+	
 	
 }
 

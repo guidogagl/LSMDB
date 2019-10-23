@@ -1,6 +1,7 @@
 package application;
 
 import java.awt.event.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import javax.swing.JPasswordField;
 
@@ -72,6 +73,14 @@ public class Interface {
 		description.setMaxHeight(90);
 		description.setEditable(false);
 		description.setWrapText(true);
+		description.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+
+            	description.clear();    
+            }
+		});
 		
 		//description.setOnKeyPressed(new EventHandler<KeyEvent>(){
 			//public void handle(KeyEvent event) {
@@ -134,9 +143,11 @@ public class Interface {
 	    
 	    accept.setLayoutX(780);
 	    accept.setLayoutY(200);
+	    accept.setDisable(true);
 	    
 	    refuse.setLayoutX(850);
 	    refuse.setLayoutY(200);
+	    refuse.setDisable(true);
 	    
 	    l_description_message.setLayoutX(730);
 	    l_description_message.setLayoutY(250);
@@ -145,6 +156,16 @@ public class Interface {
 	    description_message.setLayoutY(270);
 	    description_message.setMaxWidth(330);
 	    description_message.setMaxHeight(90);
+	    description_message.setEditable(false);
+		description_message.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+
+            	description_message.clear();    
+            }
+		});
+	    
 	    
 	    message_receiver.setLayoutX(730);
 	    message_receiver.setLayoutY(370);
@@ -159,14 +180,17 @@ public class Interface {
 	    
 	    stake_message.setLayoutX(730);
 	    stake_message.setLayoutY(480);
+	    stake_message.setEditable(false);
 	    
 	    l_project_message.setLayoutX(900);
 	    l_project_message.setLayoutY(450);
 	    
 	    project_message.setLayoutX(900);
 	    project_message.setLayoutY(480);
+	    project_message.setEditable(false);
 	    
 	    send.setLayoutX(730);
 	    send.setLayoutY(530);
+	    send.setDisable(true);
 	}
 }

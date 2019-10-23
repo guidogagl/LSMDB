@@ -1,6 +1,8 @@
 package jpaEntities;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +39,36 @@ public class ProgettoEntity {
             mappedBy = "progetto"
     )
     private List<ProgettoEntity> messaggi = null;
+    
+    public ProgettoEntity(	int id,
+    					  	String nome,
+    					  	Integer budget,
+    					  	String descrizione,
+    					    AziendaEntity aziendaOwner
+    					  ) 
+    {
+    	this.id = id;
+    	this.nome = nome;
+    	this.budget = budget;
+    	this.descrizione = descrizione;
+    	this.aziendaOwner=aziendaOwner;
+    }
+    
+    public void addStakes( FinanziamentoEntity stake)
+    {
+    	 if(stakes == null )
+             stakes =  new ArrayList<FinanziamentoEntity>();
+
+         stakes.add( stake );
+    }
+    
+    public void addMessaggio( ProgettoEntity messaggio)
+    {
+    	 if(messaggi == null )
+             messaggi =  new ArrayList<ProgettoEntity>();
+
+         messaggi.add( messaggio );
+    }
 
 
     @Id
