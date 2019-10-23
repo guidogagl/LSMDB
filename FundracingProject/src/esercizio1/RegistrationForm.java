@@ -42,18 +42,18 @@ class RegistrationForm extends Frame {
             });
             submit.addActionListener(new ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    if (!Arrays.equals(password.getPassword(), confirm_password.getPassword())) {
-                        JOptionPane.showMessageDialog(null, "The two passwords do not coincide!");
-                        password = new JPasswordField();
-                        confirm_password = new JPasswordField();
+                    if (name_field.getText().isEmpty() || address_field.getText().isEmpty() || ZIP_field.getText().isEmpty()
+                                    || password.getPassword().isEmpty() || confirm_password.getPassword().isEmpty()|| url.getText().isEmpty() || urlLogo_field.getText().isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "Beware! The registration form is incomplete");
                     } else {
                         if ((deposito.getAgency(name_field.getText()).isEmpty()) {
                             JOptionPane.showMessageDialog(null, "This agency is already present!");
                             setVisible(false);
                         } else {
-                            if (name_field.getText().isEmpty() || address_field.getText().isEmpty() || ZIP_field.getText().isEmpty()
-                                    || password.getPassword().length == 0 || confirm_password.getPassword().length == 0 || url.getText().isEmpty() || urlLogo_field.getText().isEmpty()) {
-                                JOptionPane.showMessageDialog(null, "Beware! The registration form is incomplete");
+                            if (password.getPassword().isEmpty||(!Arrays.equals(password.getPassword(), confirm_password.getPassword())) {
+                        JOptionPane.showMessageDialog(null, "The two passwords do not coincide!");
+                                password = new JPasswordField();
+                                confirm_password = new JPasswordField();
                             } else {
                                 Vector<String> val = new Vector<String>();
                                 val.addElement(name_field.getText());
