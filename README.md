@@ -421,20 +421,22 @@ Update use case diagram
 ![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/usecase.png)
 
 
-The main actor of the application is an agency chief. The application provides to the user six different main functionalities:
+The main actor of the application is an agency chief. The application provides to the user seven different main functionalities:
 
 **1)Login** The user can, by inserting the username and password, confirm its identity and access to private informations
 
 **2)Registration** By filling in a predeterminated form, the user can register its agency inside the network and from now on have an active part in financing other projects and receive founds for its own
 
-**3)View Projects List** The chief agency will see,in a table, all the projects previously insered by the companies part of the network. If it's interested, by clicking a row, it will automatically receive additional informations, namely 
+**3)View Agencies** The user can read all the agencies present in the network
+
+**4)View Projects List** The chief agency will see,in a table, all the projects previously insered by the companies part of the network. If it's interested, by clicking a row, it will automatically receive additional informations, namely 
 the description and the stake insered until then, and also it can update the stake of a project or delete the projects itself,if it's the owner of it, or just the investment made, if it's not.
 
-**4)Add Project** The user can insert a new project requiring founds to start, and it will automatically be seen in the table.
+**5)Add Project** The user can insert a new project requiring founds to start, and it will automatically be seen in the table.
 
-**5)Add Request** The user can ask to other agency chiefs present in the network to fund one of its projects. That request will be automatically be seen by the receiver.
+**6)Add Request** The user can ask to other agency chiefs present in the network to fund one of its projects. That request will be automatically be seen by the receiver.
 
-**6)View Messages** The chief agency will see, in a table, all the requests made to it. If it's interested, by clicking a row, it will automatically receive the additional information of the description, and also it can accept or decline
+**7)View Messages** The chief agency will see, in a table, all the requests made to it. If it's interested, by clicking a row, it will automatically receive the additional information of the description, and also it can accept or decline
  the request.
 
 
