@@ -1,6 +1,7 @@
 package application;
 
-import mysqlConnect.DepositoDati;
+
+import jpaConnect.*;
 
 import java.util.ArrayList;
 import java.util.List;

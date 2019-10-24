@@ -4,7 +4,6 @@ import java.util.*;
 import javafx.collections.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.*;
-import javafx.scene.image.*;
 
 public class TableMessage extends TableView<RowTableMessage> {
 

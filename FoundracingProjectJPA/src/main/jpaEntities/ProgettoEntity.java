@@ -11,63 +11,26 @@ import java.util.Objects;
 public class ProgettoEntity {
     private int id;
     private String nome;
-    private Integer budget;
     private String descrizione;
+    private Integer budget;
 
-    @ManyToOne(
-            fetch = FetchType.LAZY
-    )
-    @JoinColumn(
-            name = "nomeAzienda",
-            nullable = false
-    )
-    private AziendaEntity aziendaOwner;
+    private List<FinanziamentoEntity> myStakes;
+    private List<MessaggioEntity> myMsgs;
+    private AziendaEntity azienda;
 
 
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY,
-            mappedBy = "progetto"
-    )
-    private List<FinanziamentoEntity> stakes = null;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "progetto")
+    public List<FinanziamentoEntity> getMyStakes(){ return this.myStakes ;};
+    public void setMyStakes(List<FinanziamentoEntity> _stakes){ this.myStakes = _stakes; };
 
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY,
-            mappedBy = "progetto"
-    )
-    private List<ProgettoEntity> messaggi = null;
-    
-    public ProgettoEntity(
-    					  	String nome,
-    					  	Integer budget,
-    					  	String descrizione,
-    					    AziendaEntity aziendaOwner
-    					  ) 
-    {
-    	this.nome = nome;
-    	this.budget = budget;
-    	this.descrizione = descrizione;
-    	this.aziendaOwner=aziendaOwner;
-    }
-    
-    public void addStakes( FinanziamentoEntity stake)
-    {
-    	 if(stakes == null )
-             stakes =  new ArrayList<FinanziamentoEntity>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "progetto")
+    public List<MessaggioEntity> getMyMsgs(){ return this.myMsgs ;};
+    public void setMyMsgs(List<MessaggioEntity> _msgs){ this.myMsgs = _msgs; };
 
-         stakes.add( stake );
-    }
-    
-    public void addMessaggio( ProgettoEntity messaggio)
-    {
-    	 if(messaggi == null )
-             messaggi =  new ArrayList<ProgettoEntity>();
-
-         messaggi.add( messaggio );
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "azienda_id", nullable = false)
+    public AziendaEntity getAzienda(){ return this.azienda ;};
+    public void setAzienda(AziendaEntity _azienda){ this.azienda = _azienda; };
 
 
     @Id
@@ -75,7 +38,6 @@ public class ProgettoEntity {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -85,7 +47,6 @@ public class ProgettoEntity {
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -95,7 +56,6 @@ public class ProgettoEntity {
     public Integer getBudget() {
         return budget;
     }
-
     public void setBudget(Integer budget) {
         this.budget = budget;
     }
@@ -105,16 +65,12 @@ public class ProgettoEntity {
     public String getDescrizione() {
         return descrizione;
     }
-
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
 
-    @Basic
-    @Column(name = "azienda", nullable = true, length = 500)
-    public String getOwner() {
-        return aziendaOwner.getNomeAzienda();
-    }
+
+
 
     @Override
     public boolean equals(Object o) {

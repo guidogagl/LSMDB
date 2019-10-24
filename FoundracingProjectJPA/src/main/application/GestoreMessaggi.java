@@ -1,6 +1,6 @@
 package application;
 
-import jpaConnect.DepositoDati;
+import jpaConnect.*;
 
 import java.util.List;
 import java.util.Timer;

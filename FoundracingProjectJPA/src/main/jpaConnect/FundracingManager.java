@@ -1,15 +1,11 @@
 package jpaConnect;
 
-import application.Fundracing;
-import jpaEntities.AziendaEntity;
-import jpaEntities.FinanziamentoEntity;
-import jpaEntities.MessaggioEntity;
-import jpaEntities.ProgettoEntity;
+import jpaEntities.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
-
 
 public class FundracingManager {
     private EntityManagerFactory factory = null;
@@ -87,8 +83,13 @@ public class FundracingManager {
 
     }
 
-    private void setup(){
-        factory = Persistence.createEntityManagerFactory("esercizio1");
+    private void setup() {
+        try{
+            factory = Persistence.createEntityManagerFactory("esercizio1");
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
     }
 
     public FundracingManager(){
@@ -147,12 +148,15 @@ public class FundracingManager {
                         String indirizzo,
                         Integer cap,
                         String password ){
-        AziendaEntity newAzienda = new AziendaEntity(   nomeAzienda,
-                                                    urlLogo,
-                                                    urlSito,
-                                                    indirizzo,
-                                                    cap,
-                                                    password);
+
+        AziendaEntity newAzienda = new AziendaEntity();
+        newAzienda.setNomeAzienda(nomeAzienda);
+        newAzienda.setUrlLogo(urlLogo);
+        newAzienda.setUrlSito(urlSito);
+        newAzienda.setIndirizzo(indirizzo);
+        newAzienda.setCap(cap);
+        newAzienda.setPassword(password);
+
         fem = new FundracingEntityManager(factory);
         if(fem == null){
             System.out.print("Impossibile costruire connessione con il database");
@@ -226,7 +230,13 @@ public class FundracingManager {
                                                    Integer budget,
                                                    AziendaEntity azienda,
                                                    ProgettoEntity progetto){
-        FinanziamentoEntity newFinanziamento = new FinanziamentoEntity(budget, azienda, progetto);
+
+        FinanziamentoEntity newFinanziamento = new FinanziamentoEntity();
+
+        newFinanziamento.setBudget(budget);
+        newFinanziamento.setAzienda(azienda);
+        newFinanziamento.setProgetto(progetto);
+
         return create(newFinanziamento);
     }
 
@@ -246,14 +256,18 @@ public class FundracingManager {
     public MessaggioEntity createMessage(String _testo,
                                          int _stake,
                                          Date _data,
-                                         AziendaEntity _azienda,
+                                         AziendaEntity _mittente,
+                                         AziendaEntity _destinatario,
                                          ProgettoEntity _progetto){
-        MessaggioEntity newMessage = new MessaggioEntity(
-                                                     _testo,
-                                                     _stake,
-                                                     _data,
-                                                     _azienda,
-                                                     _progetto);
+
+        MessaggioEntity newMessage = new MessaggioEntity();
+        newMessage.setTesto(_testo);
+        newMessage.setStake(_stake);
+        newMessage.setData(_data);
+        newMessage.setMittente(_mittente);
+        newMessage.setDestinatario(_destinatario);
+        newMessage.setProgetto(_progetto);
+
         return create(newMessage);
     }
 
@@ -272,12 +286,14 @@ public class FundracingManager {
     public ProgettoEntity createProject(String nome,
                                         Integer budget,
                                         String descrizione,
-                                        AziendaEntity aziendaOwner){
-        ProgettoEntity newProject = new ProgettoEntity(
-                                                        nome,
-                                                        budget,
-                                                        descrizione,
-                                                        aziendaOwner);
+                                        AziendaEntity azienda){
+
+        ProgettoEntity newProject = new ProgettoEntity();
+        newProject.setNome(nome);
+        newProject.setBudget(budget);
+        newProject.setDescrizione(descrizione);
+        newProject.setAzienda(azienda);
+
         return create(newProject);
     }
 

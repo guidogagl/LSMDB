@@ -2,7 +2,6 @@ package jpaEntities;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,38 +12,24 @@ public class MessaggioEntity {
     private int stake;
     private Date data;
 
-    @ManyToOne(
-            fetch = FetchType.LAZY
-    )
-    @JoinColumn(
-            name = "nomeAzienda",
-            nullable = false
-    )
-    private AziendaEntity aziendaDestinataria;
-
-    @ManyToOne(
-            fetch = FetchType.LAZY
-    )
-    @JoinColumn(
-            name = "id",
-            nullable = false
-    )
+    private AziendaEntity destinatario;
+    private AziendaEntity mittente;
     private ProgettoEntity progetto;
-    
-    
-    public MessaggioEntity(
-    						String _testo,
-    						int _stake,
-    						Date _data,
-    						AziendaEntity _azienda,
-    						ProgettoEntity _progetto) {
-    	this.testo = _testo;
-    	this.stake = _stake;
-    	this.data = _data;
-    	this.aziendaDestinataria = _azienda;
-    	this.progetto = _progetto;
-    }
-    
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "destinatario_id", nullable = false)
+    public AziendaEntity getDestinatario(){ return this.destinatario ;};
+    public void setDestinatario(AziendaEntity _destinatario){ this.destinatario = _destinatario; };
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mittente_id", nullable = false)
+    public AziendaEntity getMittente(){ return this.mittente ;};
+    public void setMittente(AziendaEntity _mittente){ this.mittente = _mittente; };
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "progetto_id", nullable = false)
+    public ProgettoEntity getProgetto(){ return this.progetto ;};
+    public void setProgetto(ProgettoEntity _progetto){ this.progetto = _progetto; };
 
     @Id
     @Column(name = "id", nullable = false)
@@ -52,7 +37,6 @@ public class MessaggioEntity {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -62,7 +46,6 @@ public class MessaggioEntity {
     public String getTesto() {
         return testo;
     }
-
     public void setTesto(String testo) {
         this.testo = testo;
     }
@@ -72,21 +55,8 @@ public class MessaggioEntity {
     public int getStake() {
         return stake;
     }
-
     public void setStake(int stake) {
         this.stake = stake;
-    }
-
-    @Basic
-    @Column(name = "progetto", nullable = false)
-    public int getProject() {
-        return progetto.getId();
-    }
-
-    @Basic
-    @Column(name = "destinatario", nullable = false)
-    public String getDestinatario() {
-        return aziendaDestinataria.getNomeAzienda();
     }
 
     @Basic
@@ -94,7 +64,6 @@ public class MessaggioEntity {
     public Date getData() {
         return data;
     }
-
     public void setData(Date data) {
         this.data = data;
     }

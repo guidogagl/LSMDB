@@ -19,7 +19,7 @@ import javafx.scene.input.*;
 
 import javafx.stage.*;
 import javafx.util.*;
-import jpaConnect.DepositoDati;
+import jpaConnect.*;
 
 
 public class Fundracing extends Application{
@@ -72,10 +72,9 @@ public class Fundracing extends Application{
 	private ChoiceBox choice_agency = new ChoiceBox();
 	private Label message_receiver = new Label("Message receiver");
 	private GestoreMessaggi gm = null;
-	
-	
+
 	public void start(Stage stage) {
-		
+
 		table.updateProjects(deposito.getProjectsWithoutStake());
 		selectTableRow();
 		
@@ -339,8 +338,6 @@ public class Fundracing extends Application{
 			System.out.println("agency " + i + " : " + agencyList.get(i));
 		}
 	}	
-	
-	
 	
 }
 

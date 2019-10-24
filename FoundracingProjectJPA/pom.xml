@@ -4,8 +4,13 @@
   <artifactId>FoundracingProjectJPA</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
-    <sourceDirectory>src</sourceDirectory>
-    <plugins>
+    <sourceDirectory>src/main</sourceDirectory>
+      <resources>
+          <resource>
+              <directory>src/resources</directory>
+          </resource>
+      </resources>
+      <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
@@ -20,7 +25,7 @@
   <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
 	<dependency>
 	    <groupId>org.hibernate</groupId>
-	    <artifactId>hibernate-entitymanager</artifactId>
+	    <artifactId>hibernate-core</artifactId>
 	    <version>5.4.4.Final</version>
 	</dependency>
   	<dependency>

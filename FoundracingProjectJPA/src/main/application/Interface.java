@@ -1,9 +1,6 @@
 package application;
 
-import java.awt.event.KeyEvent;
 import javafx.scene.input.MouseEvent;
-
-import javax.swing.JPasswordField;
 
 import javafx.scene.image.*;
 

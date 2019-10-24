@@ -3,7 +3,6 @@ package application;
 import java.awt.Component;
 
 import javafx.beans.property.*;
-import javafx.scene.image.*;
 
 public class RowTableMessage extends Component{
 	

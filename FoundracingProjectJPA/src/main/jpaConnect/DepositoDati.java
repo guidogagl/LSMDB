@@ -1,18 +1,11 @@
 package jpaConnect;
 
-import application.RowTableMessage;
-import application.RowTableProjects;
-import jpaEntities.AziendaEntity;
-import jpaEntities.FinanziamentoEntity;
-import jpaEntities.MessaggioEntity;
-import jpaEntities.ProgettoEntity;
-import mysqlConnect.Connect;
+import application.*;
+import jpaEntities.*;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import java.util.zip.ZipEntry;
 
 public class DepositoDati {
     private FundracingManager fm = null;
@@ -36,7 +29,7 @@ public class DepositoDati {
                     stake = 0;
             }
 
-            RowTableProjects rtp = new RowTableProjects(projectId, p.getNome(), progress.toString(), p.getBudget(), stake, p.getOwner());
+            RowTableProjects rtp = new RowTableProjects(projectId, p.getNome(), progress.toString(), p.getBudget(), stake, p.getAzienda().getNomeAzienda());
             rows.add( rtp );
         }
 
@@ -51,8 +44,8 @@ public class DepositoDati {
 
         for( MessaggioEntity me : me_list){
 
-            RowTableMessage row = new RowTableMessage(me.getId(), me.getProject(), me.getData().toString(),
-                    " ", me.getDestinatario(), me.getTesto(), me.getStake());
+            RowTableMessage row = new RowTableMessage(me.getId(), me.getProgetto().getId(), me.getData().toString(),
+                    me.getMittente().getNomeAzienda(), me.getDestinatario().getNomeAzienda(), me.getTesto(), me.getStake());
 
             rows.add(row);
         }
@@ -361,7 +354,7 @@ public class DepositoDati {
             vett.add(p.getNome());
             vett.add(p.getBudget().toString());
             vett.add(p.getDescrizione());
-            vett.add(p.getOwner());
+            vett.add(p.getAzienda().getNomeAzienda());
 
             list.add(vett);
         }
@@ -401,8 +394,14 @@ public class DepositoDati {
             return;
         }
 
-        AziendaEntity ae = fm.selectAgency( val.get(1) );
-        if(ae == null){
+        AziendaEntity aeDest = fm.selectAgency( val.get(1) );
+        if(aeDest == null){
+            System.out.print( "Impossibile inviare un messaggio a un'azienda non registrata \n");
+            return;
+        }
+
+        AziendaEntity aeMitt = fm.selectAgency( val.get(0) );
+        if(aeMitt == null){
             System.out.print( "Impossibile inviare un messaggio a un'azienda non registrata \n");
             return;
         }
@@ -415,7 +414,7 @@ public class DepositoDati {
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date date = new java.sql.Date(utilDate.getTime());
 
-        MessaggioEntity me = fm.createMessage(  val.get(3), Integer.parseInt(val.get(4)), date, ae, pe );
+        MessaggioEntity me = fm.createMessage( val.get(3), Integer.parseInt(val.get(4)), date, aeMitt, aeDest, pe );
 
         fm.exit();
 
