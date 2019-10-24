@@ -2,32 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4271c21a-8c18-4199-9fef-cf61e4fb1bb1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_entitymanager_5_4_4_Final.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoundracingProjectJPA.iml" beforeDir="false" afterPath="$PROJECT_DIR$/FoundracingProjectJPA.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/META-INF/persistence.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/Connect.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/DepositoDati.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/Fundracing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/application/Fundracing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/GestoreMessaggi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/application/GestoreMessaggi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/Interface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/application/Interface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/RowTableMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/application/RowTableMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/RowTableProjects.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/application/RowTableProjects.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/TableMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/application/TableMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/TableProjects.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/application/TableProjects.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/ThreadGestioneMessaggi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/application/ThreadGestioneMessaggi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/registerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/application/registerPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jpaConnect/DepositoDati.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaConnect/DepositoDati.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jpaConnect/FundracingEntityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaConnect/FundracingEntityManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jpaConnect/FundracingManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaConnect/FundracingManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jpaEntities/AziendaEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaEntities/AziendaEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jpaEntities/FinanziamentoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaEntities/FinanziamentoEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jpaEntities/MessaggioEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaEntities/MessaggioEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jpaEntities/ProgettoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaEntities/ProgettoEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mysqlConnect/Connect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/mysqlConnect/Connect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mysqlConnect/DepositoDati.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/mysqlConnect/DepositoDati.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Task0/fillDatabase.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../Task0/fillDatabase.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jpaConnect/DepositoDati.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaConnect/DepositoDati.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jpaConnect/FundracingEntityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaConnect/FundracingEntityManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jpaConnect/FundracingManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaConnect/FundracingManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jpaEntities/FinanziamentoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaEntities/FinanziamentoEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jpaEntities/MessaggioEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaEntities/MessaggioEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jpaEntities/ProgettoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaEntities/ProgettoEntity.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -185,7 +166,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1571758560897</updated>
-      <workItem from="1571758586604" duration="45848000" />
+      <workItem from="1571758586604" duration="53420000" />
     </task>
     <task id="LOCAL-00001" summary="update FundracingManager">
       <created>1571815295706</created>
@@ -230,7 +211,17 @@
           <line>167</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/jpaConnect/DepositoDati.java</url>
+          <line>184</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="((double)progress/p.getBudget())*100" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

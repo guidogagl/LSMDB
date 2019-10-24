@@ -1,9 +1,6 @@
 package jpaConnect;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 public class FundracingEntityManager {
@@ -38,9 +35,12 @@ public class FundracingEntityManager {
 
         TypedQuery<T> query = em.createQuery( sql, tableClass );
 
-        List<T> results = query.getResultList();
-
-        return results;
+        try {
+            List<T> results = query.getResultList();
+            return results;
+        } catch(NoResultException e){
+            return null;
+        }
     }
 
     public <T> T  singleResultQuery( Class<T> tableClass, String sql) {
@@ -50,9 +50,13 @@ public class FundracingEntityManager {
 
         TypedQuery<T> query = em.createQuery( sql, tableClass );
 
-        T results = query.getSingleResult();
+        try {
+            T results = query.getSingleResult();
 
-        return results;
+            return results;
+        } catch(NoResultException e){
+            return null;
+        }
     }
 
     public int queryExecuteQuery(String sql){
@@ -96,26 +100,34 @@ public class FundracingEntityManager {
     public <T> T read(Class<T> tableClass, String id) {
         if (em == null)
             return null;
+
+        T result = null;
+
         try {
             em.getTransaction().begin();
-            T result  =  em.find(tableClass, id);
-            return result;
+            result  =  em.find(tableClass, id);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return null;
+        } finally {
+            em.getTransaction().commit();
+            return result;
         }
     }
 
     public <T> T read(Class<T> tableClass, int id) {
         if (em == null)
             return null;
+
+        T result = null;
+
         try {
             em.getTransaction().begin();
-            T result  =  em.find(tableClass, id);
-            return null;
-        }catch (Exception ex) {
+            result  =  em.find(tableClass, id);
+        } catch (Exception ex) {
             ex.printStackTrace();
-            return null;
+        } finally {
+            em.getTransaction().commit();
+            return result;
         }
     }
 

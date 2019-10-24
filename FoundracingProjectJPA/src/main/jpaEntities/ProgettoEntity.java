@@ -33,7 +33,7 @@ public class ProgettoEntity {
     public void setAzienda(AziendaEntity _azienda){ this.azienda = _azienda; };
 
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public int getId() {
         return id;

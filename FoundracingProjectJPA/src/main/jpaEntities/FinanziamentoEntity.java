@@ -24,9 +24,8 @@ public class FinanziamentoEntity {
     public ProgettoEntity getProgetto(){ return this.progetto ;};
     public void setProgetto(ProgettoEntity _progetto){ this.progetto = _progetto; };
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
     }

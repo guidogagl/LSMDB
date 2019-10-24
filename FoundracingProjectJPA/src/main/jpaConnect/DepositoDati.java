@@ -15,21 +15,21 @@ public class DepositoDati {
         for(ProgettoEntity p : list){
             int projectId = p.getId();
 
-            Integer progress = fm.singleReturnQuery(int.class, "SELECT SUM(f.budget) FROM finanziamento f WHERE f.progetto = " + projectId );
+            Long progress = fm.singleReturnQuery(Long.class, "SELECT SUM(f.budget) FROM FinanziamentoEntity f WHERE f.progetto = " + projectId );
             if( progress == null)
-                progress = 0;
+                progress = new Long(0);
 
-            progress = 100 * progress / p.getBudget();
+            double prog  = ((double) progress / p.getBudget() ) * 100 ;
 
-            Integer stake = 0;
+            Long stake = new Long(0);
 
             if(withStake) {
-                stake = fm.singleReturnQuery(int.class, "SELECT SUM(f.budget) FROM finanziamento f WHERE f.progetto = " + projectId + "AND f.azienda = '" + agencyName + "'");
+                stake = fm.singleReturnQuery(Long.class, "SELECT SUM(f.budget) FROM FinanziamentoEntity f WHERE f.progetto = " + projectId + "AND f.azienda = '" + agencyName + "'");
                 if (stake == null)
-                    stake = 0;
+                    stake = new Long(0);
             }
 
-            RowTableProjects rtp = new RowTableProjects(projectId, p.getNome(), progress.toString(), p.getBudget(), stake, p.getAzienda().getNomeAzienda());
+            RowTableProjects rtp = new RowTableProjects(projectId, p.getNome(), Double.toString(prog), p.getBudget(), Integer.parseInt(stake.toString()), p.getAzienda().getNomeAzienda());
             rows.add( rtp );
         }
 
@@ -60,11 +60,12 @@ public class DepositoDati {
             return null;
         }
 
-        List<ProgettoEntity> projects = fm.query(ProgettoEntity.class, "SELECT p FROM progetto p");
+        List<ProgettoEntity> projects = fm.query(ProgettoEntity.class, "SELECT p FROM ProgettoEntity p");
 
-        fm.exit();
 
         List<RowTableProjects> ret = getRowTableProjects( projects, agencyName, true );
+
+        fm.exit();
 
         return ret;
     }
@@ -77,7 +78,7 @@ public class DepositoDati {
                 "        on m.mittente = a.nomeAzienda\n" +
                 "where 	m.destinatario =  (?) ;";
         */
-        String sql = "SELECT * FROM messaggio WHERE destinatario = '" + agencyName + "'";
+        String sql = "SELECT m FROM MessaggioEntity m WHERE destinatario = '" + agencyName + "'";
 
         fm = new FundracingManager();
         if( !fm.isSetup() ){
@@ -110,23 +111,21 @@ public class DepositoDati {
     }
 
     public int getSommaStakes(int selectedProjectID){
-        String sql = "SELECT sum(f.budget) as somma "
-                    + "FROM finanziamento f  "
-                    + " WHERE f.progetto="+ selectedProjectID +";";
+        String sql = "SELECT sum(f.budget) FROM FinanziamentoEntity f  WHERE f.progetto= " + selectedProjectID ;
 
 
         fm = new FundracingManager();
         if(!fm.isSetup())
             return -1;
 
-        Integer stake = fm.singleReturnQuery(int.class, sql);
+        Long stake = fm.singleReturnQuery(Long.class, sql);
 
         fm.exit();
 
         if(stake == null)
             return 0;
 
-        return stake;
+        return Integer.parseInt(stake.toString());
     }
 
     public double getProgress(int id_progetto) {
@@ -149,7 +148,7 @@ public class DepositoDati {
             System.out.print("Impossibile creare il manager del database \n");
             return null;
         }
-        List<ProgettoEntity> projects = fm.query(ProgettoEntity.class, "SELECT p FROM progetto p");
+        List<ProgettoEntity> projects = fm.query(ProgettoEntity.class, "SELECT p FROM ProgettoEntity p");
 
         List<RowTableProjects> ret = getRowTableProjects( projects, null, false );
 
@@ -176,17 +175,17 @@ public class DepositoDati {
     }
 
     public boolean iAmOwner(int projectId,String agencyName) {
-        String sql="SELECT COUNT(*) as conta FROM progetto WHERE id="+ projectId +" and azienda='"+ agencyName +"';";
-
         fm = new FundracingManager();
         if( !fm.isSetup() ){
             System.out.print("Impossibile creare il manager del database \n");
             return false;
         }
-        Integer occurrency = fm.singleReturnQuery(int.class, sql);
+
+
+        ProgettoEntity progetto = fm.singleReturnQuery(ProgettoEntity.class, "SELECT p FROM ProgettoEntity p WHERE p.azienda = '" + agencyName + "' AND p.id = " + projectId );
 
         fm.exit();
-        if(occurrency == null || occurrency <= 0)
+        if(progetto == null)
             return false;
 
         return true;
@@ -199,13 +198,13 @@ public class DepositoDati {
             return -1;
         }
 
-        Integer stake = fm.singleReturnQuery(int.class, "SELECT SUM(f.budget) FROM finanziamento f WHERE f.progetto = " + id_project + "AND f.azienda = '" + agencyName + "'");
+        Long stake = fm.singleReturnQuery(Long.class, "SELECT SUM(f.budget) FROM FinanziamentoEntity f WHERE f.progetto = " + id_project + "AND f.azienda = '" + agencyName + "'");
         if (stake == null)
-            stake = 0;
+            stake = new Long( 0);
 
         fm.exit();
 
-        return stake;
+        return Integer.parseInt(stake.toString());
     }
 
     public Boolean isMyStake(String agencyName, int id_project) {
@@ -253,7 +252,7 @@ public class DepositoDati {
 
         Vector<String> vett = new Vector<String>();
 
-        if(ae == null || password != ae.getPassword())
+        if(ae == null || !password.equals(ae.getPassword()) )
             return vett;
 
         vett.add(ae.getNomeAzienda());
@@ -283,7 +282,7 @@ public class DepositoDati {
     }
 
     public void deleteMyStake(int projectId,String agencyName) {
-        String sql = "DELETE FROM finanziamento WHERE progetto = "+ projectId +" and azienda = '"+ agencyName + "';";
+        String sql = "DELETE FROM FinanziamentoEntity WHERE progetto = "+ projectId +" and azienda = '"+ agencyName + "';";
 
         fm = new FundracingManager();
         if( !fm.isSetup() ){
@@ -300,38 +299,35 @@ public class DepositoDati {
     }
 
     public void updateStake(int stakeBudget,String agencyName,int idProgetto, boolean add) {
-        Boolean stakePresent = isMyStake(agencyName, idProgetto);
-
-        if(stakePresent == null )
-            return;
-
-        String stakeBudgetStr = Integer.toString(stakeBudget);
-        String idProgettoStr = Integer.toString(idProgetto);
-
-        String sql = "";
-        if(!stakePresent)
-            sql = "INSERT INTO finanziamento (budget, azienda, progetto) values('"+ stakeBudgetStr +"', '"+ agencyName +"', '"+idProgettoStr +"');";
-        else if (!add)
-            sql = "UPDATE finanziamento SET budget = '"+ stakeBudgetStr +"' WHERE azienda = '"+agencyName+"' and progetto = '"+idProgettoStr+"';";
-        else
-            sql = "UPDATE finanziamento SET budget = budget + '"+ stakeBudgetStr +"' WHERE azienda = '"+agencyName+"' and progetto = '"+idProgettoStr+"';";
-
         fm = new FundracingManager();
+
         if( !fm.isSetup() ){
             System.out.print("Impossibile creare il manager del database \n");
             return;
         }
 
-        int occurrency = fm.executeUpdateQuery(sql);
+        FinanziamentoEntity finanziamento = fm.singleReturnQuery(FinanziamentoEntity.class, "SELECT f FROM FinanziamentoEntity f WHERE f.progetto =" + idProgetto + "AND f.azienda = '" + agencyName + "'");
+
+        if(finanziamento == null){
+            AziendaEntity azienda = fm.selectAgency(agencyName);
+            ProgettoEntity progetto = fm.selectProject(idProgetto);
+
+            fm.createFinanziamento(stakeBudget, azienda, progetto);
+        }
+        else if(!add) {
+            finanziamento.setBudget(stakeBudget);
+            fm.updateFinanziamento(finanziamento.getId(), finanziamento );
+        }else{
+            finanziamento.setBudget(stakeBudget + finanziamento.getBudget());
+            fm.updateFinanziamento(finanziamento.getId(), finanziamento);
+        }
 
         fm.exit();
 
-        if( occurrency < 1 )
-            System.out.print("FAILED TO UPDATE STAKE \n");
     }
 
     public List<Vector<String>> getProject(int idProgetto){
-        String sql = "SELECT * FROM progetto WHERE id =" + idProgetto + ";";
+        String sql = "SELECT p FROM Progetto p WHERE id =" + idProgetto + ";";
 
         fm = new FundracingManager();
         if( !fm.isSetup() ){
@@ -363,8 +359,7 @@ public class DepositoDati {
     }
 
     public List<String> getListAgency(){
-        String sql = "select *	\n" +
-                "from	azienda;";
+        String sql = "select a	from	AziendaEntity a ";
 
         fm = new FundracingManager();
         if( !fm.isSetup() ){

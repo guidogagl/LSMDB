@@ -4,7 +4,6 @@ import jpaEntities.*;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.List;
 
 public class FundracingManager {
