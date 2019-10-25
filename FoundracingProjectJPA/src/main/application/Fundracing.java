@@ -313,7 +313,6 @@ public class Fundracing extends Application{
 						stake_message.clear();
 						project_message.clear();
 						
-						send.setDisable(true);
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Non hai compilato correttamente tutti i campi!");
