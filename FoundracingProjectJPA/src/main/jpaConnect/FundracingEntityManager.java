@@ -1,7 +1,10 @@
 package jpaConnect;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
+
 import java.util.List;
+import java.util.logging.Level;
 
 public class FundracingEntityManager {
     private EntityManager em = null;
@@ -10,6 +13,7 @@ public class FundracingEntityManager {
 
     public FundracingEntityManager(EntityManagerFactory emf){
         try{
+        	java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);//LEVEL.SEVERE altrimenti,o ON
             em = emf.createEntityManager();
         }
         catch(Exception ex){
@@ -58,13 +62,20 @@ public class FundracingEntityManager {
             return null;
         }
     }
-
+    
     public int queryExecuteQuery(String sql){
         if (!isSetup()) {
             return (-1);
         }
-
-        return  em.createQuery( sql ).executeUpdate();
+        try {
+        	em.getTransaction().begin();
+            int results = em.createQuery( sql ).executeUpdate();
+            em.getTransaction().commit();
+            em.close();
+            return results;
+        } catch(NoResultException e){
+            return 0;
+        }
     }
 
     public <T> T create( T entity ){

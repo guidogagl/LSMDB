@@ -118,7 +118,7 @@ public class FundracingManager {
         fem = new FundracingEntityManager(factory);
         if(!fem.isSetup())
             return -1;
-
+        
         int res = fem.queryExecuteQuery( sql);
 
         fem.close();

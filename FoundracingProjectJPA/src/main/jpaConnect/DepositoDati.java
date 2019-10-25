@@ -282,7 +282,7 @@ public class DepositoDati {
     }
 
     public void deleteMyStake(int projectId,String agencyName) {
-        String sql = "DELETE FROM FinanziamentoEntity WHERE progetto = "+ projectId +" and azienda = '"+ agencyName + "';";
+        String sql = "DELETE FROM FinanziamentoEntity WHERE progetto = "+ projectId +" and azienda = '"+ agencyName + "'";
 
         fm = new FundracingManager();
         if( !fm.isSetup() ){
@@ -327,7 +327,7 @@ public class DepositoDati {
     }
 
     public List<Vector<String>> getProject(int idProgetto){
-        String sql = "SELECT p FROM Progetto p WHERE id =" + idProgetto + ";";
+        String sql = "SELECT p FROM ProgettoEntity p WHERE id =" + idProgetto ;
 
         fm = new FundracingManager();
         if( !fm.isSetup() ){
@@ -400,7 +400,7 @@ public class DepositoDati {
             System.out.print( "Impossibile inviare un messaggio a un'azienda non registrata \n");
             return;
         }
-
+        System.out.println("Questo è l'id "+Integer.parseInt(val.get(2)));
         ProgettoEntity pe = fm.selectProject(Integer.parseInt( val.get(2) ));
         if(pe == null){
             System.out.print( "Impossibile inviare un messaggio a su di un progetto inesistente \n");
