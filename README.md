@@ -452,7 +452,7 @@ the description and the stake insered until then, and also it can update the sta
 
 **5)Add Project** The user can insert a new project requiring founds to start, and it will automatically be seen in the table.
 
-**6)Add Request** The user can ask to other agency chiefs present in the network to fund one of its projects. That request will be automatically be seen by the receiver.
+**6)Add Message** The user can ask to other agency chiefs present in the network to fund one of its projects. That request will be automatically be seen by the receiver.
 
 **7)View Messages** The chief agency will see, in a table, all the requests made to it. If it's interested, by clicking a row, it will automatically receive the additional information of the description, and also it can accept or decline
  the request.
