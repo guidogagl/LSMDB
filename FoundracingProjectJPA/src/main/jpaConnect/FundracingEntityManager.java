@@ -67,14 +67,18 @@ public class FundracingEntityManager {
         if (!isSetup()) {
             return (-1);
         }
+        
+        int results = 0;
+        
         try {
         	em.getTransaction().begin();
-            int results = em.createQuery( sql ).executeUpdate();
-            em.getTransaction().commit();
-            em.close();
-            return results;
+            results = em.createQuery( sql ).executeUpdate();
+            
         } catch(NoResultException e){
-            return 0;
+            System.out.println("La query ha dato risultato vuoto");
+        }finally {
+        	em.getTransaction().commit();
+            return results;
         }
     }
 
