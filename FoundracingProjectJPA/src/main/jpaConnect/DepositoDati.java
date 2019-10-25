@@ -9,7 +9,34 @@ import java.util.Vector;
 
 public class DepositoDati {
     private FundracingManager fm = null;
-
+    public Vector<String> getAgency(String agencyName) {
+        fm = new FundracingManager();
+        if( !fm.isSetup() ){
+            System.out.print("Impossibile creare il manager del database \n");
+            return null;
+        }
+        if(fm.selectAgency(agencyName)==null){
+            System.out.print("Agency not present \n");
+            return null;
+        }
+        AziendaEntity ae = fm.selectAgency(agencyName);
+        
+        fm.exit();
+        
+        if(ae==null)
+            return null;
+        Vector<String> vett=new Vector<String>();
+        vett.add(ae.getNomeAzienda());
+        return vett;
+        }
+    public void insertAgency(Vector<String> val){
+        fm = new FundracingManager();
+        if( !fm.isSetup() ){
+            System.out.print("Impossibile creare il manager del database \n");
+        }
+        fm.createAgency(val.get(0), val.get(1), val.get(2), val.get(3), Integer.parseInt(val.get(4)), val.get(5));
+        fm.exit();
+    }
     private List<RowTableProjects> getRowTableProjects(List<ProgettoEntity> list, String agencyName, Boolean withStake) {
         List<RowTableProjects> rows = new ArrayList<RowTableProjects>();
         for(ProgettoEntity p : list){

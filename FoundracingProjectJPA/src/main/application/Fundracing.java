@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javafx.scene.image.*;
 
 import javafx.application.*;
+import static javafx.application.Application.launch;
 
 import javafx.event.*;
 
@@ -19,7 +20,7 @@ import javafx.scene.input.*;
 
 import javafx.stage.*;
 import javafx.util.*;
-import jpaConnect.*;
+import jpaConnect.DepositoDati;
 
 
 public class Fundracing extends Application{
@@ -72,9 +73,11 @@ public class Fundracing extends Application{
 	private ChoiceBox choice_agency = new ChoiceBox();
 	private Label message_receiver = new Label("Message receiver");
 	private GestoreMessaggi gm = null;
-
+        private Button register=new Button("Register");
+	private RegistrationForm form=new RegistrationForm();
+	
 	public void start(Stage stage) {
-
+		
 		table.updateProjects(deposito.getProjectsWithoutStake());
 		selectTableRow();
 		
@@ -86,7 +89,7 @@ public class Fundracing extends Application{
 			
 			String urlLogo = "";
 			
-			if(!tf_companyName.getText().equals("") || !tf_password.getText().equals("")) {
+			if(!tf_companyName.getText().equals("") && !tf_password.getText().equals("")) {
 				
 				agencyName = tf_companyName.getText();
 				String password=tf_password.getText();
@@ -107,33 +110,30 @@ public class Fundracing extends Application{
 					
 					logged = true;
 					insert.setDisable(false);
-					//delete.setDisable(false);
+					delete.setDisable(false);
 					description.setEditable(true);
 					name_project.setEditable(true);
 					total_budget.setEditable(true);
 					stake.setEditable(true);
-					//update.setDisable(false);
+					update.setDisable(false);
 					name_agency.setText(result.get(0)); 
 					address_agency.setText(result.get(3));
 					site_agency.setText(result.get(4));
 					urlLogo = result.get(1);
 					image = new Image(urlLogo);
 					iv1.setImage(image);
-					//accept.setDisable(false);
-					//refuse.setDisable(false);
+					accept.setDisable(false);
+					refuse.setDisable(false);
 					send.setDisable(false);
 					description_message.setEditable(true);
 					stake_message.setEditable(true);
 					project_message.setEditable(true);
+                                        register.setVisible(false);
 					
-				} //Se il nome dell'azienda non è presente nel db
+				} //Se il nome dell'azienda non ï¿½ presente nel db
 				else {
-					JOptionPane.showMessageDialog(null, "Il nome dell'azienda è errato oppure la password è scorretta!");
-					return;
+					JOptionPane.showMessageDialog(null, "Il nome dell'azienda ï¿½ errato oppure la password ï¿½ scorretta!");
 				}
-			}else {
-					JOptionPane.showMessageDialog(null, "Il nome o la password mancano!");
-					return;
 			}
 			
         });
@@ -141,28 +141,14 @@ public class Fundracing extends Application{
 		
 		refuse.setOnAction((ActionEvent ev1)->{
 			
-			if(description_message.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "Non hai selezionato nessun messaggio!");
-				return;
-			}
 			deposito.deleteMessage(selectedMessagetId);
 			table_message.updateMessages(deposito.getMessages(agencyName));
-			refuse.setDisable(true);
-			accept.setDisable(true);
 		});
 		
 		
 		accept.setOnAction((ActionEvent ev1)->{
-			
-			if(description_message.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "Non hai selezionato nessun messaggio!");
-				return;
-			}
-			
 			deposito.updateStake(selectedMessageStake, agencyName, selectedProjectMessageId, true);
 			deposito.deleteMessage(selectedMessagetId);
-			accept.setDisable(true);
-			refuse.setDisable(true);
 			table.updateProjects(deposito.getProjects(agencyName));
 			table_message.updateMessages(deposito.getMessages(agencyName));
 		});
@@ -173,24 +159,16 @@ public class Fundracing extends Application{
 				name_agency, address_agency, site_agency,tf_password,l_agencyName,l_password,
 				table_message, l_stake, l_description, l_total_budget, l_project_name, messages_received, accept, refuse,
 				l_description_message, description_message, stake_message, project_message,
-				l_stake_message, l_project_message, send, choice_agency, message_receiver);
+				l_stake_message, l_project_message, send, choice_agency, message_receiver, register);
 		
 		
 		insert.setOnAction((ActionEvent ev2)->{
-			
-					String budget = total_budget.getText();
+					
 					String desc = description.getText(); 
 					String name = name_project.getText();
+					String budget = total_budget.getText();
 					
-					
-					
-					if(!desc.equals("") || !name.equals("") || !budget.equals("")) {
-						
-						if(!budget.matches("[0-9]+")) {
-							JOptionPane.showMessageDialog(null, "Il budget deve essere numerico!");
-							return;
-						}
-						
+					if(!desc.equals("") && !name.equals("") && !budget.equals("")) {
 						
 						Vector<String> vector = new Vector<String>(4);
 			
@@ -208,58 +186,33 @@ public class Fundracing extends Application{
 						vector.clear();
 						
 						table.updateProjects(deposito.getProjects(agencyName));
-					}else {
-						JOptionPane.showMessageDialog(null, "Uno dei campi non è stato inserito!");
-						return;
 					}
 		        });
 		
 		
 			delete.setOnAction((ActionEvent ev1)->{
 				
-				if(description.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "Non hai selezionato nessun progetto!");
-					return;
-				}
-				
-				
-				Boolean iAmOwner = deposito.iAmOwner(selectedProjectId, agencyName);
-				
 				//Se sono il proprietario
-				if(iAmOwner) {
+				if(deposito.iAmOwner(selectedProjectId, agencyName)) {
 					deposito.deleteProject(selectedProjectId);
 					table.updateProjects(deposito.getProjects(agencyName));
 				}//Se non sono il proprietario ma voglio levare il mio stake
-				else if(iAmOwner==false &&
-					deposito.isMyStake(agencyName, selectedProjectId) == true) {
+				else if(deposito.iAmOwner(selectedProjectId, agencyName)==false &&
+						deposito.isMyStake(agencyName, selectedProjectId) == true) {
 					deposito.deleteMyStake(selectedProjectId, agencyName);
 					table.updateProjects(deposito.getProjects(agencyName));
-					delete.setDisable(true);
-					update.setDisable(true);
 				}//Se cerco di eliminare il progetto o lo stake di un altro
 				else {
 					JOptionPane.showMessageDialog(null, "Puoi eliminare solo i tuoi progetti o finanziamenti!");
-					return;
 				}
 			});
-			
-			
+			register.setOnAction((ActionEvent ev2)->{
+                            form.interfaccia=new Interface(form);
+                            form.setVisible(true);
+                            
+			}); 
 			update.setOnAction((ActionEvent ev1)->{
-				
-				String string_stakeInsered = stake.getText();
-				
-				if(string_stakeInsered.equals("")) {
-					JOptionPane.showMessageDialog(null, "Manca il valore del campo Stake!");	
-					return;
-				}
-				
-				//Controllo se il valore inserito è un numero
-				if(!string_stakeInsered.matches("[0-9]+")) {
-					JOptionPane.showMessageDialog(null, "Puoi inserire solo valori numerici nel campo Stake!");	
-					return;
-				}
-				
-				int stakeInsered=Integer.parseInt(string_stakeInsered);
+				int stakeInsered=Integer.parseInt(stake.getText());
 				int totalStakes=deposito.getSommaStakes(selectedProjectId);
 				//se ho giï¿½ raggiunto l'obiettivo
 				if(totalStakes>=selectedTotalBudget) {
@@ -275,8 +228,6 @@ public class Fundracing extends Application{
 					deposito.updateStake(newStake,agencyName,selectedProjectId, false);
 					table.updateProjects(deposito.getProjects(agencyName));
 					stake.setText("");
-					update.setDisable(true);
-					delete.setDisable(true);
 				} 
 			});
 			
@@ -286,17 +237,11 @@ public class Fundracing extends Application{
 				String description = description_message.getText();
 				String stake = stake_message.getText();
 				String project = project_message.getText();
-				Object object_receiver = choice_agency.getValue();
+				String receiver = choice_agency.getValue().toString();
+				System.out.println("Receiver selected: "+receiver);
 
-				if(!description.equals("") || !stake.equals("") || !project.equals("") || !(object_receiver == null)) {
+				if(!description.equals("") && !stake.equals("") && !project.equals("") && !receiver.equals("")) {
 				
-					if(!stake.matches("[0-9]+") || !project.matches("[0-9]+")) {
-						JOptionPane.showMessageDialog(null, "Campo Stake e id progetto devono essere numerici!");
-						return;
-					}
-					
-					String receiver = object_receiver.toString();
-					
 					if(deposito.getProject(Integer.parseInt(project)).isEmpty()) {
 						JOptionPane.showMessageDialog(null, "Il progetto selezionato non esiste");
 					} else {
@@ -308,15 +253,9 @@ public class Fundracing extends Application{
 						vector.add(description);	//testo
 						vector.add(stake);	//stake
 						deposito.insertMessage(vector);
-						
-						description_message.clear();
-						stake_message.clear();
-						project_message.clear();
-						
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Non hai compilato correttamente tutti i campi!");
-					return;
 				}
 			});
 			
@@ -333,7 +272,7 @@ public class Fundracing extends Application{
 				name_project, total_budget, insert, delete, iv1, stake, update, 
 				name_agency, address_agency, site_agency,l_agencyName,l_password, table_message, l_stake, l_description, l_total_budget,
 				l_project_name, messages_received, accept, refuse, l_description_message, description_message, stake_message, project_message,
-				l_stake_message, l_project_message, send, choice_agency, message_receiver);
+				l_stake_message, l_project_message, send, choice_agency, message_receiver, register);
 		
 		
 	
@@ -365,8 +304,6 @@ public class Fundracing extends Application{
                 selectedStake=res.getStake();
                 description.setText(deposito.getDescriptionProject(selectedProjectId));
                 stake.setText(Integer.toString(res.getStake()));
-                update.setDisable(false);
-                delete.setDisable(false);
             }  
          });  
             return row;  
@@ -392,8 +329,6 @@ public class Fundracing extends Application{
                 selectedProjectMessageId = res.getId_project();
                 description_message.setText(deposito.getDescriptionMessage(selectedMessagetId));
                 //stake.setText(Integer.toString(res.getStake()));
-                accept.setDisable(false);
-                refuse.setDisable(false);
             }  
          });  
             return row;  
@@ -410,6 +345,8 @@ public class Fundracing extends Application{
 			System.out.println("agency " + i + " : " + agencyList.get(i));
 		}
 	}	
+	
+	
 	
 }
 

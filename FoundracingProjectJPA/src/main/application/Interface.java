@@ -6,6 +6,7 @@ import javafx.scene.image.*;
 
 import javafx.event.*;
 import javafx.scene.control.*;
+import javax.swing.JLabel;
 
 public class Interface {
 
@@ -15,14 +16,17 @@ public class Interface {
 			Label l_agencyName,Label l_password, TableMessage table_message, Label l_stake, Label l_description, Label l_total_budget,
 			Label l_project_name, Label messages_received, Button accept, Button refuse, Label l_description_message, TextArea description_message,
 			TextField stake_message, TextField project_message, Label l_stake_message, Label l_project_message, Button send,
-			ChoiceBox choice_agency, Label message_receiver){
+			ChoiceBox choice_agency, Label message_receiver, Button register){
 		
 		//Abbasso tutte le y di 20
-		login.setLayoutX(540);
+		login.setLayoutX(510);
 		login.setLayoutY(125);
 		login.setMinSize(70, 30);
 		login.setStyle("-fx-font-weight: bold;");
-		
+		register.setLayoutX(600);
+		register.setLayoutY(125);
+		register.setMinSize(70, 30);
+		register.setStyle("-fx-font-weight: bold;");
 		name_agency.setLayoutX(335);
 		name_agency.setLayoutY(40);
 		name_agency.setStyle("-fx-font-weight: bold;  -fx-font-size: 18px;");
@@ -190,4 +194,46 @@ public class Interface {
 	    send.setLayoutY(530);
 	    send.setDisable(true);
 	}
+        public Interface(RegistrationForm form) {
+            JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
+
+            form.setTitle("Network Registration Form");
+            form.setSize(700, 500);
+            form.setLayout(null);
+
+            form.nameAgency.setBounds(100, 70, 400, 30);
+            form.name_field.setBounds(250, 70, 350, 30);
+            form.address.setBounds(100, 110, 400, 30);
+            form.address_field.setBounds(250, 110, 350, 30);
+            form.ZIP.setBounds(100, 150, 400, 30);
+            form.ZIP_field.setBounds(250, 150, 350, 30);
+            form.insertPassword.setBounds(100, 190, 400, 30);
+            form.password.setBounds(250, 190, 350, 30);
+            confirmPasswordLabel.setBounds(100, 230, 400, 30);
+            form.confirm_password.setBounds(250, 230, 350, 30);
+            form.insertUrl.setBounds(100, 270, 400, 30);
+            form.url.setBounds(250, 270, 350, 30);
+            form.urlLogo.setBounds(100, 310, 400, 30);
+            form.urlLogo_field.setBounds(250, 310, 350, 30);
+            form.submit().setBounds(200, 360, 140, 30);
+            form.discard().setBounds(400, 360, 140, 30);
+
+            form.add(form.nameAgency);
+            form.add(form.name_field);
+            form.add(form.address);
+            form.add(form.address_field);
+            form.add(form.ZIP);
+            form.add(form.ZIP_field);
+            form.add(form.insertPassword);
+            form.add(form.password);
+            form.add(confirmPasswordLabel);
+            form.add(form.confirm_password);
+            form.add(form.insertUrl);
+            form.add(form.url);
+            form.add(form.urlLogo);
+            form.add(form.urlLogo_field);
+            form.add(form.submit());
+            form.add(form.discard());
+        }
+
 }
