@@ -14,7 +14,7 @@ public class AziendaEntity {
     private String indirizzo;
     private Integer cap;
     private String password;
-
+/*
     private List<FinanziamentoEntity> myStakes;
     private List<ProgettoEntity> myProjects;
     private List<MessaggioEntity> msgsReceived;
@@ -37,7 +37,7 @@ public class AziendaEntity {
     public List<MessaggioEntity> getMsgsSended(){ return this.msgsSended ;};
     public void setMsgsSended(List<MessaggioEntity> _msgs){ this.msgsSended = _msgs; };
 
-
+*/
     @Id
     @Column(name = "nomeAzienda", nullable = false, length = 500)
     public String getNomeAzienda() {

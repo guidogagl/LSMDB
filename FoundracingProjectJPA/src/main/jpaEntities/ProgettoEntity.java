@@ -13,10 +13,10 @@ public class ProgettoEntity {
     private String nome;
     private String descrizione;
     private Integer budget;
-
+    private AziendaEntity azienda;
+/*
     private List<FinanziamentoEntity> myStakes;
     private List<MessaggioEntity> myMsgs;
-    private AziendaEntity azienda;
 
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "progetto")
@@ -26,7 +26,7 @@ public class ProgettoEntity {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "progetto")
     public List<MessaggioEntity> getMyMsgs(){ return this.myMsgs ;};
     public void setMyMsgs(List<MessaggioEntity> _msgs){ this.myMsgs = _msgs; };
-
+*/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "azienda_id", nullable = false)
     public AziendaEntity getAzienda(){ return this.azienda ;};

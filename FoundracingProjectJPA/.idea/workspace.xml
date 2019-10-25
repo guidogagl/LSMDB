@@ -3,11 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4271c21a-8c18-4199-9fef-cf61e4fb1bb1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/jpaConnect/DepositoDati.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaConnect/DepositoDati.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/jpaConnect/FundracingEntityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaConnect/FundracingEntityManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/jpaConnect/FundracingManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaConnect/FundracingManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/jpaEntities/FinanziamentoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaEntities/FinanziamentoEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/jpaEntities/MessaggioEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaEntities/MessaggioEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FoundracingProjectJPA.iml" beforeDir="false" afterPath="$PROJECT_DIR$/FoundracingProjectJPA.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jpaEntities/AziendaEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaEntities/AziendaEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/jpaEntities/ProgettoEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jpaEntities/ProgettoEntity.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -167,6 +164,7 @@
       <option name="presentableId" value="Default" />
       <updated>1571758560897</updated>
       <workItem from="1571758586604" duration="53420000" />
+      <workItem from="1572014702159" duration="179000" />
     </task>
     <task id="LOCAL-00001" summary="update FundracingManager">
       <created>1571815295706</created>
@@ -193,7 +191,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
