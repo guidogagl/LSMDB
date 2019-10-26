@@ -19,11 +19,11 @@ public class Interface {
 			ChoiceBox choice_agency, Label message_receiver, Button register){
 		
 		//Abbasso tutte le y di 20
-		login.setLayoutX(490);
+		login.setLayoutX(510);
 		login.setLayoutY(125);
 		login.setMinSize(70, 30);
 		login.setStyle("-fx-font-weight: bold;");
-		register.setLayoutX(590);
+		register.setLayoutX(600);
 		register.setLayoutY(125);
 		register.setMinSize(70, 30);
 		register.setStyle("-fx-font-weight: bold;");
@@ -137,7 +137,6 @@ public class Interface {
 	    update.setLayoutX(300);
 	    update.setLayoutY(370);
 	    update.setDisable(true);
-	    update.setStyle("-fx-font-weight: bold;");
 	    
 	    table_message.setLayoutX(730);
 	    table_message.setLayoutY(40);
@@ -146,12 +145,10 @@ public class Interface {
 	    accept.setLayoutX(780);
 	    accept.setLayoutY(200);
 	    accept.setDisable(true);
-	    accept.setStyle("-fx-font-weight: bold;");
 	    
 	    refuse.setLayoutX(850);
 	    refuse.setLayoutY(200);
 	    refuse.setDisable(true);
-	    refuse.setStyle("-fx-font-weight: bold;");
 	    
 	    l_description_message.setLayoutX(730);
 	    l_description_message.setLayoutY(250);
@@ -196,7 +193,6 @@ public class Interface {
 	    send.setLayoutX(730);
 	    send.setLayoutY(530);
 	    send.setDisable(true);
-	    send.setStyle("-fx-font-weight: bold;");
 	}
         public Interface(RegistrationForm form) {
             JLabel confirmPasswordLabel = new JLabel("Confirm Password:");

@@ -150,7 +150,6 @@ login.setOnAction((ActionEvent ev1)->{
 			table_message.updateMessages(deposito.getMessages(agencyName));
 			refuse.setDisable(true);
 			accept.setDisable(true);
-			description_message.clear();
 		});
 
 		
@@ -166,7 +165,6 @@ login.setOnAction((ActionEvent ev1)->{
 			deposito.deleteMessage(selectedMessagetId);
 			accept.setDisable(true);
 			refuse.setDisable(true);
-			description_message.clear();
 			table.updateProjects(deposito.getProjects(agencyName));
 			table_message.updateMessages(deposito.getMessages(agencyName));
 		});
@@ -233,9 +231,6 @@ login.setOnAction((ActionEvent ev1)->{
 			if(iAmOwner) {
 				deposito.deleteProject(selectedProjectId);
 				table.updateProjects(deposito.getProjects(agencyName));
-				delete.setDisable(true);
-				update.setDisable(true);
-				description.clear();
 			}//Se non sono il proprietario ma voglio levare il mio stake
 			else if(iAmOwner==false &&
 				deposito.isMyStake(agencyName, selectedProjectId) == true) {
@@ -243,7 +238,6 @@ login.setOnAction((ActionEvent ev1)->{
 				table.updateProjects(deposito.getProjects(agencyName));
 				delete.setDisable(true);
 				update.setDisable(true);
-				description.clear();
 			}//Se cerco di eliminare il progetto o lo stake di un altro
 			else {
 				JOptionPane.showMessageDialog(null, "Puoi eliminare solo i tuoi progetti o finanziamenti!");
@@ -296,7 +290,6 @@ login.setOnAction((ActionEvent ev1)->{
 					stake.setText("");
 					update.setDisable(true);
 					delete.setDisable(true);
-					description.clear();
 				} 
 			});
 			
