@@ -70,9 +70,9 @@ public class Fundracing extends Application{
 	private TextField project_message = new TextField();
 	private Label l_project_message = new Label("ID Project");
 	private Button send = new Button("Send");
-	private ChoiceBox choice_agency = new ChoiceBox();
+	private ChoiceBox choice_agency = new ChoiceBox(null);
 	private Label message_receiver = new Label("Message receiver");
-	private GestoreMessaggi gm = null;
+	private Gestore gm = null;
         private Button register=new Button("Register");
 	private RegistrationForm form=new RegistrationForm();
 	
@@ -104,10 +104,8 @@ login.setOnAction((ActionEvent ev1)->{
 						gm.endAggiornamentoTabella();
 					}
 					
-					gm = new GestoreMessaggi(deposito, table_message, agencyName);
+					gm = new Gestore(deposito,table, table_message,choice_agency, agencyName);
 					gm.startAggiornamentoTabella();
-					//table_message.updateMessages(deposito.getMessages(agencyName));
-					
 					logged = true;
 					insert.setDisable(false);
 					//delete.setDisable(false);
@@ -152,6 +150,7 @@ login.setOnAction((ActionEvent ev1)->{
 			table_message.updateMessages(deposito.getMessages(agencyName));
 			refuse.setDisable(true);
 			accept.setDisable(true);
+			description_message.clear();
 		});
 
 		
@@ -167,6 +166,7 @@ login.setOnAction((ActionEvent ev1)->{
 			deposito.deleteMessage(selectedMessagetId);
 			accept.setDisable(true);
 			refuse.setDisable(true);
+			description_message.clear();
 			table.updateProjects(deposito.getProjects(agencyName));
 			table_message.updateMessages(deposito.getMessages(agencyName));
 		});
@@ -233,6 +233,9 @@ login.setOnAction((ActionEvent ev1)->{
 			if(iAmOwner) {
 				deposito.deleteProject(selectedProjectId);
 				table.updateProjects(deposito.getProjects(agencyName));
+				delete.setDisable(true);
+				update.setDisable(true);
+				description.clear();
 			}//Se non sono il proprietario ma voglio levare il mio stake
 			else if(iAmOwner==false &&
 				deposito.isMyStake(agencyName, selectedProjectId) == true) {
@@ -240,6 +243,7 @@ login.setOnAction((ActionEvent ev1)->{
 				table.updateProjects(deposito.getProjects(agencyName));
 				delete.setDisable(true);
 				update.setDisable(true);
+				description.clear();
 			}//Se cerco di eliminare il progetto o lo stake di un altro
 			else {
 				JOptionPane.showMessageDialog(null, "Puoi eliminare solo i tuoi progetti o finanziamenti!");
@@ -292,6 +296,7 @@ login.setOnAction((ActionEvent ev1)->{
 					stake.setText("");
 					update.setDisable(true);
 					delete.setDisable(true);
+					description.clear();
 				} 
 			});
 			
@@ -314,6 +319,7 @@ login.setOnAction((ActionEvent ev1)->{
 				
 				if(deposito.getProject(Integer.parseInt(project)).isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Il progetto selezionato non esiste");
+					return ;
 				} else {
 					Vector<String> vector = new Vector<String>();
 					
@@ -327,6 +333,7 @@ login.setOnAction((ActionEvent ev1)->{
 					description_message.clear();
 					stake_message.clear();
 					project_message.clear();
+					choice_agency.setValue(null);
 					
 				}
 			} else {
@@ -335,7 +342,11 @@ login.setOnAction((ActionEvent ev1)->{
 			}
 		});
 		
-		
+		stage.setOnCloseRequest((WindowEvent we)->{
+			if(gm != null) {
+				gm.endAggiornamentoTabella();
+			}
+		});
 		
 		Group root = new Group(tf_companyName,tf_password, login, table_title, table, description,
 				name_project, total_budget, insert, delete, iv1, stake, update, 
