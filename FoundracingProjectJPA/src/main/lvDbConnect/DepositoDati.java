@@ -1,7 +1,12 @@
-package jpaConnect;
+package lvDbConnect;
 
-import application.*;
-import jpaEntities.*;
+import application.RowTableMessage;
+import application.RowTableProjects;
+import jpaConnect.FundracingManager;
+import jpaEntities.AziendaEntity;
+import jpaEntities.FinanziamentoEntity;
+import jpaEntities.MessaggioEntity;
+import jpaEntities.ProgettoEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,38 +14,7 @@ import java.util.Vector;
 
 public class DepositoDati {
     private FundracingManager fm = null;
-    public Vector<String> getAgency(String agencyName) {
-        fm = new FundracingManager();
-        if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
-            return null;
-        }
 
-        AziendaEntity ae = fm.selectAgency(agencyName);
-
-        if( ae == null)
-            System.out.print("Agency not present \n");
-
-
-        fm.exit();
-
-        Vector<String> vett=new Vector<String>();
-        vett.add(ae.getNomeAzienda());
-        vett.add( ae.getUrlLogo());
-        vett.add( ae.getUrlSito());
-        vett.add( ae.getIndirizzo());
-        vett.add( ae.getCap().toString());
-
-        return vett;
-    }
-    public void insertAgency(Vector<String> val){
-        fm = new FundracingManager();
-        if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
-        }
-        fm.createAgency(val.get(0), val.get(1), val.get(2), val.get(3), Integer.parseInt(val.get(4)), val.get(5));
-        fm.exit();
-    }
     private List<RowTableProjects> getRowTableProjects(List<ProgettoEntity> list, String agencyName, Boolean withStake) {
         List<RowTableProjects> rows = new ArrayList<RowTableProjects>();
         for(ProgettoEntity p : list){
@@ -66,7 +40,6 @@ public class DepositoDati {
 
         return rows;
     }
-
     private List<RowTableMessage> getRowTableMessage(List<MessaggioEntity> me_list) {
         if(me_list == null)
             return new ArrayList<RowTableMessage>();
@@ -82,6 +55,41 @@ public class DepositoDati {
         }
 
         return rows;
+    }
+
+    public Vector<String> getAgency(String agencyName) {
+
+        fm = new FundracingManager();
+        if( !fm.isSetup() ){
+            System.out.print("Impossibile creare il manager del database \n");
+            return null;
+        }
+
+        AziendaEntity ae = fm.selectAgency(agencyName);
+
+        if( ae == null)
+            System.out.print("Agency not present \n");
+
+
+        fm.exit();
+
+        Vector<String> vett=new Vector<String>();
+        vett.add(ae.getNomeAzienda());
+        vett.add( ae.getUrlLogo());
+        vett.add( ae.getUrlSito());
+        vett.add( ae.getIndirizzo());
+        vett.add( ae.getCap().toString());
+
+        return vett;
+    }
+
+    public void insertAgency(Vector<String> val){
+        fm = new FundracingManager();
+        if( !fm.isSetup() ){
+            System.out.print("Impossibile creare il manager del database \n");
+        }
+        fm.createAgency(val.get(0), val.get(1), val.get(2), val.get(3), Integer.parseInt(val.get(4)), val.get(5));
+        fm.exit();
     }
 
     public List<RowTableProjects> getProjects(String agencyName){
