@@ -2,7 +2,38 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4271c21a-8c18-4199-9fef-cf61e4fb1bb1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/lvDbConnect/Connect.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/lvDbConnect/FundracingManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/Fundracing$1$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/Fundracing$1$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/Fundracing$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/Fundracing$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/Fundracing$2$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/Fundracing$2$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/Fundracing$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/Fundracing$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/Fundracing.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/Fundracing.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/GestoreMessaggi$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/GestoreMessaggi$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/GestoreMessaggi.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/GestoreMessaggi.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/Interface$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/Interface$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/Interface$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/Interface$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/Interface.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/Interface.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/RowTableMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/RowTableMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/RowTableProjects.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/RowTableProjects.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/TableMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/TableMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/TableProjects.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/TableProjects.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/ThreadGestioneMessaggi.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/ThreadGestioneMessaggi.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/registerPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/registerPanel$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/registerPanel$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/registerPanel$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application/registerPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application/registerPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/jpaConnect/DepositoDati.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/jpaConnect/DepositoDati.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/jpaConnect/FundracingEntityManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/jpaConnect/FundracingEntityManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/jpaConnect/FundracingManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/jpaConnect/FundracingManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/jpaEntities/AziendaEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/jpaEntities/AziendaEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/jpaEntities/FinanziamentoEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/jpaEntities/FinanziamentoEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/jpaEntities/MessaggioEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/jpaEntities/MessaggioEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/jpaEntities/ProgettoEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/jpaEntities/ProgettoEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mysqlConnect/Connect.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mysqlConnect/Connect.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mysqlConnect/DepositoDati.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mysqlConnect/DepositoDati.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -85,6 +116,9 @@
     <property name="settings.editor.selected.configurable" value="project.validation" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="lvDbConnect" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/resources" />
     </key>
@@ -161,7 +195,7 @@
       <option name="presentableId" value="Default" />
       <updated>1571758560897</updated>
       <workItem from="1571758586604" duration="53420000" />
-      <workItem from="1572014702159" duration="1400000" />
+      <workItem from="1572014702159" duration="12645000" />
     </task>
     <task id="LOCAL-00001" summary="update FundracingManager">
       <created>1571815295706</created>
@@ -205,12 +239,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/jpaConnect/DepositoDati.java</url>
-          <line>167</line>
+          <line>194</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/jpaConnect/DepositoDati.java</url>
-          <line>184</line>
+          <line>211</line>
           <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
