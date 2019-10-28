@@ -33,5 +33,11 @@
   		<artifactId>mysql-connector-java</artifactId>
   		<version>8.0.17</version>
   	</dependency>
+      <!-- https://mvnrepository.com/artifact/org.fusesource.leveldbjni/leveldbjni-all -->
+      <dependency>
+          <groupId>org.fusesource.leveldbjni</groupId>
+          <artifactId>leveldbjni-all</artifactId>
+          <version>1.8</version>
+      </dependency>
   </dependencies>
 </project>

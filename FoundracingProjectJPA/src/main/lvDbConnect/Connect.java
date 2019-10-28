@@ -1,6 +1,9 @@
 package lvDbConnect;
 
 import org.iq80.leveldb.*;
+
+import javax.swing.text.html.parser.Entity;
+
 import static org.fusesource.leveldbjni.JniDBFactory.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -12,7 +15,7 @@ public class Connect {
     private Options options = new Options();
     private DB db = null;
 
-    private Boolean isSetup(){
+    public Boolean isSetup(){
         if(db == null)
             return false;
         return true;
@@ -40,19 +43,13 @@ public class Connect {
     }
 
 
-    public void writeEntity(List<Vector<String>> key_value){
-        // format expected
-        // list - vector
-        // list1 --> EntityName - id
-        // list2 --> attribute1 - value1
-        // ...
-        if(!isSetup())
-            return;
-
+    public void writeEntity(String entityName, Vector<String> attributes, Vector<String> values){
         WriteBatch batch = db.createWriteBatch();
-
+        // Primo vector<String>= EntityName:$entityNameID;
         // key arrangement EntityName:$entityNameId:NameAttribute = $value
+<<<<<<< HEAD
         String primaryKey = key_value.get(1).firstElement() + ":" + key_value.get(1).lastElement() + ":";
+        //String primaryKey= EntityName:$entityNameId
         Boolean next_step = true;
         try {
             for( Vector<String> kv : key_value ) {
@@ -60,9 +57,20 @@ public class Connect {
                     next_step = false;
                     continue;
                 }
-
+                //NameAttribute=$value
                 String key = primaryKey + kv.get(1);
                 batch.put(bytes(key), bytes(kv.get(1)));
+                
+=======
+
+        String primaryKey = entityName + ":" + attributes.get(0) + ":";
+
+        Boolean next_step = true;
+        try {
+            for( int i = 1; i < attributes.size(); i++ ) {
+                String key = primaryKey + attributes.get(i);
+                batch.put(bytes(key), bytes(values.get(i)));
+>>>>>>> 5e978378d2258437813b1e0feb4f5077dddcff08
             }
 
             db.write(batch);
@@ -72,11 +80,11 @@ public class Connect {
         }
     }
 
-    public List<Vector<String>> readEntity(String entityName, String primaryKey){
+    public List<Vector<String>> readEntity(String entityName, String primaryKey){ //qui primaryKey=1
 
         // se primaryKey è null leggiamo tutte le entità con qualsiasi chiave
-        if( primaryKey != null )
-            primaryKey = ":" + primaryKey;
+        if( primaryKey != null ) 
+            primaryKey = ":" + primaryKey; //:1
 
         // effettuiamo uno snapshot per evitare letture inconsistenti a causa dei thread di update
         // del database
@@ -84,11 +92,12 @@ public class Connect {
         ro.snapshot(db.getSnapshot());
 
         DBIterator keyIterator = db.iterator();
-        keyIterator.seek(bytes( entityName + primaryKey )); // moves the iterator to the keys starting with "employee"
-
+        keyIterator.seek(bytes( entityName + primaryKey )); // moves the iterator to the keys starting with "employee:primaryKey"
+        //employee:5->ma questo non c'�
+        //employee
         Vector<String> entity = new Vector<String>();
         if( primaryKey != null )
-            entity.add(primaryKey);
+            entity.add(primaryKey); //primo elemento entity=:primarykey
 
         List<Vector<String>> resultSet = new ArrayList<Vector<String>>();
         try {
@@ -96,7 +105,7 @@ public class Connect {
 
                 String stored_key = asString(keyIterator.peekNext().getKey()); // key arrangement : employee:$employee_id:$attribute_name = $value
                 String[] keySplit = stored_key.split(":"); // split the key
-
+                //!keySplit[1].equals( primaryKey ) ?
                 if( !keySplit[1].equals( primaryKey ) || !keySplit[0].equals(entityName) ){ // nuova entità da registrare nella lista
                     if( primaryKey != null ) // controllo non sia la prima iterazione
                         resultSet.add( entity ); // se non lo è allora ho registrato una nuova entità

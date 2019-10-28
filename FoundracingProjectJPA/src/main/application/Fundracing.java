@@ -20,7 +20,7 @@ import javafx.scene.input.*;
 
 import javafx.stage.*;
 import javafx.util.*;
-import jpaConnect.DepositoDati;
+import lvDbConnect.DepositoDati;
 
 
 public class Fundracing extends Application{
@@ -127,9 +127,9 @@ login.setOnAction((ActionEvent ev1)->{
 					stake_message.setEditable(true);
 					project_message.setEditable(true);
 					
-				} //Se il nome dell'azienda non è presente nel db
+				} //Se il nome dell'azienda non ï¿½ presente nel db
 				else {
-					JOptionPane.showMessageDialog(null, "Il nome dell'azienda è errato oppure la password è scorretta!");
+					JOptionPane.showMessageDialog(null, "Il nome dell'azienda ï¿½ errato oppure la password ï¿½ scorretta!");
 					return;
 				}
 			}else {
@@ -211,7 +211,7 @@ login.setOnAction((ActionEvent ev1)->{
 				
 				table.updateProjects(deposito.getProjects(agencyName));
 			}else {
-				JOptionPane.showMessageDialog(null, "Uno dei campi non è stato inserito!");
+				JOptionPane.showMessageDialog(null, "Uno dei campi non ï¿½ stato inserito!");
 				return;
 			}
         });
@@ -266,7 +266,7 @@ login.setOnAction((ActionEvent ev1)->{
 					return;
 				}
 				
-				//Controllo se il valore inserito è un numero
+				//Controllo se il valore inserito ï¿½ un numero
 				if(!string_stakeInsered.matches("[0-9]+")) {
 					JOptionPane.showMessageDialog(null, "Puoi inserire solo valori numerici nel campo Stake!");	
 					return;
