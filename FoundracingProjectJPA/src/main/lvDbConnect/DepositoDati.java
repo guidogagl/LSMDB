@@ -2,7 +2,9 @@ package lvDbConnect;
 
 import application.RowTableMessage;
 import application.RowTableProjects;
+
 import jpaConnect.FundracingManager;
+
 import jpaEntities.AziendaEntity;
 import jpaEntities.FinanziamentoEntity;
 import jpaEntities.MessaggioEntity;
