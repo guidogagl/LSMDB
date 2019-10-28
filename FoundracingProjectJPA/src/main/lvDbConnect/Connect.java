@@ -1,6 +1,9 @@
 package lvDbConnect;
 
 import org.iq80.leveldb.*;
+
+import javax.swing.text.html.parser.Entity;
+
 import static org.fusesource.leveldbjni.JniDBFactory.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -12,7 +15,7 @@ public class Connect {
     private Options options = new Options();
     private DB db = null;
 
-    private Boolean isSetup(){
+    public Boolean isSetup(){
         if(db == null)
             return false;
         return true;
@@ -40,29 +43,18 @@ public class Connect {
     }
 
 
-    public void writeEntity(List<Vector<String>> key_value){
-        // format expected
-        // list - vector
-        // list1 --> EntityName - id
-        // list2 --> attribute1 - value1
-        // ...
-        if(!isSetup())
-            return;
-
+    public void writeEntity(String entityName, Vector<String> attributes, Vector<String> values){
         WriteBatch batch = db.createWriteBatch();
 
         // key arrangement EntityName:$entityNameId:NameAttribute = $value
-        String primaryKey = key_value.get(1).firstElement() + ":" + key_value.get(1).lastElement() + ":";
+
+        String primaryKey = entityName + ":" + attributes.get(0) + ":";
+
         Boolean next_step = true;
         try {
-            for( Vector<String> kv : key_value ) {
-                if(next_step){
-                    next_step = false;
-                    continue;
-                }
-
-                String key = primaryKey + kv.get(1);
-                batch.put(bytes(key), bytes(kv.get(1)));
+            for( int i = 1; i < attributes.size(); i++ ) {
+                String key = primaryKey + attributes.get(i);
+                batch.put(bytes(key), bytes(values.get(i)));
             }
 
             db.write(batch);

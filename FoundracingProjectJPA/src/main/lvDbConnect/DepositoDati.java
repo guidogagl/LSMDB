@@ -14,6 +14,24 @@ import java.util.Vector;
 
 public class DepositoDati {
     private FundracingManager fm = null;
+    private Connect conn = null;
+
+    private Boolean createManager(){
+        fm = new FundracingManager();
+        if( !fm.isSetup() ){
+            System.out.print("Impossibile creare il manager del database \n");
+            return false;
+        }
+        return true;
+    }
+    private Boolean createConnection(){
+        conn = new Connect();
+        if (conn == null){
+            System.out.print("Impossibile create la connessione con il levelDb \n");
+            return false;
+        }
+        return true;
+    }
 
     private List<RowTableProjects> getRowTableProjects(List<ProgettoEntity> list, String agencyName, Boolean withStake) {
         List<RowTableProjects> rows = new ArrayList<RowTableProjects>();
@@ -58,12 +76,18 @@ public class DepositoDati {
     }
 
     public Vector<String> getAgency(String agencyName) {
-
-        fm = new FundracingManager();
-        if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+        // leggo prima da levelDb
+        if( !createConnection() )
             return null;
-        }
+        List<Vector<String>> agencyList = conn.readEntity("AziendaEntity", agencyName);
+
+        // se l'ho trovato
+        if (agencyList != null && !agencyList.isEmpty())
+            return agencyList.get(1);
+
+        // se non l'ho trovato
+        if(!createManager())
+            return null;
 
         AziendaEntity ae = fm.selectAgency(agencyName);
 
@@ -73,12 +97,25 @@ public class DepositoDati {
 
         fm.exit();
 
+
         Vector<String> vett=new Vector<String>();
         vett.add(ae.getNomeAzienda());
         vett.add( ae.getUrlLogo());
         vett.add( ae.getUrlSito());
         vett.add( ae.getIndirizzo());
         vett.add( ae.getCap().toString());
+
+        Vector<String> att = new Vector<String>( );
+        att.add("nomeAzienda");
+        att.add( "urlLogo");
+        att.add( "urlSito");
+        att.add( "indirizzo");
+        att.add( "cap" );
+
+        // scrivo su level db
+
+        conn.writeEntity("AziendaEntity", att, vett);
+        conn.close();
 
         return vett;
     }
