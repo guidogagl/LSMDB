@@ -70,9 +70,9 @@ public class Fundracing extends Application{
 	private TextField project_message = new TextField();
 	private Label l_project_message = new Label("ID Project");
 	private Button send = new Button("Send");
-	private ChoiceBox choice_agency = new ChoiceBox();
+	private ChoiceBox choice_agency = new ChoiceBox(null);
 	private Label message_receiver = new Label("Message receiver");
-	private GestoreMessaggi gm = null;
+	private Gestore gm = null;
         private Button register=new Button("Register");
 	private RegistrationForm form=new RegistrationForm();
 	
@@ -104,10 +104,8 @@ login.setOnAction((ActionEvent ev1)->{
 						gm.endAggiornamentoTabella();
 					}
 					
-					gm = new GestoreMessaggi(deposito, table_message, agencyName);
+					gm = new Gestore(deposito,table, table_message,choice_agency, agencyName);
 					gm.startAggiornamentoTabella();
-					//table_message.updateMessages(deposito.getMessages(agencyName));
-					
 					logged = true;
 					insert.setDisable(false);
 					//delete.setDisable(false);
@@ -314,6 +312,7 @@ login.setOnAction((ActionEvent ev1)->{
 				
 				if(deposito.getProject(Integer.parseInt(project)).isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Il progetto selezionato non esiste");
+					return ;
 				} else {
 					Vector<String> vector = new Vector<String>();
 					
@@ -327,6 +326,7 @@ login.setOnAction((ActionEvent ev1)->{
 					description_message.clear();
 					stake_message.clear();
 					project_message.clear();
+					choice_agency.setValue(null);
 					
 				}
 			} else {
@@ -335,7 +335,11 @@ login.setOnAction((ActionEvent ev1)->{
 			}
 		});
 		
-		
+		stage.setOnCloseRequest((WindowEvent we)->{
+			if(gm != null) {
+				gm.endAggiornamentoTabella();
+			}
+		});
 		
 		Group root = new Group(tf_companyName,tf_password, login, table_title, table, description,
 				name_project, total_budget, insert, delete, iv1, stake, update, 

@@ -22,11 +22,7 @@
     </plugins>
   </build>
   <dependencies>
-    <dependency>
-        <groupId>org.fusesource.leveldbjni</groupId>
-        <artifactId>leveldbjni-all</artifactId>
-        <version>1.8</version>
-    </dependency>
+  <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
 	<dependency>
 	    <groupId>org.hibernate</groupId>
 	    <artifactId>hibernate-core</artifactId>

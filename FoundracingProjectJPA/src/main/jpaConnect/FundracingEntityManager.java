@@ -19,6 +19,7 @@ public class FundracingEntityManager {
         catch(Exception ex){
             ex.printStackTrace();
             em = null;
+       
         }
     }
 
