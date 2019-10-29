@@ -1,0 +1,55 @@
+clc
+clear
+close all
+%% Iterative alg. for CT rec.
+I0 = importdata('I0.mat');
+figure,imagesc(abs(I0)),colormap gray
+th =linspace(-180,180,40);
+
+A = @(x) radon(x, th);   % trasformata di Radon
+At = @(x) iradon(x, th, 'nearest', 'None', size(I0,1));  % Trasformata inversa di Radon
+
+y=A(I0);    % sinogramma
+sigma = 0.005*max(abs(y(:)));   % rumore
+y = y + sigma*randn(size(y));  % rumore sul sinogramma
+% figure, imagesc(abs(y)), colormap gray
+
+nIt = 1; %20   numero iterazioni
+xk = 0;  % condizione iniziale della immagine di partenza
+stepSize = 5/25;
+maxbkIt = 20; %20
+prevObj = Inf;
+c = 0.1; % 0.1
+Tol = sigma*sqrt(numel(y))/2;
+%%
+%%
+for it = 1:nIt
+    res = At(A(xk)) - At(y);   % residuo nel dominio dell'immagine
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%% Ricerca del valore ottimale dello step
+        for btkIt = 1:maxbkIt
+        st = stepSize*c^(btkIt-1)  % un modo per trovare il valore di 'st' ottimale
+        tmpI = xk - st*res;
+        y1 = A(tmpI);  % dominio del sinogramma
+        Obj = norm(y1(:)-y(:));  % distanza nel dominio del sinogramma
+        
+        if Obj < prevObj
+            prevObj = Obj;
+            stepSize = st;
+            break;
+        end
+        
+        if btkIt == maxbkIt
+            fprintf('ERROR!!!\n')
+            return
+        end
+     end
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end
+    xk = xk - stepSize*res;
+      
+    figure(10),subplot(1,2,1),imagesc(abs(res)),colormap gray, colorbar, title('Res.'),ylabel(sprintf('iter %d, step = %f(%d)',it, stepSize, btkIt))
+    subplot(1,2,2),imagesc(abs(xk)),colormap gray, colorbar, title('xk'), drawnow
+    
+end
+Ig=xk;
+%%
