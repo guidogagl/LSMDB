@@ -80,7 +80,32 @@ public class Connect {
         }
     }
 
+<<<<<<< HEAD
+    public void deleteEntity(String entityName, Vector<String> attributes){
+        WriteBatch batch = db.createWriteBatch();
+
+        // key arrangement EntityName:$entityNameId:NameAttribute = $value
+        String primaryKey = entityName + ":" + attributes.get(0) + ":";
+
+        Boolean next_step = true;
+        try {
+            for( int i = 1; i < attributes.size(); i++ ) {
+                String key = primaryKey + attributes.get(i);
+                batch.delete( bytes(key) );
+            }
+
+            db.write(batch);
+        } finally {
+            // Make sure you close the batch to avoid resource leaks.
+            batch.close();
+        }
+
+    }
+
+    public List<Vector<String>> readEntity(String entityName, String primaryKey){
+=======
     public List<Vector<String>> readEntity(String entityName, String primaryKey){ //qui primaryKey=1
+>>>>>>> e2caf630437f9115cb667e8cad832fdfe8643d94
 
         // se primaryKey è null leggiamo tutte le entità con qualsiasi chiave
         if( primaryKey != null ) 
@@ -105,8 +130,13 @@ public class Connect {
 
                 String stored_key = asString(keyIterator.peekNext().getKey()); // key arrangement : employee:$employee_id:$attribute_name = $value
                 String[] keySplit = stored_key.split(":"); // split the key
+<<<<<<< HEAD
+
+                if( !(":" + keySplit[1]).equals( primaryKey ) || !keySplit[0].equals(entityName) ){ // nuova entità da registrare nella lista
+=======
                 //!keySplit[1].equals( primaryKey ) ?
                 if( !keySplit[1].equals( primaryKey ) || !keySplit[0].equals(entityName) ){ // nuova entità da registrare nella lista
+>>>>>>> e2caf630437f9115cb667e8cad832fdfe8643d94
                     if( primaryKey != null ) // controllo non sia la prima iterazione
                         resultSet.add( entity ); // se non lo è allora ho registrato una nuova entità
 
