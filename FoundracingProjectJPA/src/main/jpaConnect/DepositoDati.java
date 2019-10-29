@@ -15,24 +15,20 @@ public class DepositoDati {
             System.out.print("Impossibile creare il manager del database \n");
             return null;
         }
-
-        AziendaEntity ae = fm.selectAgency(agencyName);
-
-        if( ae == null)
+        if(fm.selectAgency(agencyName)==null){
             System.out.print("Agency not present \n");
-
-
+            return null;
+        }
+        AziendaEntity ae = fm.selectAgency(agencyName);
+        
         fm.exit();
-
+        
+        if(ae==null)
+            return null;
         Vector<String> vett=new Vector<String>();
         vett.add(ae.getNomeAzienda());
-        vett.add( ae.getUrlLogo());
-        vett.add( ae.getUrlSito());
-        vett.add( ae.getIndirizzo());
-        vett.add( ae.getCap().toString());
-
         return vett;
-    }
+        }
     public void insertAgency(Vector<String> val){
         fm = new FundracingManager();
         if( !fm.isSetup() ){
@@ -431,7 +427,7 @@ public class DepositoDati {
             System.out.print( "Impossibile inviare un messaggio a un'azienda non registrata \n");
             return;
         }
-        System.out.println("Questo ï¿½ l'id "+Integer.parseInt(val.get(2)));
+        System.out.println("Questo è l'id "+Integer.parseInt(val.get(2)));
         ProgettoEntity pe = fm.selectProject(Integer.parseInt( val.get(2) ));
         if(pe == null){
             System.out.print( "Impossibile inviare un messaggio a su di un progetto inesistente \n");

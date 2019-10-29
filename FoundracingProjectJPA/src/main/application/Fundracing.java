@@ -20,7 +20,7 @@ import javafx.scene.input.*;
 
 import javafx.stage.*;
 import javafx.util.*;
-import lvDbConnect.DepositoDati;
+import jpaConnect.DepositoDati;
 
 
 public class Fundracing extends Application{
@@ -127,9 +127,9 @@ login.setOnAction((ActionEvent ev1)->{
 					stake_message.setEditable(true);
 					project_message.setEditable(true);
 					
-				} //Se il nome dell'azienda non ï¿½ presente nel db
+				} //Se il nome dell'azienda non è presente nel db
 				else {
-					JOptionPane.showMessageDialog(null, "Il nome dell'azienda ï¿½ errato oppure la password ï¿½ scorretta!");
+					JOptionPane.showMessageDialog(null, "Il nome dell'azienda è errato oppure la password è scorretta!");
 					return;
 				}
 			}else {
@@ -150,6 +150,7 @@ login.setOnAction((ActionEvent ev1)->{
 			table_message.updateMessages(deposito.getMessages(agencyName));
 			refuse.setDisable(true);
 			accept.setDisable(true);
+			description_message.clear();
 		});
 
 		
@@ -165,6 +166,7 @@ login.setOnAction((ActionEvent ev1)->{
 			deposito.deleteMessage(selectedMessagetId);
 			accept.setDisable(true);
 			refuse.setDisable(true);
+			description_message.clear();
 			table.updateProjects(deposito.getProjects(agencyName));
 			table_message.updateMessages(deposito.getMessages(agencyName));
 		});
@@ -211,7 +213,7 @@ login.setOnAction((ActionEvent ev1)->{
 				
 				table.updateProjects(deposito.getProjects(agencyName));
 			}else {
-				JOptionPane.showMessageDialog(null, "Uno dei campi non ï¿½ stato inserito!");
+				JOptionPane.showMessageDialog(null, "Uno dei campi non è stato inserito!");
 				return;
 			}
         });
@@ -231,6 +233,9 @@ login.setOnAction((ActionEvent ev1)->{
 			if(iAmOwner) {
 				deposito.deleteProject(selectedProjectId);
 				table.updateProjects(deposito.getProjects(agencyName));
+				delete.setDisable(true);
+				update.setDisable(true);
+				description.clear();
 			}//Se non sono il proprietario ma voglio levare il mio stake
 			else if(iAmOwner==false &&
 				deposito.isMyStake(agencyName, selectedProjectId) == true) {
@@ -238,6 +243,7 @@ login.setOnAction((ActionEvent ev1)->{
 				table.updateProjects(deposito.getProjects(agencyName));
 				delete.setDisable(true);
 				update.setDisable(true);
+				description.clear();
 			}//Se cerco di eliminare il progetto o lo stake di un altro
 			else {
 				JOptionPane.showMessageDialog(null, "Puoi eliminare solo i tuoi progetti o finanziamenti!");
@@ -266,7 +272,7 @@ login.setOnAction((ActionEvent ev1)->{
 					return;
 				}
 				
-				//Controllo se il valore inserito ï¿½ un numero
+				//Controllo se il valore inserito è un numero
 				if(!string_stakeInsered.matches("[0-9]+")) {
 					JOptionPane.showMessageDialog(null, "Puoi inserire solo valori numerici nel campo Stake!");	
 					return;
@@ -290,6 +296,7 @@ login.setOnAction((ActionEvent ev1)->{
 					stake.setText("");
 					update.setDisable(true);
 					delete.setDisable(true);
+					description.clear();
 				} 
 			});
 			
