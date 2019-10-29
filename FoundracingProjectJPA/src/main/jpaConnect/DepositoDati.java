@@ -9,6 +9,107 @@ import java.util.Vector;
 
 public class DepositoDati {
     private FundracingManager fm = null;
+
+    private List<RowTableProjects> getRowTableProjects(List<ProgettoEntity> list, String agencyName, Boolean withStake) {
+        List<RowTableProjects> rows = new ArrayList<RowTableProjects>();
+        for(ProgettoEntity p : list){
+            int projectId = p.getId();
+
+            Long progress = fm.singleReturnQuery(Long.class, "SELECT SUM(f.budget) FROM FinanziamentoEntity f WHERE f.progetto = " + projectId );
+            if( progress == null)
+                progress = new Long(0);
+
+            double prog  = ((double) progress / p.getBudget() ) * 100 ;
+
+            Long stake = new Long(0);
+
+            if(withStake) {
+                stake = fm.singleReturnQuery(Long.class, "SELECT SUM(f.budget) FROM FinanziamentoEntity f WHERE f.progetto = " + projectId + "AND f.azienda = '" + agencyName + "'");
+                if (stake == null)
+                    stake = new Long(0);
+            }
+
+            RowTableProjects rtp = new RowTableProjects(projectId, p.getNome(), Double.toString(prog), p.getBudget(), Integer.parseInt(stake.toString()), p.getAzienda().getNomeAzienda());
+            rows.add( rtp );
+        }
+
+        return rows;
+    }
+    private List<RowTableMessage> getRowTableMessage(List<MessaggioEntity> me_list) {
+        if(me_list == null)
+            return new ArrayList<RowTableMessage>();
+
+        List<RowTableMessage> rows = new ArrayList<RowTableMessage>();
+
+        for( MessaggioEntity me : me_list){
+
+            RowTableMessage row = new RowTableMessage(me.getId(), me.getProgetto().getId(), me.getData().toString(),
+                    me.getMittente().getNomeAzienda(), me.getDestinatario().getNomeAzienda(), me.getTesto(), me.getStake());
+
+            rows.add(row);
+        }
+
+        return rows;
+    }
+
+    protected List<Vector<String>> getAgencyEntities() {
+        String sql = "select a	from	AziendaEntity a ";
+
+        fm = new FundracingManager();
+        if (!fm.isSetup()) {
+            System.out.print("Impossibile creare il manager del database \n");
+            return null;
+        }
+
+        List<AziendaEntity> agencies = fm.query(AziendaEntity.class, sql);
+
+        fm.exit();
+
+        List<Vector<String>> list = new ArrayList<>();
+
+        if (agencies == null)
+            return list;
+
+        for (AziendaEntity a : agencies) {
+            Vector<String> vett = new Vector<String>();
+            vett.add(a.getNomeAzienda());
+            vett.add( a.getUrlLogo() );
+            vett.add( a.getUrlSito() );
+            vett.add( a.getIndirizzo() );
+            vett.add( a.getCap().toString() );
+            vett.add( a.getPassword() );
+
+            list.add(vett);
+        }
+
+        return list;
+    }
+
+
+    public Vector<String> getAgency(String agencyName,String password) {
+        fm = new FundracingManager();
+        if( !fm.isSetup() ){
+            System.out.print("Impossibile creare il manager del database \n");
+            return null;
+        }
+
+        AziendaEntity ae = fm.selectAgency(agencyName);
+
+        fm.exit();
+
+        Vector<String> vett = new Vector<String>();
+
+        if(ae == null || !password.equals(ae.getPassword()) )
+            return vett;
+
+        vett.add(ae.getNomeAzienda());
+        vett.add( ae.getUrlLogo());
+        vett.add( ae.getUrlSito());
+        vett.add( ae.getIndirizzo());
+        vett.add( ae.getCap().toString());
+
+        return vett;
+    }
     public Vector<String> getAgency(String agencyName) {
         fm = new FundracingManager();
         if( !fm.isSetup() ){
@@ -37,47 +138,15 @@ public class DepositoDati {
         fm.createAgency(val.get(0), val.get(1), val.get(2), val.get(3), Integer.parseInt(val.get(4)), val.get(5));
         fm.exit();
     }
-    private List<RowTableProjects> getRowTableProjects(List<ProgettoEntity> list, String agencyName, Boolean withStake) {
-        List<RowTableProjects> rows = new ArrayList<RowTableProjects>();
-        for(ProgettoEntity p : list){
-            int projectId = p.getId();
+    public List<String> getListAgency(){
 
-            Long progress = fm.singleReturnQuery(Long.class, "SELECT SUM(f.budget) FROM FinanziamentoEntity f WHERE f.progetto = " + projectId );
-            if( progress == null)
-                progress = new Long(0);
+        List<Vector<String>> agencyList = getAgencyEntities();
+        List<String> list = new ArrayList<>();
 
-            double prog  = ((double) progress / p.getBudget() ) * 100 ;
+        for( Vector<String> a : agencyList )
+            list.add(a.get(0));
 
-            Long stake = new Long(0);
-
-            if(withStake) {
-                stake = fm.singleReturnQuery(Long.class, "SELECT SUM(f.budget) FROM FinanziamentoEntity f WHERE f.progetto = " + projectId + "AND f.azienda = '" + agencyName + "'");
-                if (stake == null)
-                    stake = new Long(0);
-            }
-
-            RowTableProjects rtp = new RowTableProjects(projectId, p.getNome(), Double.toString(prog), p.getBudget(), Integer.parseInt(stake.toString()), p.getAzienda().getNomeAzienda());
-            rows.add( rtp );
-        }
-
-        return rows;
-    }
-
-    private List<RowTableMessage> getRowTableMessage(List<MessaggioEntity> me_list) {
-        if(me_list == null)
-            return new ArrayList<RowTableMessage>();
-
-        List<RowTableMessage> rows = new ArrayList<RowTableMessage>();
-
-        for( MessaggioEntity me : me_list){
-
-            RowTableMessage row = new RowTableMessage(me.getId(), me.getProgetto().getId(), me.getData().toString(),
-                    me.getMittente().getNomeAzienda(), me.getDestinatario().getNomeAzienda(), me.getTesto(), me.getStake());
-
-            rows.add(row);
-        }
-
-        return rows;
+        return list;
     }
 
     public List<RowTableProjects> getProjects(String agencyName){
@@ -98,13 +167,6 @@ public class DepositoDati {
     }
 
     public List<RowTableMessage> getMessages(String agencyName){
-        /* String sqlStr="select	m.id, m.progetto as id_project, m.data, m.mittente, m.destinatario, m.testo as messaggio, m.stake\n" +
-                "from	messaggio m\n" +
-                "		inner join\n" +
-                "        azienda a\n" +
-                "        on m.mittente = a.nomeAzienda\n" +
-                "where 	m.destinatario =  (?) ;";
-        */
         String sql = "SELECT m FROM MessaggioEntity m WHERE destinatario = '" + agencyName + "'";
 
         fm = new FundracingManager();
@@ -266,31 +328,6 @@ public class DepositoDati {
 
     }
 
-    public Vector<String> getAgency(String agencyName,String password) {
-        fm = new FundracingManager();
-        if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
-            return null;
-        }
-
-        AziendaEntity ae = fm.selectAgency(agencyName);
-
-        fm.exit();
-
-        Vector<String> vett = new Vector<String>();
-
-        if(ae == null || !password.equals(ae.getPassword()) )
-            return vett;
-
-        vett.add(ae.getNomeAzienda());
-        vett.add( ae.getUrlLogo());
-        vett.add( ae.getUrlSito());
-        vett.add( ae.getIndirizzo());
-        vett.add( ae.getCap().toString());
-
-        return vett;
-    }
-
     public String getDescriptionProject(int id_project) {
         fm = new FundracingManager();
         if( !fm.isSetup() ){
@@ -385,29 +422,6 @@ public class DepositoDati {
         return list;
     }
 
-    public List<String> getListAgency(){
-        String sql = "select a	from	AziendaEntity a ";
-
-        fm = new FundracingManager();
-        if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
-            return null;
-        }
-
-        List<AziendaEntity> agencies = fm.query(AziendaEntity.class, sql);
-
-        fm.exit();
-
-        if(agencies == null)
-            return new ArrayList<String>();
-
-        List<String> list = new ArrayList<String>();
-
-        for(AziendaEntity a : agencies)
-            list.add(a.getNomeAzienda());
-
-        return list;
-    }
 
     public void insertMessage(Vector<String>val) {
         fm = new FundracingManager();
@@ -427,7 +441,7 @@ public class DepositoDati {
             System.out.print( "Impossibile inviare un messaggio a un'azienda non registrata \n");
             return;
         }
-        System.out.println("Questo è l'id "+Integer.parseInt(val.get(2)));
+        System.out.println("Questo ï¿½ l'id "+Integer.parseInt(val.get(2)));
         ProgettoEntity pe = fm.selectProject(Integer.parseInt( val.get(2) ));
         if(pe == null){
             System.out.print( "Impossibile inviare un messaggio a su di un progetto inesistente \n");

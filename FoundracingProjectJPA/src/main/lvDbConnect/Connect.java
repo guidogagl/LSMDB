@@ -1,15 +1,12 @@
 package lvDbConnect;
 
 import org.iq80.leveldb.*;
-
-import javax.swing.text.html.parser.Entity;
-
-import static org.fusesource.leveldbjni.JniDBFactory.*;
+import static org.iq80.leveldb.impl.Iq80DBFactory.*;
 import java.io.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-
 
 public class Connect {
     private Options options = new Options();
@@ -45,11 +42,9 @@ public class Connect {
 
     public void writeEntity(String entityName, Vector<String> attributes, Vector<String> values){
         WriteBatch batch = db.createWriteBatch();
-        // Primo vector<String>= EntityName:$entityNameID;
-        // key arrangement EntityName:$entityNameId:NameAttribute = $value
-<<<<<<< HEAD
+
         String primaryKey = key_value.get(1).firstElement() + ":" + key_value.get(1).lastElement() + ":";
-        //String primaryKey= EntityName:$entityNameId
+
         Boolean next_step = true;
         try {
             for( Vector<String> kv : key_value ) {
@@ -60,8 +55,7 @@ public class Connect {
                 //NameAttribute=$value
                 String key = primaryKey + kv.get(1);
                 batch.put(bytes(key), bytes(kv.get(1)));
-                
-=======
+
 
         String primaryKey = entityName + ":" + attributes.get(0) + ":";
 
@@ -70,17 +64,14 @@ public class Connect {
             for( int i = 1; i < attributes.size(); i++ ) {
                 String key = primaryKey + attributes.get(i);
                 batch.put(bytes(key), bytes(values.get(i)));
->>>>>>> 5e978378d2258437813b1e0feb4f5077dddcff08
             }
 
             db.write(batch);
         } finally {
-            // Make sure you close the batch to avoid resource leaks.
             batch.close();
         }
     }
 
-<<<<<<< HEAD
     public void deleteEntity(String entityName, Vector<String> attributes){
         WriteBatch batch = db.createWriteBatch();
 
@@ -103,9 +94,6 @@ public class Connect {
     }
 
     public List<Vector<String>> readEntity(String entityName, String primaryKey){
-=======
-    public List<Vector<String>> readEntity(String entityName, String primaryKey){ //qui primaryKey=1
->>>>>>> e2caf630437f9115cb667e8cad832fdfe8643d94
 
         // se primaryKey è null leggiamo tutte le entità con qualsiasi chiave
         if( primaryKey != null ) 
@@ -118,7 +106,7 @@ public class Connect {
 
         DBIterator keyIterator = db.iterator();
         keyIterator.seek(bytes( entityName + primaryKey )); // moves the iterator to the keys starting with "employee:primaryKey"
-        //employee:5->ma questo non c'�
+        //employee:5->ma questo non c'�
         //employee
         Vector<String> entity = new Vector<String>();
         if( primaryKey != null )
@@ -130,13 +118,9 @@ public class Connect {
 
                 String stored_key = asString(keyIterator.peekNext().getKey()); // key arrangement : employee:$employee_id:$attribute_name = $value
                 String[] keySplit = stored_key.split(":"); // split the key
-<<<<<<< HEAD
 
                 if( !(":" + keySplit[1]).equals( primaryKey ) || !keySplit[0].equals(entityName) ){ // nuova entità da registrare nella lista
-=======
-                //!keySplit[1].equals( primaryKey ) ?
                 if( !keySplit[1].equals( primaryKey ) || !keySplit[0].equals(entityName) ){ // nuova entità da registrare nella lista
->>>>>>> e2caf630437f9115cb667e8cad832fdfe8643d94
                     if( primaryKey != null ) // controllo non sia la prima iterazione
                         resultSet.add( entity ); // se non lo è allora ho registrato una nuova entità
 

@@ -28,7 +28,14 @@
 	    <artifactId>hibernate-core</artifactId>
 	    <version>5.4.4.Final</version>
 	</dependency>
-  	<dependency>
+      <!-- https://mvnrepository.com/artifact/org.iq80.leveldb/leveldb -->
+      <dependency>
+          <groupId>org.iq80.leveldb</groupId>
+          <artifactId>leveldb</artifactId>
+          <version>0.7</version>
+      </dependency>
+
+      <dependency>
   		<groupId>mysql</groupId>
   		<artifactId>mysql-connector-java</artifactId>
   		<version>8.0.17</version>
