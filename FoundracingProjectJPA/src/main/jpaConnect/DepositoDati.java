@@ -176,7 +176,7 @@ public class DepositoDati {
     }
 
     public List<RowTableProjects> getProjects(String agencyName){
-        List<ProgettoEntity> projects = getProjectEntites();
+        List<ProgettoEntity> projects = this.getProjectEntities();
         List<RowTableProjects> ret = getRowTableProjects( projects, agencyName, true );
 
         return ret;
