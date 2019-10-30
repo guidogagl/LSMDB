@@ -43,7 +43,7 @@ public class Connect {
     public void writeEntity(String entityName, Vector<String> attributes, Vector<String> values){
 
         WriteBatch batch = db.createWriteBatch();
-        String primaryKey = entityName + ":" + attributes.get(0);
+        String primaryKey = entityName + ":" + values.get(0);
 
         try {
             for( int i = 1; i < attributes.size() ; i++){
@@ -62,24 +62,18 @@ public class Connect {
         }
     }
 
-
-
     public List<Vector<String>> readEntity(String entityName, String primaryKey){
-
-        if( primaryKey != null )
-            primaryKey = ":" + primaryKey; //:1
-
         // effettuiamo uno snapshot per evitare letture inconsistenti a causa dei thread di update
         // del database
         ReadOptions ro = new ReadOptions();
         ro.snapshot(db.getSnapshot());
 
         DBIterator keyIterator = db.iterator();
-        keyIterator.seek(bytes( entityName + primaryKey ));
+        keyIterator.seek(bytes( entityName + ":" + primaryKey ));
 
         Vector<String> entity = new Vector<String>();
         if( primaryKey != null )
-            entity.add(primaryKey); //primo elemento entity=:primarykey
+            entity.add(primaryKey); //primo elemento del vector è la chiave
 
         List<Vector<String>> resultSet = new ArrayList<Vector<String>>();
         try {
@@ -87,29 +81,22 @@ public class Connect {
                 String stored_key = asString(keyIterator.peekNext().getKey()); // key arrangement : employee:$employee_id:$attribute_name = $value
                 String[] keySplit = stored_key.split(":"); // split the key
 
-                if( !(":" + keySplit[1]).equals( primaryKey ) || !keySplit[0].equals(entityName) ){ // nuova entità da registrare nella lista
-                if( !keySplit[1].equals( primaryKey ) || !keySplit[0].equals(entityName) ){ // nuova entità da registrare nella lista
-                    if( primaryKey != null ) // controllo non sia la prima iterazione
-                        resultSet.add( entity ); // se non lo è allora ho registrato una nuova entità
-
-                    // aggiorno la chiave primaria
-                    primaryKey = keySplit[1];
-
-                    entity = new Vector<String>();
-                    entity.add( primaryKey );
+                if( !keySplit[0].equals(entityName) ){
+                    resultSet.add(entity);
+                    break;
                 }
 
-                if (!keySplit[0].equals(entityName))
+                if( keySplit[1].equals( primaryKey )  ){
+                    entity.add( asString( db.get( bytes( stored_key ) ) ) );
+                    keyIterator.next();
+                } else
                     break;
 
-                entity.add( asString( db.get( bytes( stored_key ) ) ) ); // aggiungo il valore dell'attributo al vettore
-
-                keyIterator.next();
-
-                if(!keyIterator.hasNext()) // se non ho più next ho finito
-                    resultSet.add(entity);
             }
-            }
+
+            if( resultSet.isEmpty() && (entity.size() > 1) )
+                resultSet.add(entity);
+
         }catch(Exception e) {
         	e.printStackTrace();
         }
@@ -123,9 +110,6 @@ public class Connect {
         }
 
         return resultSet;
-    }
-    public List<Vector<String>> readEntities(String entityName){
-        return readEntity(entityName, null);
     }
 
 

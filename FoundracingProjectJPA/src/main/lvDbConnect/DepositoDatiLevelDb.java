@@ -13,15 +13,15 @@ import java.util.List;
 import java.util.Vector;
 
 public class DepositoDatiLevelDb extends DepositoDati{
-    private Connect conn = null;
+    private Connect conn = new Connect();
     private Boolean createConnection(){
-        conn = new Connect();
         if (conn == null){
             System.out.print("Impossibile create la connessione con il levelDb \n");
             return false;
         }
         return true;
     }
+
     private Vector<String> agencyAtt = new Vector<String>();
     private Vector<String> projectsAtt = new Vector<String>();
     private Vector<String> messageAtt = new Vector<String>();
@@ -33,7 +33,8 @@ public class DepositoDatiLevelDb extends DepositoDati{
 
         // se l'ho trovato
         if (agencyList != null && !agencyList.isEmpty())
-            return agencyList.get(1);
+            return agencyList.get(0);
+
         return null;
     }
 
@@ -66,8 +67,8 @@ public class DepositoDatiLevelDb extends DepositoDati{
     }
     public Vector<String> getAgency(String agencyName,String password) {
         Vector<String> res = this.getAgency(agencyName);
-        if( res.isEmpty() || !res.get(5).equals(password))
-            return null;
+        if( res.isEmpty() || !res.get(3).equals(password))
+            return new Vector<String>();
         return res;
     }
     public void insertAgency(Vector<String> val){
@@ -79,7 +80,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
             return;
 
         conn.writeEntity( "AziendaEntity", agencyAtt, val);
-        conn.close();
+
     }
     public List<String> getListAgency(){
         List<Vector<String>> allAgency = super.getAgencyEntities();
@@ -98,7 +99,6 @@ public class DepositoDatiLevelDb extends DepositoDati{
         for( Vector<String> agency : allAgency )
             conn.writeEntity("AziendaEntity", agencyAtt, agency);
 
-        conn.close();
         return list;
     }
 
@@ -108,7 +108,8 @@ public class DepositoDatiLevelDb extends DepositoDati{
 
         if(!createConnection())
             return ret;
-        int i = 1;
+
+        int i = 0;
         for(ProgettoEntity p : projects){
             Vector<String> val = new Vector<String>();
             val.add( Integer.toString(p.getId()) );
@@ -123,7 +124,6 @@ public class DepositoDatiLevelDb extends DepositoDati{
             i++;
         }
 
-        conn.close();
         return ret;
     }
     public List<RowTableProjects> getProjectsWithoutStake() {
@@ -133,7 +133,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
         if (!createConnection())
             return ret;
 
-        int i = 1;
+        int i = 0;
         for (ProgettoEntity p : projects) {
             Vector<String> val = new Vector<String>();
             val.add(Integer.toString(p.getId()));
@@ -141,13 +141,14 @@ public class DepositoDatiLevelDb extends DepositoDati{
             val.add(p.getNome());
             val.add(p.getBudget().toString());
             val.add(p.getAzienda().getNomeAzienda());
+
             val.add(ret.get(i).getProgress());
             val.add( "0" );
 
             conn.writeEntity("ProgettoEntity", projectsAtt, val);
             i++;
         }
-        conn.close();
+
         return ret;
     }
     public List<Vector<String>> getProject(int idProgetto){
@@ -161,30 +162,32 @@ public class DepositoDatiLevelDb extends DepositoDati{
 
         return new ArrayList<Vector<String>>();
     }
-    public double getProgress(int id_progetto) {
-        Vector<String> prog = getEntityFromLevelDb("ProgettoEntity:" + id_progetto, "Progress");
 
-        if( prog!= null && !prog.isEmpty() )
-            return Double.parseDouble( prog.firstElement() );
+    public double getProgress(int id_progetto) {
+        Vector<String> prog = getProjects( id_progetto );
+
+        if( !prog.isEmpty() )
+            return Double.parseDouble( prog.get(5) );
         return 0;
     }
-    public String getDescriptionProject(int id_project) {
-        Vector<String> desc = getEntityFromLevelDb("ProgettoEntity:" + id_project, "descrizione");
 
-        if( desc!= null && !desc.isEmpty() )
-            return desc.firstElement() ;
+    public String getDescriptionProject(int id_project) {
+        Vector<String> desc = getProject( id_project );
+
+        if( !desc.isEmpty() )
+            return desc.get(2) ;
 
         return new String();
     }
     public boolean iAmOwner(int projectId,String agencyName) {
-        Vector<String> agency = getEntityFromLevelDb("ProgettoEntity:" + projectId , "nomeAzienda");
+        Vector<String> agency = getProject( projectId );
 
-        if( agency == null || agency.isEmpty() || agency.firstElement() == null || !agency.firstElement().equals(agencyName))
+        if(  agency.isEmpty() || !agency.get(1).equals(agencyName))
             return false;
         return true;
     }
     public int getSommaStakes(int selectedProjectID){
-        Vector<String> stakes = getEntityFromLevelDb("ProgettoEntity:" + selectedProjectID , "Stake");
+        Vector<String> stakes = getEntityFromLevelDb("ProgettoEntity" , Integer.toString( selectedProjectID ));
         if( stakes == null || stakes.isEmpty() || stakes.firstElement().isEmpty() )
             return 0;
         return Integer.parseInt(stakes.firstElement());
@@ -205,7 +208,6 @@ public class DepositoDatiLevelDb extends DepositoDati{
             conn.writeEntity("MessaggioEntity", messageAtt, val);
         }
 
-        conn.close();
         return ret;
     }
     public String getDescriptionMessage(int id_message) {

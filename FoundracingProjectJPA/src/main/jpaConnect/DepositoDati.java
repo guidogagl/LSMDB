@@ -11,6 +11,12 @@ public class DepositoDati {
     private FundracingManager fm = null;
 
     protected List<RowTableProjects> getRowTableProjects(List<ProgettoEntity> list, String agencyName, Boolean withStake) {
+        fm = new FundracingManager();
+        if( !fm.isSetup() ){
+            System.out.print("Impossibile creare il manager del database \n");
+            return null;
+        }
+
         List<RowTableProjects> rows = new ArrayList<RowTableProjects>();
         for(ProgettoEntity p : list){
             int projectId = p.getId();
@@ -33,6 +39,7 @@ public class DepositoDati {
             rows.add( rtp );
         }
 
+        fm.exit();
         return rows;
     }
     protected List<RowTableMessage> getRowTableMessage(List<MessaggioEntity> me_list) {

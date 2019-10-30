@@ -114,10 +114,11 @@ login.setOnAction((ActionEvent ev1)->{
 					total_budget.setEditable(true);
 					stake.setEditable(true);
 					//update.setDisable(false);
+
 					name_agency.setText(result.get(0)); 
-					address_agency.setText(result.get(3));
-					site_agency.setText(result.get(4));
-					urlLogo = result.get(1);
+					address_agency.setText(result.get(2) + ", " + result.get(1) );
+					site_agency.setText(result.get(5));
+					urlLogo = result.get(4);
 					image = new Image(urlLogo);
 					iv1.setImage(image);
 					//accept.setDisable(false);
