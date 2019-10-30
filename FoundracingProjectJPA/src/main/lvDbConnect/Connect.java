@@ -54,7 +54,11 @@ public class Connect {
         } catch (Exception e ){
             e.printStackTrace();
         } finally {
-            batch.close();
+        	try {
+        		batch.close();
+        	}catch(IOException e) {
+        		e.printStackTrace();
+        	}
         }
     }
 
@@ -105,9 +109,17 @@ public class Connect {
                 if(!keyIterator.hasNext()) // se non ho più next ho finito
                     resultSet.add(entity);
             }
-        } finally {
-            keyIterator.close();
-            ro.snapshot().close();
+            }
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }
+    	finally {
+    		try {
+	            keyIterator.close();
+	            ro.snapshot().close();
+    		}catch(IOException e) {
+    			e.printStackTrace();
+    		}
         }
 
         return resultSet;

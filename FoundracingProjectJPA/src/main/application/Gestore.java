@@ -27,12 +27,12 @@ public class Gestore {
 		
 		
 	}
-	public void startAggiornamentoTabella() {
+	public void startAggiornamento() {
 			timer = new Timer();
 			task = new TimerTask() {
 				public void run() {
 					
-					aggiornaTabellaMessaggi();
+					aggiorna();
 					
 				}
 			};
@@ -41,7 +41,7 @@ public class Gestore {
 							
 	}
 	
-	private void aggiornaTabellaMessaggi() {
+	private void aggiorna() {
 		tp.updateProjects(d.getProjects(agencyName));
 		List<RowTableMessage> messaggiDaAggiungere = d.getMessages(agencyName);
 		tm.updateMessages(messaggiDaAggiungere);
@@ -50,7 +50,7 @@ public class Gestore {
 	}
 	
 	
-	public void endAggiornamentoTabella() {
+	public void endAggiornamento() {
 		timer.cancel();
 		timer.purge();
 	}

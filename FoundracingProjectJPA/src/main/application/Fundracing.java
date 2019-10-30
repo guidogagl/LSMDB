@@ -101,11 +101,11 @@ login.setOnAction((ActionEvent ev1)->{
 					table.updateProjects(deposito.getProjects(agencyName));
 					
 					if(gm!=null) {
-						gm.endAggiornamentoTabella();
+						gm.endAggiornamento();
 					}
 					
 					gm = new Gestore(deposito,table, table_message,choice_agency, agencyName);
-					gm.startAggiornamentoTabella();
+					gm.startAggiornamento();
 					logged = true;
 					insert.setDisable(false);
 					//delete.setDisable(false);
@@ -344,7 +344,7 @@ login.setOnAction((ActionEvent ev1)->{
 		
 		stage.setOnCloseRequest((WindowEvent we)->{
 			if(gm != null) {
-				gm.endAggiornamentoTabella();
+				gm.endAggiornamento();
 			}
 		});
 		

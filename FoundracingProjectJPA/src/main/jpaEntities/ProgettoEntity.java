@@ -31,7 +31,7 @@ public class ProgettoEntity {
     @JoinColumn(name = "azienda_id", nullable = false)
     public AziendaEntity getAzienda(){ return this.azienda ;};
     public void setAzienda(AziendaEntity _azienda){ this.azienda = _azienda; };
-
+    
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
