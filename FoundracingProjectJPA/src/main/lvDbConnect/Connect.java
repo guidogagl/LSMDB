@@ -41,62 +41,28 @@ public class Connect {
 
 
     public void writeEntity(String entityName, Vector<String> attributes, Vector<String> values){
+
         WriteBatch batch = db.createWriteBatch();
+        String primaryKey = entityName + ":" + attributes.get(0);
 
-        String primaryKey = key_value.get(1).firstElement() + ":" + key_value.get(1).lastElement() + ":";
-
-        Boolean next_step = true;
         try {
-            for( Vector<String> kv : key_value ) {
-                if(next_step){
-                    next_step = false;
-                    continue;
-                }
-                //NameAttribute=$value
-                String key = primaryKey + kv.get(1);
-                batch.put(bytes(key), bytes(kv.get(1)));
-
-
-        String primaryKey = entityName + ":" + attributes.get(0) + ":";
-
-        Boolean next_step = true;
-        try {
-            for( int i = 1; i < attributes.size(); i++ ) {
-                String key = primaryKey + attributes.get(i);
-                batch.put(bytes(key), bytes(values.get(i)));
+            for( int i = 1; i < attributes.size() ; i++){
+                String key = primaryKey + ":" + attributes.get(i);
+                batch.put( bytes(key), bytes(values.get(i)));
             }
-
             db.write(batch);
+        } catch (Exception e ){
+            e.printStackTrace();
         } finally {
             batch.close();
         }
     }
 
-    public void deleteEntity(String entityName, Vector<String> attributes){
-        WriteBatch batch = db.createWriteBatch();
 
-        // key arrangement EntityName:$entityNameId:NameAttribute = $value
-        String primaryKey = entityName + ":" + attributes.get(0) + ":";
-
-        Boolean next_step = true;
-        try {
-            for( int i = 1; i < attributes.size(); i++ ) {
-                String key = primaryKey + attributes.get(i);
-                batch.delete( bytes(key) );
-            }
-
-            db.write(batch);
-        } finally {
-            // Make sure you close the batch to avoid resource leaks.
-            batch.close();
-        }
-
-    }
 
     public List<Vector<String>> readEntity(String entityName, String primaryKey){
 
-        // se primaryKey è null leggiamo tutte le entità con qualsiasi chiave
-        if( primaryKey != null ) 
+        if( primaryKey != null )
             primaryKey = ":" + primaryKey; //:1
 
         // effettuiamo uno snapshot per evitare letture inconsistenti a causa dei thread di update
@@ -105,9 +71,8 @@ public class Connect {
         ro.snapshot(db.getSnapshot());
 
         DBIterator keyIterator = db.iterator();
-        keyIterator.seek(bytes( entityName + primaryKey )); // moves the iterator to the keys starting with "employee:primaryKey"
-        //employee:5->ma questo non c'�
-        //employee
+        keyIterator.seek(bytes( entityName + primaryKey ));
+
         Vector<String> entity = new Vector<String>();
         if( primaryKey != null )
             entity.add(primaryKey); //primo elemento entity=:primarykey
@@ -115,7 +80,6 @@ public class Connect {
         List<Vector<String>> resultSet = new ArrayList<Vector<String>>();
         try {
             while (keyIterator.hasNext()) {
-
                 String stored_key = asString(keyIterator.peekNext().getKey()); // key arrangement : employee:$employee_id:$attribute_name = $value
                 String[] keySplit = stored_key.split(":"); // split the key
 

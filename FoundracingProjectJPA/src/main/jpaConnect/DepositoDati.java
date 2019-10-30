@@ -10,7 +10,7 @@ import java.util.Vector;
 public class DepositoDati {
     private FundracingManager fm = null;
 
-    private List<RowTableProjects> getRowTableProjects(List<ProgettoEntity> list, String agencyName, Boolean withStake) {
+    protected List<RowTableProjects> getRowTableProjects(List<ProgettoEntity> list, String agencyName, Boolean withStake) {
         List<RowTableProjects> rows = new ArrayList<RowTableProjects>();
         for(ProgettoEntity p : list){
             int projectId = p.getId();
@@ -35,7 +35,7 @@ public class DepositoDati {
 
         return rows;
     }
-    private List<RowTableMessage> getRowTableMessage(List<MessaggioEntity> me_list) {
+    protected List<RowTableMessage> getRowTableMessage(List<MessaggioEntity> me_list) {
         if(me_list == null)
             return new ArrayList<RowTableMessage>();
 
@@ -84,7 +84,33 @@ public class DepositoDati {
 
         return list;
     }
+    protected List<ProgettoEntity> getProjectEntities(){
+        fm = new FundracingManager();
+        if( !fm.isSetup() ){
+            System.out.print("Impossibile creare il manager del database \n");
+            return null;
+        }
 
+        List<ProgettoEntity> projects = fm.query(ProgettoEntity.class, "SELECT p FROM ProgettoEntity p");
+        fm.exit();
+
+        return projects;
+    }
+    protected List<MessaggioEntity> getMessageEntities(String agencyName){
+        String sql = "SELECT m FROM MessaggioEntity m WHERE destinatario = '" + agencyName + "'";
+
+        fm = new FundracingManager();
+        if( !fm.isSetup() ){
+            System.out.print("Impossibile creare il manager del database \n");
+            return null;
+        }
+
+        List<MessaggioEntity> messages = fm.query(MessaggioEntity.class, sql);
+
+        fm.exit();
+
+        return messages;
+    }
 
     public Vector<String> getAgency(String agencyName,String password) {
         fm = new FundracingManager();
@@ -150,35 +176,14 @@ public class DepositoDati {
     }
 
     public List<RowTableProjects> getProjects(String agencyName){
-        fm = new FundracingManager();
-        if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
-            return null;
-        }
-
-        List<ProgettoEntity> projects = fm.query(ProgettoEntity.class, "SELECT p FROM ProgettoEntity p");
-
-
+        List<ProgettoEntity> projects = getProjectEntites();
         List<RowTableProjects> ret = getRowTableProjects( projects, agencyName, true );
-
-        fm.exit();
 
         return ret;
     }
 
     public List<RowTableMessage> getMessages(String agencyName){
-        String sql = "SELECT m FROM MessaggioEntity m WHERE destinatario = '" + agencyName + "'";
-
-        fm = new FundracingManager();
-        if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
-            return null;
-        }
-
-        List<MessaggioEntity> messages = fm.query(MessaggioEntity.class, sql);
-
-        fm.exit();
-
+        List<MessaggioEntity> messages = getMessageEntities(agencyName);
         List<RowTableMessage> ret = getRowTableMessage(messages);
 
         return ret;

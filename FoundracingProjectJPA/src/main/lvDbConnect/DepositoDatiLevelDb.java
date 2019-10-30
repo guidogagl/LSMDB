@@ -191,7 +191,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
     }
 
     public List<RowTableMessage> getMessages(String agencyName){
-        List<MessaggioEntity> messages = super.getMessagesEntity( agencyName );
+        List<MessaggioEntity> messages = super.getMessageEntities( agencyName );
         List<RowTableMessage> ret = super.getRowTableMessage(messages);
 
         if(!createConnection())
