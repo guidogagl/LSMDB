@@ -164,25 +164,30 @@ public class DepositoDatiLevelDb extends DepositoDati{
     }
 
     public double getProgress(int id_progetto) {
-        Vector<String> prog = getProjects( id_progetto );
+    	Double somma_stake = super.getProgress(id_progetto);
+        List<Vector<String>> prog = super.getProject( id_progetto );
 
-        if( !prog.isEmpty() )
-            return Double.parseDouble( prog.get(5) );
+        
+        if( !prog.isEmpty() ) {
+        	Double total_budget = Double.parseDouble(prog.get(0).get(2));
+            return (somma_stake/total_budget)*100;
+        }
+        
         return 0;
     }
 
     public String getDescriptionProject(int id_project) {
-        Vector<String> desc = getProject( id_project );
+       List<Vector<String>> desc = super.getProject( id_project );
 
         if( !desc.isEmpty() )
-            return desc.get(2) ;
+            return desc.get(0).get(3) ;
 
         return new String();
     }
     public boolean iAmOwner(int projectId,String agencyName) {
-        Vector<String> agency = getProject( projectId );
+    	List<Vector<String>> agency = super.getProject( projectId );
 
-        if(  agency.isEmpty() || !agency.get(1).equals(agencyName))
+        if(  agency.isEmpty() || !agency.get(0).get(1).equals(agencyName))
             return false;
         return true;
     }
