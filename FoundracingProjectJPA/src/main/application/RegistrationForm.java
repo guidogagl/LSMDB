@@ -32,9 +32,10 @@ class RegistrationForm extends Frame {
            discard.addActionListener(new ActionListener() {
            public void actionPerformed(java.awt.event.ActionEvent e) {
                     setVisible(false);
+                    dispose();
                 }
 
-            });
+            });           
             submit.addActionListener(new ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     if (name_field.getText().isEmpty() || address_field.getText().isEmpty() || ZIP_field.getText().isEmpty()
