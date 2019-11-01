@@ -8,7 +8,7 @@ import javax.swing.*;
 import jpaConnect.DepositoDati;
 
 
-class RegistrationForm extends Frame {
+class RegistrationForm extends JFrame {
 
          JLabel nameAgency = new JLabel("Agency Name:");
          JLabel address = new JLabel("Address:");
