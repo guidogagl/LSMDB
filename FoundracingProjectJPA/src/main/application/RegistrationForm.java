@@ -31,7 +31,6 @@ class RegistrationForm extends JFrame {
         public RegistrationForm() {
            discard.addActionListener(new ActionListener() {
            public void actionPerformed(java.awt.event.ActionEvent e) {
-                    setVisible(false);
                     dispose();
                 }
 
@@ -44,7 +43,7 @@ class RegistrationForm extends JFrame {
                     } else {
                         if (deposito.getAgency(name_field.getText())!=null) {
                             JOptionPane.showMessageDialog(null, "This agency is already present!");
-                            setVisible(false);
+                            dispose();
                         } else {
                             if(password==null)
                                 JOptionPane.showMessageDialog(null, "Password not inserted!");
@@ -59,10 +58,9 @@ class RegistrationForm extends JFrame {
                                 val.addElement(url.getText());
                                 val.addElement(address_field.getText());
                                 val.addElement(ZIP_field.getText());
-                                //password passata in chiaro!!!
                                 val.addElement(new String(password.getPassword()));
                                 deposito.insertAgency(val);
-                                setVisible(false);
+                                dispose();
                             }
                         }
 
@@ -73,7 +71,6 @@ class RegistrationForm extends JFrame {
             );
           
     }
-    //getter methods
     
 
         public JTextField getname_field() {return name_field;}
