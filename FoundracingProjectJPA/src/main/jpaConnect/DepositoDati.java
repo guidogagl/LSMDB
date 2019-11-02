@@ -158,7 +158,8 @@ public class DepositoDati {
         fm.exit();
         
         if(ae==null)
-            return null;
+            return new Vector<>();
+
         Vector<String> vett=new Vector<String>();
         vett.add(ae.getNomeAzienda());
         return vett;
