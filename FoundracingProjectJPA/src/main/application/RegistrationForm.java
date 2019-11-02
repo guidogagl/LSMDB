@@ -46,7 +46,7 @@ class RegistrationForm extends JFrame {
                             JOptionPane.showMessageDialog(null, "This agency is already present!");
                             
                         } else {
-                            if(password==null)
+                            if(password.getPassword().length==0)
                                 JOptionPane.showMessageDialog(null, "Password not inserted!");
                             if (!Arrays.equals(password.getPassword(), confirm_password.getPassword())) {
                         JOptionPane.showMessageDialog(null, "The two passwords do not coincide!");
