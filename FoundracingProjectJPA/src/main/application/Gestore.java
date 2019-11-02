@@ -1,6 +1,7 @@
 package application;
 
 import jpaConnect.*;
+import lvDbConnect.DepositoDatiLevelDb;
 
 import java.util.List;
 import java.util.Timer;
@@ -9,15 +10,16 @@ import java.util.TimerTask;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
 
+
 public class Gestore {
-	private DepositoDati d;
+	private DepositoDatiLevelDb d;
 	private TableMessage tm;
 	private TableProjects tp;
 	private ChoiceBox cb;
 	private String agencyName;
 	private Timer timer = null;
 	private TimerTask task = null;
-	public Gestore( DepositoDati d,TableProjects tp,TableMessage tm,ChoiceBox cb,String agencyName)
+	public Gestore( DepositoDatiLevelDb d,TableProjects tp,TableMessage tm,ChoiceBox cb,String agencyName)
 	{
 		this.d=d;
 		this.tp=tp;
@@ -42,6 +44,7 @@ public class Gestore {
 	}
 	
 	private void aggiorna() {
+		
 		tp.updateProjects(d.getProjects(agencyName));
 		List<RowTableMessage> messaggiDaAggiungere = d.getMessages(agencyName);
 		tm.updateMessages(messaggiDaAggiungere);

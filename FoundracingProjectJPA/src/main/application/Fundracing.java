@@ -2,10 +2,11 @@ package application;
 
 
 import java.util.*;
+import java.util.logging.Level;
+
 import javafx.collections.*;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import javafx.scene.image.*;
 
@@ -20,6 +21,7 @@ import javafx.scene.input.*;
 
 import javafx.stage.*;
 import javafx.util.*;
+import jpaEntities.MessaggioEntity;
 import lvDbConnect.DepositoDatiLevelDb;
 
 
@@ -74,10 +76,12 @@ public class Fundracing extends Application{
 	private Label message_receiver = new Label("Message receiver");
 	private Gestore gm = null;
         private Button register=new Button("Register");
-	private RegistrationForm form=new RegistrationForm();
+	private RegistrationForm form=new RegistrationForm(deposito);
 	
 	public void start(Stage stage) {
-
+		
+		java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF); //LEVEL.SEVERE altrimenti,o ON
+		
 		table.updateProjects(deposito.getProjectsWithoutStake());
 		selectTableRow();
 		
@@ -85,7 +89,7 @@ public class Fundracing extends Application{
 		
 		inizializeChoiceBox();
 		
-login.setOnAction((ActionEvent ev1)->{
+		login.setOnAction((ActionEvent ev1)->{
 			
 			String urlLogo = "";
 			
@@ -93,9 +97,10 @@ login.setOnAction((ActionEvent ev1)->{
 				
 				agencyName = tf_companyName.getText();
 				String password=tf_password.getText();
-				Vector<String> result = deposito.getAgency(agencyName,password);
+				Vector<String> result = deposito.getAgencyBasic(agencyName,password, true);
 				
-				//Se il nome dell'azienda ï¿½ presente nel db e la password ï¿½ corretta
+				
+				//Se il nome dell'azienda è presente nel db e la password è corretta
 				if(!result.isEmpty()) {
 					
 					table.updateProjects(deposito.getProjects(agencyName));
@@ -113,12 +118,13 @@ login.setOnAction((ActionEvent ev1)->{
 					name_project.setEditable(true);
 					total_budget.setEditable(true);
 					stake.setEditable(true);
+					register.setVisible(false);
 					//update.setDisable(false);
 
 					name_agency.setText(result.get(0)); 
-					address_agency.setText(result.get(2) + ", " + result.get(1) );
-					site_agency.setText(result.get(5));
-					urlLogo = result.get(4);
+					address_agency.setText(result.get(3) + ", " + result.get(4) );
+					site_agency.setText(result.get(2));
+					urlLogo = result.get(1);
 					image = new Image(urlLogo);
 					iv1.setImage(image);
 					//accept.setDisable(false);
@@ -128,13 +134,17 @@ login.setOnAction((ActionEvent ev1)->{
 					stake_message.setEditable(true);
 					project_message.setEditable(true);
 					
-				} //Se il nome dell'azienda non ï¿½ presente nel db
+				} //Se il nome dell'azienda non è presente nel db
 				else {
-					JOptionPane.showMessageDialog(null, "Il nome dell'azienda ï¿½ errato oppure la password ï¿½ scorretta!");
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setHeaderText("Il nome dell'azienda è errato oppure la password è scorretta!");
+					alert.showAndWait();
 					return;
 				}
 			}else {
-					JOptionPane.showMessageDialog(null, "Il nome o la password mancano!");
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setHeaderText("Il nome o la password mancano!");
+					alert.showAndWait();
 					return;
 			}
 			
@@ -144,7 +154,9 @@ login.setOnAction((ActionEvent ev1)->{
 		refuse.setOnAction((ActionEvent ev1)->{
 			
 			if(description_message.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "Non hai selezionato nessun messaggio!");
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setHeaderText("Non hai selezionato nessun messaggio!");
+				alert.showAndWait();
 				return;
 			}
 			deposito.deleteMessage(selectedMessagetId);
@@ -159,7 +171,9 @@ login.setOnAction((ActionEvent ev1)->{
 		accept.setOnAction((ActionEvent ev1)->{
 			
 			if(description_message.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "Non hai selezionato nessun messaggio!");
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setHeaderText("Non hai selezionato nessun messaggio!");
+				alert.showAndWait();
 				return;
 			}
 			
@@ -192,7 +206,9 @@ login.setOnAction((ActionEvent ev1)->{
 			if(!desc.equals("") || !name.equals("") || !budget.equals("")) {
 				
 				if(!budget.matches("[0-9]+")) {
-					JOptionPane.showMessageDialog(null, "Il budget deve essere numerico!");
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setHeaderText("Il budget deve essere numerico!");
+					alert.showAndWait();
 					return;
 				}
 				
@@ -214,7 +230,9 @@ login.setOnAction((ActionEvent ev1)->{
 				
 				table.updateProjects(deposito.getProjects(agencyName));
 			}else {
-				JOptionPane.showMessageDialog(null, "Uno dei campi non ï¿½ stato inserito!");
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setHeaderText("Uno dei campi non è stato inserito!");
+				alert.showAndWait();
 				return;
 			}
         });
@@ -223,16 +241,24 @@ login.setOnAction((ActionEvent ev1)->{
 		delete.setOnAction((ActionEvent ev1)->{
 			
 			if(description.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "Non hai selezionato nessun progetto!");
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setHeaderText("Non hai selezionato nessun progetto!");
+				alert.showAndWait();
 				return;
 			}
 			
 			
 			Boolean iAmOwner = deposito.iAmOwner(selectedProjectId, agencyName);
+			System.out.println("Project: " + selectedProjectId + " Agency: " + agencyName + " Owner " + iAmOwner);
 			
 			//Se sono il proprietario
 			if(iAmOwner) {
 				deposito.deleteProject(selectedProjectId);
+				List<String>agencies=deposito.getListAgency();
+				
+				for(String a : agencies) //delete di tutti finanziamenti fatti da tutte le aziende sul progetto eliminato
+					deposito.deleteMyStake(selectedProjectId, a);
+				
 				table.updateProjects(deposito.getProjects(agencyName));
 				delete.setDisable(true);
 				update.setDisable(true);
@@ -247,7 +273,9 @@ login.setOnAction((ActionEvent ev1)->{
 				description.clear();
 			}//Se cerco di eliminare il progetto o lo stake di un altro
 			else {
-				JOptionPane.showMessageDialog(null, "Puoi eliminare solo i tuoi progetti o finanziamenti!");
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setHeaderText("Puoi eliminare solo i tuoi progetti o finanziamenti!");
+				alert.showAndWait();
 				return;
 			}
 		});
@@ -256,7 +284,7 @@ login.setOnAction((ActionEvent ev1)->{
 			
 			
 			register.setOnAction((ActionEvent ev2)->{
-                            form.interfaccia=new Interface(form);
+                           new Interface(form);
                             form.setVisible(true);
                             
 			}); 
@@ -269,13 +297,17 @@ login.setOnAction((ActionEvent ev1)->{
 				String string_stakeInsered = stake.getText();
 				
 				if(string_stakeInsered.equals("")) {
-					JOptionPane.showMessageDialog(null, "Manca il valore del campo Stake!");	
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setHeaderText("Manca il valore del campo stake!");
+					alert.showAndWait();	
 					return;
 				}
 				
 				//Controllo se il valore inserito ï¿½ un numero
 				if(!string_stakeInsered.matches("[0-9]+")) {
-					JOptionPane.showMessageDialog(null, "Puoi inserire solo valori numerici nel campo Stake!");	
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setHeaderText("Puoi inserire solo valori numerici nel campo stake!");
+					alert.showAndWait();
 					return;
 				}
 				
@@ -283,7 +315,9 @@ login.setOnAction((ActionEvent ev1)->{
 				int totalStakes=deposito.getSommaStakes(selectedProjectId);
 				//se ho giï¿½ raggiunto l'obiettivo
 				if(totalStakes>=selectedTotalBudget) {
-					JOptionPane.showMessageDialog(null, "Ti ringraziamo per la tua generositï¿½, ma abbiamo giï¿½ raggiunto l'obiettivo prefissato!");	
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setHeaderText("Ti ringraziamo per la tua generosità, ma abbiamo già raggiunto l'obbiettivo prefissato!");
+					alert.showAndWait();
 				} //se non ho raggiunto l'obiettivo e voglio aggiungere soldi
 				else  {
 					int newStake=0;
@@ -312,14 +346,18 @@ login.setOnAction((ActionEvent ev1)->{
 			if(!description.equals("") || !stake.equals("") || !project.equals("") || !(object_receiver == null)) {
 			
 				if(!stake.matches("[0-9]+") || !project.matches("[0-9]+")) {
-					JOptionPane.showMessageDialog(null, "Campo Stake e id progetto devono essere numerici!");
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setHeaderText("Campo Stake e id progetto devono essere numerici!");
+					alert.showAndWait();
 					return;
 				}
 				
 				String receiver = object_receiver.toString();
 				
 				if(deposito.getProject(Integer.parseInt(project)).isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Il progetto selezionato non esiste");
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setHeaderText("Il progetto selezionato non esiste!");
+					alert.showAndWait();
 					return ;
 				} else {
 					Vector<String> vector = new Vector<String>();
@@ -338,10 +376,13 @@ login.setOnAction((ActionEvent ev1)->{
 					
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "Non hai compilato correttamente tutti i campi!");
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setHeaderText("Non hai compilato correttamente tutti i campi!");
+				alert.showAndWait();
 				return;
 			}
 		});
+		
 		
 		stage.setOnCloseRequest((WindowEvent we)->{
 			if(gm != null) {

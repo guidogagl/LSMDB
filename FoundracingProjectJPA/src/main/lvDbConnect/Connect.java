@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
 
 public class Connect {
     private Options options = new Options();
@@ -19,7 +20,7 @@ public class Connect {
     }
 
     public Connect(){
-        options.createIfMissing(true);
+    	 options.createIfMissing(true);
         try {
             db =  factory.open( new File("levelDbStore"), options);
         } catch (IOException e) {
@@ -38,7 +39,22 @@ public class Connect {
             e.printStackTrace();
         }
     }
-
+   
+    public void clearEntity(String entityName) {
+    	DBIterator keyIterator = db.iterator();
+        keyIterator.seek(bytes( entityName));
+        while (keyIterator.hasNext()) { 
+        	byte[]row=keyIterator.peekNext().getKey();
+        	String stored_key = asString(row); // key arrangement : employee:$employee_id:$attribute_name = $value
+            String[] keySplit = stored_key.split(":"); // split the key
+            if( keySplit[0].equals(entityName) ){
+                db.delete(row);
+                keyIterator.next();
+            }else
+            	break;
+        }
+    }
+	
 
     public void writeEntity(String entityName, Vector<String> attributes, Vector<String> values){
 

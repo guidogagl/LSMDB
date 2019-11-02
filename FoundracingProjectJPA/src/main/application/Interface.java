@@ -36,7 +36,7 @@ public class Interface {
 		address_agency.setLayoutY(72.5);
 		address_agency.setStyle("-fx-font-weight: bold;");
 		
-		site_agency.setLayoutX(340);
+		site_agency.setLayoutX(300);
 		site_agency.setLayoutY(100);
 		site_agency.setStyle("-fx-font-weight: bold;");
 		
