@@ -70,8 +70,8 @@ class RegistrationForm extends JFrame {
                     	ZIP_field.setText("");
                     }
                     else {
-                        if (deposito.getAgencyBasic(name_field.getText(), "", false)!=null) {
-                            JOptionPane.showMessageDialog(null, "Questa agenzia è già presente!");
+                        if (deposito.getAgencyBasic(name_field.getText(), "", false).isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Questa agenzia ï¿½ giï¿½ presente!");
                             name_field.setText("");
                         } else {
                             if(password.getPassword() == null)
