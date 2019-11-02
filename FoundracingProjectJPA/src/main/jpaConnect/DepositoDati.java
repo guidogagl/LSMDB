@@ -147,23 +147,23 @@ public class DepositoDati {
         fm = new FundracingManager();
         if( !fm.isSetup() ){
             System.out.print("Impossibile creare il manager del database \n");
-            return null;
-        }
-        if(fm.selectAgency(agencyName)==null){
-            System.out.print("Agency not present \n");
-            return null;
-        }
-        AziendaEntity ae = fm.selectAgency(agencyName);
-        
-        fm.exit();
-        
-        if(ae==null)
             return new Vector<>();
+        }
 
-        Vector<String> vett=new Vector<String>();
+        AziendaEntity ae = fm.selectAgency(agencyName);
+
+        fm.exit();
+
+        if( ae ==null){
+            System.out.print("Agency not present \n");
+            return new Vector<>();
+        }
+
+        Vector<String> vett = new Vector<String>();
         vett.add(ae.getNomeAzienda());
         return vett;
         }
+
     public void insertAgency(Vector<String> val){
         fm = new FundracingManager();
         if( !fm.isSetup() ){
