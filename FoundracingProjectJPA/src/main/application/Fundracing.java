@@ -77,7 +77,7 @@ public class Fundracing extends Application{
 	private RegistrationForm form=new RegistrationForm();
 	
 	public void start(Stage stage) {
-		
+
 		table.updateProjects(deposito.getProjectsWithoutStake());
 		selectTableRow();
 		

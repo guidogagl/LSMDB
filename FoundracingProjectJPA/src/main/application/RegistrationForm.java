@@ -24,14 +24,15 @@ class RegistrationForm extends JFrame {
          JLabel urlLogo = new JLabel("Logo: ");
          JTextField urlLogo_field = new JTextField();
         private JButton submit = new JButton("Submit");
-        private JButton discard = new JButton("Discard");
+        private JButton discard = new JButton("Reset");
         public Interface interfaccia;
         private DepositoDati deposito=new DepositoDati();
 
         public RegistrationForm() {
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
            discard.addActionListener(new ActionListener() {
            public void actionPerformed(java.awt.event.ActionEvent e) {
-                    dispose();
+                    nullify();
                 }
 
             });           
@@ -43,7 +44,7 @@ class RegistrationForm extends JFrame {
                     } else {
                         if (deposito.getAgency(name_field.getText())!=null) {
                             JOptionPane.showMessageDialog(null, "This agency is already present!");
-                            dispose();
+                            
                         } else {
                             if(password==null)
                                 JOptionPane.showMessageDialog(null, "Password not inserted!");
@@ -60,7 +61,7 @@ class RegistrationForm extends JFrame {
                                 val.addElement(ZIP_field.getText());
                                 val.addElement(new String(password.getPassword()));
                                 deposito.insertAgency(val);
-                                dispose();
+                                
                             }
                         }
 
@@ -71,7 +72,15 @@ class RegistrationForm extends JFrame {
             );
           
     }
-    
+        public void nullify(){
+            name_field.setText("");
+            address_field.setText("");
+            ZIP_field.setText("");
+            
+            url.setText("");
+            urlLogo_field.setText("");
+            
+        }
 
         public JTextField getname_field() {return name_field;}
         public JLabel getnameAgency() {return nameAgency;}
