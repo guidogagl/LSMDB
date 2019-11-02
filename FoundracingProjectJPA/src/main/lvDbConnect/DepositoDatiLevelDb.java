@@ -14,17 +14,18 @@ import java.util.Vector;
 
 public class DepositoDatiLevelDb extends DepositoDati{
     private Connect conn = new Connect();
+    private Vector<String> agencyAtt = new Vector<String>();
+    private Vector<String> projectsAtt = new Vector<String>();
+    private Vector<String> messageAtt = new Vector<String>();
+    
+    
     private Boolean createConnection(){
         if (conn == null){
             System.out.print("Impossibile create la connessione con il levelDb \n");
             return false;
         }
         return true;
-    }
-
-    private Vector<String> agencyAtt = new Vector<String>();
-    private Vector<String> projectsAtt = new Vector<String>();
-    private Vector<String> messageAtt = new Vector<String>();
+    }  
 
     private Vector<String> getEntityFromLevelDb(String EntityName, String entityID ){
         if( !createConnection() )
@@ -38,6 +39,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
         return null;
     }
 
+    
     public DepositoDatiLevelDb(){
         agencyAtt.add("nomeAzienda");
         agencyAtt.add( "urlLogo");
@@ -71,15 +73,16 @@ public class DepositoDatiLevelDb extends DepositoDati{
             return new Vector<String>();
         return res;
     }
+    
     public void insertAgency(Vector<String> val){
-        super.insertAgency(val);
+        super.insertAgency(val); //Inserimento in db ricordare per documentazione
 
-        Vector<String> att = new Vector<String>( );
+       /* Vector<String> att = new Vector<String>();
 
         if(!createConnection())
             return;
 
-        conn.writeEntity( "AziendaEntity", agencyAtt, val);
+        conn.writeEntity( "AziendaEntity", agencyAtt, val);*/
 
     }
     public List<String> getListAgency(){
@@ -94,24 +97,24 @@ public class DepositoDatiLevelDb extends DepositoDati{
 
         if(!createConnection() || list.isEmpty())
             return list;
-
-        // aggiorno la caches
+       conn.clearEntity("AziendaEntity");
+        // aggiorno la cache 
         for( Vector<String> agency : allAgency )
-            conn.writeEntity("AziendaEntity", agencyAtt, agency);
-
+        	conn.writeEntity("AziendaEntity", agencyAtt, agency);
         return list;
     }
-
+    
     public List<RowTableProjects> getProjects(String agencyName){
         List<ProgettoEntity> projects = super.getProjectEntities();
         List<RowTableProjects> ret = super.getRowTableProjects( projects, agencyName, true );
 
         if(!createConnection())
             return ret;
-
+       	conn.clearEntity("ProgettoEntity");
         int i = 0;
         for(ProgettoEntity p : projects){
-            Vector<String> val = new Vector<String>();
+          
+        	Vector<String> val = new Vector<String>();
             val.add( Integer.toString(p.getId()) );
             val.add( p.getDescrizione() );
             val.add( p.getNome());
@@ -119,10 +122,10 @@ public class DepositoDatiLevelDb extends DepositoDati{
             val.add( p.getAzienda().getNomeAzienda() );
             val.add( ret.get(i).getProgress());
             val.add( ret.get(i).getStake().toString() );
-
             conn.writeEntity("ProgettoEntity", projectsAtt, val);
             i++;
         }
+        
 
         return ret;
     }
@@ -177,17 +180,18 @@ public class DepositoDatiLevelDb extends DepositoDati{
     }
 
     public String getDescriptionProject(int id_project) {
-       List<Vector<String>> desc = super.getProject( id_project );
-
-        if( !desc.isEmpty() )
-            return desc.get(0).get(3) ;
-
+       Vector<String> prog = getEntityFromLevelDb("ProgettoEntity", Integer.toString(id_project));
+       if( prog!= null && !prog.isEmpty() && prog.firstElement() != null ) {
+    	   return prog.get(5) ;
+       } 
+       
         return new String();
     }
+    
     public boolean iAmOwner(int projectId,String agencyName) {
     	List<Vector<String>> agency = super.getProject( projectId );
 
-        if(  agency.isEmpty() || !agency.get(0).get(1).equals(agencyName))
+        if(  agency.isEmpty() || !agency.get(0).get(4).equals(agencyName))
             return false;
         return true;
     }
@@ -204,24 +208,29 @@ public class DepositoDatiLevelDb extends DepositoDati{
 
         if(!createConnection())
             return ret;
-
-        for(MessaggioEntity m : messages){
-            Vector<String> val = new Vector<String>();
+       	conn.clearEntity("MessaggioEntity");
+       	for(MessaggioEntity m : messages){
+       		Vector<String> val = new Vector<String>();
             val.add( Integer.toString(m.getId()) );
             val.add( m.getTesto() );
-
             conn.writeEntity("MessaggioEntity", messageAtt, val);
         }
-
+        
         return ret;
     }
     public String getDescriptionMessage(int id_message) {
-        Vector<String> prog = getEntityFromLevelDb("MessaggioEntity:" +id_message, "testo" );
+        Vector<String> prog = getEntityFromLevelDb("MessaggioEntity",Integer.toString(id_message));
 
         if( prog!= null && !prog.isEmpty() && prog.firstElement() != null ) {
-            return prog.firstElement();
+            return prog.get(1);
         }
 
         return new String();
+    }
+    public Vector<String> getAgencyBasic(String agencyName, String password, boolean withPassword){
+    	if(withPassword)
+    		return super.getAgency(agencyName, password);
+    	else
+    		return super.getAgency(agencyName);
     }
 }

@@ -13,7 +13,7 @@ public class FundracingEntityManager {
 
     public FundracingEntityManager(EntityManagerFactory emf){
         try{
-        	java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);//LEVEL.SEVERE altrimenti,o ON
+        	// java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);//LEVEL.SEVERE altrimenti,o ON
             em = emf.createEntityManager();
         }
         catch(Exception ex){
