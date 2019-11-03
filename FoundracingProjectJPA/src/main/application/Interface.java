@@ -219,8 +219,8 @@ public class Interface {
             form.url.setBounds(250, 270, 350, 30);
             form.urlLogo.setBounds(100, 310, 400, 30);
             form.urlLogo_field.setBounds(250, 310, 350, 30);
-            form.submit().setBounds(200, 360, 140, 30);
-            form.discard().setBounds(400, 360, 140, 30);
+            form.submit.setBounds(200, 360, 140, 30);
+            form.reset.setBounds(400, 360, 140, 30);
 
             form.add(form.nameAgency);
             form.add(form.name_field);
@@ -236,8 +236,8 @@ public class Interface {
             form.add(form.url);
             form.add(form.urlLogo);
             form.add(form.urlLogo_field);
-            form.add(form.submit());
-            form.add(form.discard());
+            form.add(form.submit);
+            form.add(form.reset);
         }
 
 }
