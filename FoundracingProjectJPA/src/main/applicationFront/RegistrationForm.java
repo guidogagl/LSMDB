@@ -1,5 +1,5 @@
 
-package applicationMiddle;
+package applicationFront;
 import java.awt.Frame;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -13,22 +13,22 @@ import lvDbConnect.DepositoDatiLevelDb;
 
 public class RegistrationForm extends JFrame {
 
-         JLabel nameAgency = new JLabel("Agency Name:");
-         JLabel address = new JLabel("Address:");
-         JLabel ZIP = new JLabel("ZIP code:");
-         JPasswordField password = new JPasswordField(16);
-         JPasswordField confirm_password = new JPasswordField(16);
-         JTextField name_field = new JTextField();
-         JTextField address_field = new JTextField();
-         JTextField ZIP_field = new JTextField();
-         JTextField url = new JTextField();
-         JLabel insertPassword = new JLabel("Password:");
-         JLabel insertUrl = new JLabel("Web Site:");
-         JLabel urlLogo = new JLabel("Logo: ");
-         JTextField urlLogo_field = new JTextField();
-         JButton submit = new JButton("Submit");
-         JButton reset = new JButton("Reset");
-         DepositoDatiLevelDb deposito=null;
+         public JLabel nameAgency = new JLabel("Agency Name:");
+         public JLabel address = new JLabel("Address:");
+         public JLabel ZIP = new JLabel("ZIP code:");
+         public JPasswordField password = new JPasswordField(16);
+         public JPasswordField confirm_password = new JPasswordField(16);
+         public JTextField name_field = new JTextField();
+         public JTextField address_field = new JTextField();
+         public JTextField ZIP_field = new JTextField();
+         public JTextField url = new JTextField();
+         public JLabel insertPassword = new JLabel("Password:");
+         public JLabel insertUrl = new JLabel("Web Site:");
+         public JLabel urlLogo = new JLabel("Logo: ");
+         public JTextField urlLogo_field = new JTextField();
+         public JButton submit = new JButton("Submit");
+         public JButton reset = new JButton("Reset");
+         public DepositoDatiLevelDb deposito=null;
 
         public RegistrationForm(DepositoDatiLevelDb db) {
         	deposito=db;

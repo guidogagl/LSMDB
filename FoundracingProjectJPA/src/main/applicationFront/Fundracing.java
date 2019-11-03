@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 
 import applicationMiddle.Gestore;
 import applicationMiddle.Interface;
-import applicationMiddle.RegistrationForm;
 import applicationMiddle.RowTableMessage;
 import applicationMiddle.RowTableProjects;
 import applicationMiddle.Interface;

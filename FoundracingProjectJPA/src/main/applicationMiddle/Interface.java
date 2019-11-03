@@ -8,6 +8,7 @@ import javafx.event.*;
 import javafx.scene.control.*;
 import javax.swing.JLabel;
 
+import applicationFront.RegistrationForm;
 import applicationFront.TableMessage;
 import applicationFront.TableProjects;
 
