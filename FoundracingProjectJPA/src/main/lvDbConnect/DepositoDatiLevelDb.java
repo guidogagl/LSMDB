@@ -1,8 +1,7 @@
 package lvDbConnect;
 
-import application.RowTableMessage;
-import application.RowTableProjects;
-
+import applicationMiddle.RowTableMessage;
+import applicationMiddle.RowTableProjects;
 import jpaConnect.DepositoDati;
 
 import jpaEntities.MessaggioEntity;

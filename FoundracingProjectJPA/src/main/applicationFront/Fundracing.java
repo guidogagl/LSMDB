@@ -1,4 +1,4 @@
-package application;
+package applicationFront;
 
 
 import java.util.*;
@@ -8,6 +8,12 @@ import javafx.collections.*;
 
 import javax.swing.JLabel;
 
+import applicationMiddle.Gestore;
+import applicationMiddle.Interface;
+import applicationMiddle.RegistrationForm;
+import applicationMiddle.RowTableMessage;
+import applicationMiddle.RowTableProjects;
+import applicationMiddle.Interface;
 import javafx.scene.image.*;
 
 import javafx.application.*;

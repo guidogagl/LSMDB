@@ -1,6 +1,8 @@
-package application;
+package applicationFront;
 
 import java.util.*;
+
+import applicationMiddle.RowTableProjects;
 import javafx.collections.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.*;

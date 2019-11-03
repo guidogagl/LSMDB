@@ -1,8 +1,8 @@
 package mysqlConnect;
 
 
-import application.RowTableMessage;
-import application.RowTableProjects;
+import applicationMiddle.RowTableMessage;
+import applicationMiddle.RowTableProjects;
 
 import java.util.ArrayList;
 import java.util.List;

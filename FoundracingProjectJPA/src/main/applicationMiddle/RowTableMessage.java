@@ -1,4 +1,4 @@
-package application;
+package applicationMiddle;
 
 import java.awt.Component;
 

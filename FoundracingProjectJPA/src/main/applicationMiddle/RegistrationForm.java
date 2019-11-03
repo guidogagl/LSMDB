@@ -1,5 +1,5 @@
 
-package application;
+package applicationMiddle;
 import java.awt.Frame;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -11,7 +11,7 @@ import jpaConnect.DepositoDati;
 import lvDbConnect.DepositoDatiLevelDb;
 
 
-class RegistrationForm extends JFrame {
+public class RegistrationForm extends JFrame {
 
          JLabel nameAgency = new JLabel("Agency Name:");
          JLabel address = new JLabel("Address:");

@@ -1,4 +1,4 @@
-package application;
+package applicationMiddle;
 
 import javafx.scene.input.MouseEvent;
 
@@ -8,9 +8,12 @@ import javafx.event.*;
 import javafx.scene.control.*;
 import javax.swing.JLabel;
 
+import applicationFront.TableMessage;
+import applicationFront.TableProjects;
+
 public class Interface {
 
-	Interface(Button login, TextField tf_companyName, Label table_title, TableProjects table, 
+	public Interface(Button login, TextField tf_companyName, Label table_title, TableProjects table, 
 			TextArea description, TextField name_project, TextField total_budget, Button insert, Button delete,
 			ImageView iv1, TextField stake, Button update, Label name_agency, Label address_agency, Label site_agency,PasswordField tf_password,
 			Label l_agencyName,Label l_password, TableMessage table_message, Label l_stake, Label l_description, Label l_total_budget,

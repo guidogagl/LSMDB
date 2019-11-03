@@ -1,6 +1,8 @@
 package jpaConnect;
 
-import application.*;
+//import application.*;
+import applicationMiddle.RowTableMessage;
+import applicationMiddle.RowTableProjects;
 import jpaEntities.*;
 
 import java.util.ArrayList;
