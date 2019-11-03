@@ -37,9 +37,7 @@ class RegistrationForm extends JFrame {
         	
            reset.addActionListener(new ActionListener() {
            public void actionPerformed(java.awt.event.ActionEvent e) {
-                   /* setVisible(false);
-                    dispose();*/
-        	   		name_field.setText("");
+                    name_field.setText("");
         	   		address_field.setText("");
         	   		ZIP_field.setText("");
         	   		url.setText("");
@@ -50,12 +48,6 @@ class RegistrationForm extends JFrame {
         	   
             });
         
-           
-           /*addWindowListener(new WindowAdapter() {
-               public void windowClosing(WindowEvent e) {
-                   dispose();
-               }
-           });*/
            this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
            
            
@@ -71,7 +63,7 @@ class RegistrationForm extends JFrame {
                     }
                     else {
                         if ( !deposito.getAgencyBasic(name_field.getText(), "", false).isEmpty()) {
-                            JOptionPane.showMessageDialog(null, "Questa agenzia ï¿½ giï¿½ presente!");
+                            JOptionPane.showMessageDialog(null, "Questa agenzia è già presente!");
                             name_field.setText("");
                         } else {
                             if(password.getPassword() == null)

@@ -163,7 +163,6 @@ public class DepositoDati {
         vett.add(ae.getNomeAzienda());
         return vett;
         }
-
     public void insertAgency(Vector<String> val){
         fm = new FundracingManager();
         if( !fm.isSetup() ){
@@ -227,6 +226,7 @@ public class DepositoDati {
         if(stake == null)
             return 0;
 
+        //return Integer.parseInt(stake.toString());
         return Integer.parseInt(stake.toString());
     }
 
@@ -235,7 +235,7 @@ public class DepositoDati {
         if(!fm.isSetup())
             return 0;
 
-        Integer progress = fm.singleReturnQuery(int.class, "SELECT SUM(f.budget) FROM finanziamento f WHERE f.progetto = " + id_progetto );
+        Integer progress = fm.singleReturnQuery(int.class, "SELECT SUM(f.budget) FROM FinanziamentoEntity f WHERE f.progetto = " + id_progetto );
         if( progress == null)
             progress = 0;
 

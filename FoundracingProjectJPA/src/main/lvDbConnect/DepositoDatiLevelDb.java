@@ -86,7 +86,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
 
     }
     public List<String> getListAgency(){
-        List<Vector<String>> allAgency = super.getAgencyEntities();
+        List<Vector<String>> allAgency = super.getAgencyEntities(); //Prende la lista delle aziende dal db
         if( allAgency == null )
             return null;
 
@@ -144,7 +144,6 @@ public class DepositoDatiLevelDb extends DepositoDati{
             val.add(p.getNome());
             val.add(p.getBudget().toString());
             val.add(p.getAzienda().getNomeAzienda());
-
             val.add(ret.get(i).getProgress());
             val.add( "0" );
 
@@ -195,11 +194,26 @@ public class DepositoDatiLevelDb extends DepositoDati{
             return false;
         return true;
     }
-    public int getSommaStakes(int selectedProjectID){
-        Vector<String> stakes = getEntityFromLevelDb("ProgettoEntity" , Integer.toString( selectedProjectID ));
-        if( stakes == null || stakes.isEmpty() || stakes.firstElement().isEmpty() )
+    
+
+    
+    public int getSommaStakes(int selectedProjectID){ //Deve prendere il progress e il total budget del progetto e da questi calcolare la somma degli stake
+    	
+        Vector<String> projectList = getEntityFromLevelDb("ProgettoEntity", Integer.toString(selectedProjectID));
+    	
+    	
+    	if( projectList == null || projectList.isEmpty() || projectList.firstElement().isEmpty() )
             return 0;
-        return Integer.parseInt(stakes.firstElement());
+    	
+    	/*for(int i = 0; i < projectList.size(); i++)
+		System.out.println(projectList.get(i));*/
+    	
+    	Double progress = Double.parseDouble(projectList.get(1));
+    	Double tot_budget = Double.parseDouble(projectList.get(4));
+    	
+    	Double somma_stake = (progress*tot_budget)/100;
+    	
+    	return somma_stake.intValue();
     }
 
     public List<RowTableMessage> getMessages(String agencyName){

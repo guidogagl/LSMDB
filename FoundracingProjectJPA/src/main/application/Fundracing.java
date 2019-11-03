@@ -303,7 +303,7 @@ public class Fundracing extends Application{
 					return;
 				}
 				
-				//Controllo se il valore inserito ï¿½ un numero
+				//Controllo se il valore inserito è un numero
 				if(!string_stakeInsered.matches("[0-9]+")) {
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
 					alert.setHeaderText("Puoi inserire solo valori numerici nel campo stake!");
@@ -313,7 +313,8 @@ public class Fundracing extends Application{
 				
 				int stakeInsered=Integer.parseInt(string_stakeInsered);
 				int totalStakes=deposito.getSommaStakes(selectedProjectId);
-				//se ho giï¿½ raggiunto l'obiettivo
+				System.out.println("totalStakes :" + totalStakes);
+				//se ho già raggiunto l'obiettivo
 				if(totalStakes>=selectedTotalBudget) {
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
 					alert.setHeaderText("Ti ringraziamo per la tua generosità, ma abbiamo già raggiunto l'obbiettivo prefissato!");
@@ -321,10 +322,10 @@ public class Fundracing extends Application{
 				} //se non ho raggiunto l'obiettivo e voglio aggiungere soldi
 				else  {
 					int newStake=0;
-					//se voglio mettere piï¿½ soldi di quelli necessari,metto solo quelli che mi servono per raggiungere il budget prefisso
+					//se voglio mettere più soldi di quelli necessari,metto solo quelli che mi servono per raggiungere il budget prefisso
 					if((totalStakes-selectedStake+stakeInsered)>selectedTotalBudget)
-						newStake=(selectedStake+(selectedTotalBudget-totalStakes)); //quanto ho messo piï¿½ quanto manca per il max
-					else //altrimenti il nuovo stake sarï¿½ semplicemente quello inserito
+						newStake=(selectedStake+(selectedTotalBudget-totalStakes)); //quanto ho messo più quanto manca per il max
+					else //altrimenti il nuovo stake sarà semplicemente quello inserito
 						newStake=stakeInsered;
 					deposito.updateStake(newStake,agencyName,selectedProjectId, false);
 					table.updateProjects(deposito.getProjects(agencyName));

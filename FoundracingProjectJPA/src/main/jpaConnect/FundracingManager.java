@@ -91,6 +91,7 @@ public class FundracingManager {
         }
     }
 
+    
     public FundracingManager(){
         this.setup();
     }
