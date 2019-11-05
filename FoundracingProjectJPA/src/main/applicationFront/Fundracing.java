@@ -80,7 +80,7 @@ public class Fundracing extends Application{
 	private ChoiceBox choice_agency = new ChoiceBox(null);
 	private Label message_receiver = new Label("Message receiver");
 	private Gestore gm = null;
-        private Button register=new Button("Register");
+    private Button register=new Button("Register");
 	private RegistrationForm form=new RegistrationForm(deposito);
 	
 	public void start(Stage stage) {
@@ -208,7 +208,7 @@ public class Fundracing extends Application{
 			
 			
 			
-			if(!desc.equals("") || !name.equals("") || !budget.equals("")) {
+			if(!desc.equals("") && !name.equals("") && !budget.equals("")) {
 				
 				if(!budget.matches("[0-9]+")) {
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -258,11 +258,18 @@ public class Fundracing extends Application{
 			
 			//Se sono il proprietario
 			if(iAmOwner) {
-				deposito.deleteProject(selectedProjectId);
-				List<String>agencies=deposito.getListAgency();
 				
-				for(String a : agencies) //delete di tutti finanziamenti fatti da tutte le aziende sul progetto eliminato
-					deposito.deleteMyStake(selectedProjectId, a);
+				if(selectedStake == 0) {
+				
+					List<String>agencies=deposito.getListAgency();
+					
+					for(String a : agencies) //delete di tutti finanziamenti fatti da tutte le aziende sul progetto eliminato
+						deposito.deleteMyStake(selectedProjectId, a);
+					
+					deposito.deleteProject(selectedProjectId);
+				}else {
+					deposito.deleteMyStake(selectedProjectId, agencyName);
+				}
 				
 				table.updateProjects(deposito.getProjects(agencyName));
 				delete.setDisable(true);
@@ -271,6 +278,7 @@ public class Fundracing extends Application{
 			}//Se non sono il proprietario ma voglio levare il mio stake
 			else if(iAmOwner==false &&
 				deposito.isMyStake(agencyName, selectedProjectId) == true) {
+				System.out.println("Ciao2");
 				deposito.deleteMyStake(selectedProjectId, agencyName);
 				table.updateProjects(deposito.getProjects(agencyName));
 				delete.setDisable(true);
