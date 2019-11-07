@@ -1,144 +1,465 @@
 ﻿# LSMDB
 Ciao questa è la wiki del progetto di LSMDB
 
-## Obiettivi del branch amaryllis (20/10)
-- It was implemented the registration mechanism, by modyfing the structure of Fundracing class as to include an inner class, RegistrationForm, existing only in the scope of the application instance and used for allowing the user to insert its data in a new frame. Both Fundracing and RegistrationForm are front-end classes which interact with the database through DepositoDati and Connect.
-Why is RegistrationFrom an inner class? Because its scope is within the cicle of life of Fundracing and because, as of Java documentation, the use of inner or nested class is recomended for enabling encapsulation and improving code readibility. A *Singleton* implementation of the registration mechanism is currently _under consideration_.
-- (discarded, as already solved in Lucia's branch, _code available upon need and request_) the implementation of a choice menu to select the receiver of the stake request. Class Choice from java.awt was used in the discarded solution, implementing a callback mechanism (applying an Observer pull methodology) in order to keep it up-to-date with the registration of new companies to the network.
-- (to be done, as not clear if it can be simplified by exploiting Guido's work) a Listener thread to store and retrieve messages from a shared UnifiedQueue<String>.
+## Obbiettivi del branch Guido1
+ - [x] Creazione della classe Connect e ristrutturazione di DepositoDati per la realizzazione di Middle-Layer e Back-end con un database Mysql per il progetto MyFundrasing Project (Task1).
+ - [ ] Implementazione e utilizzo di JPA (Task2).
+
+# Task1
+## Software Architecture
+La realizzazione della classe Connect e il seguente restauro della classe DepositoDati è avvenuto per dividere logicamente Middle-Layer e Back-end come in figura.
+
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/arch_diagram.png)
+
+## Database Modeling
+Lo schema ER in figura mostra la struttura relazionare del database implementato dal Mysql server dell'applicazione
+![ER diagram](https://github.com/guidogagl/LSMDB/blob/master/img/ER.png)
+
+Tale struttura è implementata mediante l'utilizzo di quattro tabelle 
+- **Azienda**
+- **Progetto**
+- **Finanziamento**
+- **Messaggio**
+
+illustrate in dettaglio nel modello sottostante
+![ER diagram](https://github.com/guidogagl/LSMDB/blob/master/img/er_details.png)
+
+In seguito sono riportate quattro tabelle con la spiegazione nel dettaglio dei loro campi.
+
+### Azienda
+- **nomeAzienda** - chiave primaria, si suppone che ogni azienda abbia un nome diverso.
+- **urlLogo** - rappresenta il riferimento ( relativo o assoluto ) al logo dell'a-zione che viene visualizzato nell'applicazione.
+- **urlSito** - rappresenta il riferimento al sito web dell'azienda.
+- **indirizzo** 
+- **cap**
+- **password** 
+
+### Progetto
+- **id** - chiave primaria, identifica univocamente il progetto nel database
+- **nome** - nome del progetto assegnato dall'azienda che lo crea ( possono esistere più progetti con lo stesso nome )
+- **budget** - somma di denaro che l'azienda che crea il progetto vuole ottenere attraverso l'applicazione per finanziare interamente il progetto.
+- **descrizione** - descrizione descrittiva del progetto
+- **azienda** - nome (nomeAzienda) dell'azienda che ha creato il progetto.
+
+### Finanziamento
+- **id** - chiave primaria, identifica univocamente il finanziamento nel database.
+- **budget** - somma di denaro che l'azienda finanziatrice ha deciso di investire nel progetto finanziato.
+- **azienda** - nome ( nomeAzienda ) dell'azienda che ha creato il finanziamento.
+- **progetto** - identificativo ( id ) del progetto che si intende finanziare
+
+### Messaggio
+- **id** - chiave primaria, identifica univocamente il messaggio nel database.
+- **mittente** - nome dell'azienda ( nomeAzienda ) che scrive (crea) il messaggio.
+- **destinatario** - nome dell'azienda ( nomeAzienda ) che riceve il messaggio.
+- **progetto** - identificativo ( id ) del progetto per il quale si intende chiedere un finanziamento attraverso il messaggio.
+- **stake** - somma di denaro che si richiede per finanziare il progetto oggetto del messaggio.
+- **data** - data di invio del messaggio.
 
 
 
+## Class Modeling 
 
-The main aim of class RegistrationForm is to provide the user with a mechanism to insert all the information concerning its agency, in order to joint the foundraising scheme. Checks are performed on all the inserted data before allowing the insert, that is:
+Le classi sono state strutturate usando il linguaggio Java 
 
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/class_diagram1.png)
 
-- The agency musn't already be enrolled with the same business name in the network.
-- The entered information regarding the password, in fields _password_ and _confirm password_ of the form, must coincide. In return, the class will provide the user with a mechanism to insert the password without showing the single characters;
-- The ZIP code, as for the specifi constraints given to attribute _cap_ in the scheme of table _Agenzia_, must be a numeric sequence.
-- All fields must be filled before submitting the form.
+Il meccanismo software è stato implementato così per nascondere del tutto a DepositoDati qualsiasi informazione relativa al database e nascondergli il back-end che è lasciato così unicamente a Connect.
 
-Class Fundracing, through a **register:Button** button, offers the possibility to enroll new agencies in the network. It also takes the responsability to instantiate the interface of its reference **form:RegistrationForm** to class _RegistrationForm_. In order to do so neatly, the constructor of class _Interface_ was made polymorphic, offering different kinds of layout setting depending on the arguments passend. Let us note that the **interface:Interface** of class RegistrationForm and the  **interface:Interface** of class Fundraising are two different objects in memory, per default features of the implementation.
-Here the call-back mechanism inside method **start()** of class Fundracing:
+Nello specifico DepositoDati fornisce una serie di metodi application-dependent per interrogare il database e restituire al front-end le informazioni di cui ha bisogno.
+
+Il metodo classico con il quale DepositoDati interroga il database consiste nello scrivere la query desiderata dall'utente, costruire un'istanza di Connect, chiamare un metodo di Connect e chiudere la connessione:
+
 ```
-form= new RegistrationForm();
-form.getInterface()=new Interface(form);
-form.setVisible(true);
+ String sql = " SELECT * FROM ANYWHERE ; ";
+ Connect conn = new Connect();
+ 
+ List<Vector<String>> result = conn.query(sql, numeroColonneTabellaResult);
+ 
+ conn.close();
 ```
+Le istanze di Connect si costruiscono creando una connessione con il database, che viene effettuata con parametri statici password, username e SSL. Per garantire una connessione sicura con la base di dati la variabile SSL è settata con la restrizione più forte "require=TRUE".
 
+Connect realizza da sola tutto il livello di back-end dell'applicazine. Per questo vede unicamente la base di dati ed è completamente svincolata da tutto il resto.
 
-Throgh button _submit_ RegistrationForm performs a correctness check of the inserted data, following the criteria illustrated above. If the controls are successful, it delegates the insert of the agency in the database to its reference _deposito_ of class _DepositoDati_.
-Let us note that method **getAgency** of class _DepositoDati_ is made polymorphic and give under the same name as the nameAgency, password variant the possibility as to check wheter the agency - whose business name is a primary key in the _Agenzia_ table - is already registred in the network.
+La classe fornisce sostazialmente due metodi pubblici in overload per effettuare query sul database. Il primo effettua query classiche attraverso la classe Statement, il secondo prepara le query per rendere rendere efficienti le chiamate multiple attraverso la classe Prepared Statement.
+
+Il modo classico di effettuare una query per Connect è quello di creare lo statement, eseguire la query, effettuare un fetch del risultato e chiudere lo statement.
 
 ```
-submit.addActionListener(new ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    if (!Arrays.equals(password.getPassword(), confirm_password.getPassword())) {
-                        JOptionPane.showMessageDialog(null, "The two passwords do not coincide!");
-                        password = new JPasswordField();
-                        confirm_password = new JPasswordField();
-                    } 
-                    else {
-                        if ((deposito.getAgency(name_field.getText()).isEmpty()) {
-                            JOptionPane.showMessageDialog(null, "This agency is already present!");
-                            setVisible(false);
-                        } else {
-                            if (name_field.getText().isEmpty() || address_field.getText().isEmpty() || ZIP_field.getText().isEmpty()|| password.getPassword().length == 0 || confirm_password.getPassword().length == 0||url.getText().isEmpty() ||urlLogo_field.getText().isEmpty()) {
-                                JOptionPane.showMessageDialog(null, "Beware! The registration form is incomplete");
-                            } else {
-                                Vector<String> val = new Vector<String>();
-                                val.addElement(name_field.getText());
-                                val.addElement(urlLogo_field.getText());
-                                val.addElement(url.getText());
-                                val.addElement(address_field.getText());
-                                val.addElement(ZIP_field.getText());
-                                val.addElement(new String(password.getPassword()));
-                                deposito.insertAgency(val);
-                            }
-                        }
+Statement stmt = conn.createStatement();
+stmt.execute(queryString);
+ResultSet rs = stmt.getResultSet();
 
-                    }
+if( numColumns == 0 ) {
+	stmt.close();
+	return null;
+}
 
-                }
-            });
-            
+List<Vector<String>> fetchedRows =  fetchRows(rs, numColumns);
+
+stmt.close();
+return fetchedRows;
 ```
-If the user decides not to go through with the registration, button **discard:Button** allows them to close the form.
+Nel caso in cui la tabella risultante fosse priva di colonne la funzione prevede un'ottimizzazione evitando di effettuare il fetch del risultato.
 
-
-The method **insertAgency** is invocked on the deposito:DepositoDati reference in order to insert the data in the database, through the **query()** method of class _Connect_.
+Il fetch del risultato è inserito in una lista di vettori di stringhe prima di chiudere lo stmt perchè dopo aver fatto questo si perderebbero i ResultSet. L'unica alternativa a effettuare il fetch dei risultati sarebbe mischiare middle-layer e back-end creando gli stmt al livello di DepositoDati. Per evitare questo si è optato per questa implementazione.
+			   
 ```
-public void insertAgency(Vector<String> val) {
-        String insertAgency = "INSERT INTO azienda (nomeAzienda,urlLogo,urlSito,indirizzo, cap, password) values ((?),(?),(?),(?),(?),(?))";
-
-        Connect conn = new Connect();
-
-        conn.query(insertAgency, 0, val);
-
-        conn.close();
-    }
+PreparedStatement pstmt = conn.prepareStatement(queryString);
+for(int i=0, j = 1; i < data.size() ; i++, j++) 
+	if(StringUtils.isStrictlyNumeric(data.get(i)))
+		pstmt.setInt(j, Integer.parseInt( data.get(i) ) );
+	else
+		pstmt.setString(j, data.get(i));	
+pstmt.execute();
+if( numColumns == 0 ) {
+	pstmt.close();
+	return null;
+}
+ResultSet rs = pstmt.getResultSet();
+if( rs == null) {
+	pstmt.close();
+	return null;
+}
+List<Vector<String>> fetchedRows =  fetchRows(rs, numColumns);
+pstmt.close();		
+return fetchedRows;		
 ```
+Nel caso in cui si voglia effettuare una chiamata con statement di tipo PreparedStatement, Connection riconosce il tipo della variabile da settare attraverso la direttiva StringUtils.isStriclyNumeric(), per questo motivo in tutta l'applicazione devono essere effettuati dei controlli sui tipi per evitare che compilando campi corrispondenti a stringhe, l'utente inserisca valori numerici, che verrebbero riconosciuti erroneamente da Connection e provocherebbero errori nel database.
 
-# RegistrationForm
-![Class RegistrationForm](https://github.com/guidogagl/LSMDB/blob/Amaryllis/Untitled%20Diagram.jpg)
-
+## Code Explanation
+### Connect
 Attributi privati
+- **username : String = root** 
+- **password : String = root**
+- **SSL : String =  &requireSSL=true**
+- **connStr: String**
+- **conn : Connection = null**
 
-
-- **nameAgency:JLabel**
-- **address:JLabel**
-- **ZIP: JLabel**
-- **insertPassword:JLabel**
-- **urlLogo:JLabel**
-- **insertUrl:JLabel**
-- **url:JTextField**
-- **name_field:JTextField**
-- **address_field:JTextField**
-- **ZIP_field:JTextField**
-- **url:JTextField**
-- **urlLogo_field:JTextField**
-- **password:JPasswordField**
-- **confirm_password: JPasswordField**
-- **submit: JButton**
-- **discard: JButton**
-- **interface:Interface**
-- **deposito:DepositoDati**
+Metodi privati
+- **fetchRows(Result, int) : List<Vector<String>>** - prende il result set di una query insieme al numero di colonne della tabella di result ed esegue il fetch del risultato su una lista che restituisce 
 
 Metodi pubblici
+- **Connect()** - costruttore, crea una connessione di tipo Connection con il database che assegna all'attributo privato conn
+- **close()** - chiude la connessione istanziata dall'attributo privato conn
+- **query(String, int): List<Vector<String>>** - esegue una query passata per argomento e restituisce il result set in una lista. Il numero di colonne della tabella del result è passato come argomento.
+- **query(String, int, Vector<String>): List<Vector<String>>** - metodo in overload con il precedente che esegue una query attraverso un preparedStatement. I dati da assegnare al prepared statement sono passati come argomento.
 
--  **public RegistrationForm()** - the constructors sets the events associated with the _submit_ and _discard_ buttons and delegates the setting of its view to its instance of class _Interface_. 
-- **getname_field(void) : JTextField** - the _getter_ method for the prospective agency's name.
-- **getZIP_field(void) : JTextField** -  the _getter_ method for the prospective agency's ZIP code.
-- **getaddress(void):JLabel**
-- **getnameAgency(void):JLabel** 
-- **getZIP(void):JLabel** 
-- **getinsertUrl(void):JLabel**
-- **getpassword(void):JPasswordField** 
-- **getconfirm_password(void):JPasswordField** 
-- **geturl:JTextField**
-- **getname_field:JTextField**
-- **getaddress_field:JTextField**
-- **getZIP_field:JTextField**
-- **geturl:JTextField**
-- **geturlLogo_field:JTextField**
-- **getsubmit:JButton**
-- **getdiscard:JButton**
-- **getInterface:Interface** - used for the call-back setup mechanism.
 
-# Fundracing
+### DepositoDati
+Attributi privati
+- **conn : Connect = null**
 
-Attributi privati 
-- **form:RegistrationForm**
-- **register:Button**
-
-# Interface
+Metodi privati
+- **getRowTableProjects(String, Vector<string>):List<RowTableProjects>** 
+- **getRowTableMessage(String, Vector<string>):List<RowTableMessage>**
 
 Metodi pubblici
+- getProjects(String, Vector<string>):List<RowTableProjects>
+- getMessage(String, Vector<string>):List<RowTableMessage>
+- getDescriptionMessage(int):String
+- getSommaStakes(int):int
+- getProgress(int):double
+- getProjectsWithoutStake:List<RowTableProjects>
+- insertProject(Vector<String> val): void
+- iAmOwner(int, String): boolean
+- myStake(String, int): Boolean
+- deleteProject(int):void
+- getAgency(String, String): Vector<String>
+- getDescriptionProject(int): String
+- deleteMyStake(int, String): void
+- updateStake(int, String, int): void
 
-- **Interface(RegistrationForm)** - overridden constructor as to set up the layout parameters of an instance of class _RegistrationForm_.
+
+---
+
+
+
+## Obbiettivi del branch Lucia
+
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/ClassiTableMessage.png)
+
+### TableMessage
+The TableMessage class has the purpose of constructing the table that will be shown on the application interface. This class also aims to keep the contents of the table up to date using the **updateMessages** function.
+
+
+```
+public void updateMessages(List<RowTableMessage> messages) {
+	messagesList.clear();
+	messagesList.addAll(messages);
+}
+
+```
+
+
+Private attributes:
+
+- **messagesList: ObservableList\<RowTableMessage>**
+This attribute represents a list containing all the rows in the table. 
+
+Public methods:
+
+- **TableMessage()** - class constructor, inizializes the table columns and then adds them to the table
+- **updateMessages(List\<RowTableMessage> messages):void** - This function clears all the content of the table and replaces it with
+the informations stored in the List passed as argument.
+
+
+	
+### RowTableMessage
+This class is the data representation of the rows in the message table. It uses a constructor that has the aims to convert the attribute passed as argument in SimpleXProperty, where X is the type of the argument.
+
+
+```
+public RowTableMessage(int id, int id_project, String data, String mittente, String destinatario, String messaggio,
+			int stake) {
+		
+	this.id = new SimpleIntegerProperty(id);
+	this.id_project = new SimpleIntegerProperty(id_project);
+	this.data = new SimpleStringProperty(data);
+	this.mittente = new SimpleStringProperty(mittente);
+	this.destinatario = new SimpleStringProperty(destinatario);
+	this.messaggio = new SimpleStringProperty(messaggio);
+	this.stake = new SimpleIntegerProperty(stake);
+}
+
+```
+
+
+
+Public attributes:
+
+- **id:SimpleIntegerProperty**
+- **id_project:SimpleIntegerProperty**
+- **data:SimpleStringProperty**
+- **mittente:SimpleStringProperty**
+- **destinatario:SimpleStringProperty**
+- **messaggio:SimpleStringProperty**
+- **stake:SimpleIntegerProperty**
+
+Each attribute is a column in the table.
+
+Public methods:
+
+- **RowTableMessage(int id, int id_project, String data, String mittente, String destinatario, String messaggio,
+	int stake)** - class constructor, it converts the attribute passed as argument in SimpleXProperty, where X is the type of the argument
+- **getId():int** - returns the private field 'id' of the class
+- **getId_project():int** - returns the private field 'id_project' of the class
+- **getData():String** - returns the private field 'data' of the class
+- **getMittente():String** - returns the private field 'mittente' of the class
+- **getDestinatario():String** - returns the private field 'destinatario' of the class
+- **getMessaggio():String** - returns the private field 'messaggio' of the class
+- **getStake():int** - returns the private field 'stake' of the class
+
+
+### Fundracing
+
+The following changes have been made to this class.
+
+Private attributes:
+
+- **accept:Button**
+- **refuse:Button**
+- **l_description_message:Label**
+- **description_message:TextArea**
+- **stake_message:TextField**
+- **l_stake_message:Label**
+- **project_message:TextField**
+- **l_project_message:Label**
+- **send:Button**
+- **choice_agency:ChoiceBox**
+- **message_receiver:Label**
+- **gm:GestoreMessaggi**
+- **l_password:Label**
+- **l_agencyName:Label**
+- **messages_received:Label**
+- **l_stake:Label**
+- **l_description:Label**
+- **l_project_name:Label**
+- **l_total_budget:Label**
+
+Public methods:
+
+- **selectTableRow():void** - the function uses a handler, able to detect the selection of a row table, in order to return the information
+ contained in that row
+- **selectTableMessages():void** - the function uses a handle, able to detect the selection of a row table, in order to return the information
+ contained in that row
+- **inizializeChoiceBox():void** - the function initializes the drop-down menu with the list of companies in the database
+
+
+---
+
+## Use Case
+
+At the opening, the application shows the interface as represented in the Fig. 1.
+
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/StartingInterface.JPG)
+*Fig. 1: The picture represents the interface tha will appear to the user at the opening
+of the application*
+
+A user can register on the network by pressing the 'Registration' button and filling in the registration form with their information and finally clicking the Submit button, as shown in Fig. 2. The user can also close the registration form at any time by clicking on the corresponding Discard button.
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/Registration.JPG)
+*Fig. 2: The picture shows the registration form that appears to the user after pressing the Register button*
+
+
+The user can access to its private informations by inserting its credentials (username and password) and clicking on the 'Login' button.
+
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/Login.PNG)
+*Fig. 3: The picture represents an example of login, using the credentials of the Tesla agency*
+
+
+After a successfull login, the text fields and buttons become active and within the 'NetworkProjects' and 'MessagesReceived' tables the user can see its information. In particular, the first table shows the various data related to the projects in the network: the total budget, required to start the project; the progress, which represents the percentage of the funding received over the total budget; the name of the project; the project owner and the stake invested in that project by the company that logged in. 
+The second table shows all the messages received by the agency that logged in. (Fig. 4)
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/AfterLogin.PNG)
+*Fig. 4: The picture represents an example of how the interface will appear after a successfull login*
+
  
- 
+If the user wants to insert a new project in the network, it must specify the description, the project name and the total budget, and then click the 'Insert' button as shown in the Fig. 5.
 
 
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/BeforeInserting.PNG)
+*Fig. 5: The picture represents an example of insertion of a new project*
+
+
+After the insertion of a new project, it will appear in the NetworkProjects table as shown in the figure Fig. 6.
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/AfterInsertion.PNG)
+*Fig. 6: The picture represents how the interface will appear after inserting a new project*
+
+
+When the user wants to delete one of its project, it has to click on the corresponding row of the 'NetworkProjects' table and then the 'Delete' button as in the figure below. If the user tries to delete a project of which he is not the owner, but for which he had made a financing, the click of the 'Delete' button will only cause the reset of its stake for it. If the user wants to delete a project that is not its own and for which it has not made any financing, an alert window will be displayed.
+
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/DeleteProject.PNG)
+*Fig. 7: The picture represents how the interface will appear before deleting a project*
+
+
+If the user wants to update its stake for a project, it has to click on the corresponding row of the table, inserts the new stake, and then clicks the 'Update' button, as in Fig. 8.
+
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/UpdateStake.PNG)
+*Fig. 8: The picture represents how the interface will appear before updating a stake*
+
+
+For both messages and projects, by clicking on the corresponding row in the table the description will appear in their corresponding 'Description' text field .
+As shown in the Fig. 9 and in the Fig. 10.
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/DescriptionMessage.PNG)
+*Fig. 9: The picture represents how the interface will appear after clicking on a row of the Messages Received table*
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/DescriptionProject.PNG)
+*Fig. 10: The picture represents how the interface will appear after clicking on a row of the NetworkProjects table*
+
+
+Finally, a user can accept or reject a message received from another company and send a new one. 
+By selecting the row of the table 'MessagesReceived' and pressing the button 'Accept', the user agrees to make a new financing equal to the value of the stake expressed in the message. The images below show the application interface before and after pressing the 'Accept' button.
+
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/BeforeAccepting.PNG)
+*Fig. 11: The picture represents how the interface will appear before accepting a received message*
+
+
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/AfterAccept.PNG)
+*Fig. 12: The picture represents how the interface will appear after accepting a received message*
+
+
+The user can decide to refuse a received message by selecting the corresponding row of the table and pressing the 'Refuse' button.
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/DeleteMessage.PNG)
+*Fig. 13: The picture represents how the interface will appear before deleting a received message*
+
+Finally, the user can send a new message to a company by entering a text, a stake and the id of the project to which the message refers, in their corresponding fields, and selecting the company receiving the message, Fig. 14.
+
+!["dominating_sets_example2"](https://github.com/guidogagl/LSMDB/blob/master/img/UseCaseImages/SendMessage.PNG)
+*Fig. 14: The picture represents how the interface will appear before sending a new message*
+
+
+## Obbiettivi del branch Matteo
+
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/class_diagramGestoreMessaggi.png)
+
+The class GestoreMessaggi has the purpose of creating a "scheduler" that will update the messages'table every 5 seconds
+
+Private attributes:
+
+- **d : DepositoDati** 
+- **tm : TableMessage**
+- **agencyName : String**
+- **timer : Timer = null**
+- **task : TimerTask = null**
+
+Public methods
+
+- **GestoreMessaggi(DepositoDati,TableMessage,String):void** -Initialize all the private fields of GestoreMessaggi inside the constructor
+
+- **startAggiornamentoTabella():void** -create, using the constructs Timer and TimerTask, a "scheduler" that will call every 5 seconds the function aggiornaTabellaMessaggi()
+
+```
+timer = new Timer();
+task = new TimerTask() 
+{
+	public void run() 
+	{
+					
+		aggiornaTabellaMessaggi();
+					
+	}
+};
+timer.schedule(task, 0, 5000);
+
+```
+
+- **endAggiornamentoTabella():void** -stop the "scheduler" previously created
+
+```
+
+{
+	timer.cancel();
+	timer.purge();
+}
+
+```
+
+Private methods
+
+- **aggiornaTabellaMessaggi():void** -retrieve from the database the messages related to the agency, that previously logged in, and show them in the related table 
+
+```
+
+{
+	List<RowTableMessage> messaggiDaAggiungere = d.getMessages(agencyName);
+	tm.updateMessages(messaggiDaAggiungere);
+}
+
+```
+
+------
+
+Update use case diagram
+
+![archetture diagram](https://github.com/guidogagl/LSMDB/blob/master/img/usecase.png)
+
+
+The main actor of the application is an agency chief. The application provides to the user six different main functionalities:
+
+**1)Login** The user can, by inserting the username and password, confirm its identity and access to private informations
+
+**2)Registration** By filling in a predeterminated form, the user can register its agency inside the network and from now on have an active part in financing other projects and receive founds for its own
+
+**3)View Agencies** The user can read all the agencies present in the network
+
+**4)View Projects List** The chief agency will see,in a table, all the projects previously insered by the companies part of the network. If it's interested, by clicking a row, it will automatically receive additional informations, namely 
+the description and the stake insered until then, and also it can update the stake of a project or delete the projects itself,if it's the owner of it, or just the investment made, if it's not.
+
+**5)Add Project** The user can insert a new project requiring founds to start, and it will automatically be seen in the table.
+
+**6)Add Message** The user can ask to other agency chiefs present in the network to fund one of its projects. That request will be automatically be seen by the receiver.
+
+**7)View Messages** The chief agency will see, in a table, all the requests made to it. If it's interested, by clicking a row, it will automatically receive the additional information of the description, and also it can accept or decline
+ the request.
 
 
