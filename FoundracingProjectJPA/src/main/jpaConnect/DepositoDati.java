@@ -481,7 +481,7 @@ public class DepositoDati {
             System.out.print("Impossibile creare il manager del database \n");
             return null;
         }
-        String sql= "SELECT * FROM ProgettoEntity ORDER BY id DESC LIMIT 1";
+        String sql= "SELECT p FROM ProgettoEntity p ORDER BY p.id DESC LIMIT 1";
         List<ProgettoEntity> pr=fm.query(ProgettoEntity.class, sql);
         fm.exit();
 
@@ -495,7 +495,7 @@ public class DepositoDati {
             System.out.print("Impossibile creare il manager del database \n");
             return null;
         }
-        String sql= "SELECT * FROM FinanziamentoEntity ORDER BY id DESC LIMIT 1";
+        String sql= "SELECT f FROM FinanziamentoEntity f ORDER BY f.id DESC LIMIT 1";
         List<FinanziamentoEntity> pr=fm.query(FinanziamentoEntity.class, sql);
         fm.exit();
         if(pr.isEmpty())
