@@ -483,6 +483,8 @@ public class DepositoDati {
         }
         String sql= "SELECT * FROM ProgettoEntity ORDER BY id DESC LIMIT 1";
         List<ProgettoEntity> pr=fm.query(ProgettoEntity.class, sql);
+        fm.exit();
+
         if(pr.isEmpty())
             return null;
         return pr.get(0);
@@ -495,6 +497,7 @@ public class DepositoDati {
         }
         String sql= "SELECT * FROM FinanziamentoEntity ORDER BY id DESC LIMIT 1";
         List<FinanziamentoEntity> pr=fm.query(FinanziamentoEntity.class, sql);
+        fm.exit();
         if(pr.isEmpty())
             return null;
         return pr.get(0);
