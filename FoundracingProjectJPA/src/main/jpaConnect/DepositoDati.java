@@ -474,6 +474,44 @@ public class DepositoDati {
         }
 
     }
-
     
-}
+    private ProgettoEntity retrieveIdLastProject(){
+        fm = new FundracingManager();
+        if( !fm.isSetup() ){
+            System.out.print("Impossibile creare il manager del database \n");
+            return null;
+        }
+        String sql= "SELECT * FROM ProgettoEntity ORDER BY id DESC LIMIT 1";
+        List<ProgettoEntity> pr=fm.query(ProgettoEntity.class, sql);
+        if(pr.isEmpty())
+            return null;
+        return pr.get(0);
+        }
+    private FinanziamentoEntity retrieveIdLastFinanziamento(){
+        fm = new FundracingManager();
+        if( !fm.isSetup() ){
+            System.out.print("Impossibile creare il manager del database \n");
+            return null;
+        }
+        String sql= "SELECT * FROM FinanziamentoEntity ORDER BY id DESC LIMIT 1";
+        List<FinanziamentoEntity> pr=fm.query(FinanziamentoEntity.class, sql);
+        if(pr.isEmpty())
+            return null;
+        return pr.get(0);
+    }
+    public int getId(String entity){
+        if(entity=="ProgettoEntity"){
+            ProgettoEntity pr= retrieveIdLastProject();
+            if(pr!=null)
+                return pr.getId();
+        }
+        if(entity=="FinanziamentoEntity"){
+            FinanziamentoEntity pr= retrieveIdLastFinanziamento();
+            if(pr!=null)
+                return pr.getId();
+        }
+        return -1;    
+    }
+    
+    }
+   

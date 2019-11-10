@@ -66,14 +66,25 @@ public class Gestore {
 
             //controllare se connessione possibile
             if(false) //da settare
-                return projects;
-            
+                return;
+            List<Vector<String>> finances= d.getFinanziamentoWrites();
             List<Vector<String>> messaggi= d.getMessageWrites();
+            
             for(Vector<String> project: projects){
+                String id_old=project.get(0);
                 d.insertProject(project);
+                String id_new= Integer.toString(d.getId("ProgettoEntity"));
+                for (Vector<String> mess: messaggi)
+                    if(mess.get(4)==id_old)
+                        mess.set(4, id_new);
+                for (Vector<String> fin: finances)
+                    if(fin.get(3)==id_old)
+                        fin.set(3, id_new);
+  
             }
             
             
+        }    
         }
 
 
