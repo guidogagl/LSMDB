@@ -437,7 +437,29 @@ public class DepositoDati {
         return list;
     }
 
-
+    public void insertFinanziamento(Vector<String> val){
+        fm = new FundracingManager();
+        if( !fm.isSetup() ){
+            System.out.print("Impossibile creare il manager del database \n");
+            return;
+        }
+        FinanziamentoEntity fn=fm.selectFinanziamento(Integer.parseInt(val.get(0)));
+        if(fn == null){
+            System.out.print( "Impossibile reperire il finanziamento \n");
+            return;
+        }
+        AziendaEntity ae=fm.selectAgency(val.get(2));
+        ProgettoEntity pr=fm.selectProject(Integer.parseInt(val.get(3)));
+        if(ae==null || pr==null){
+            System.out.println("Errore: azienda o progetto non esistenti \n");
+            return;
+        }
+        FinanziamentoEntity ins=fm.createFinanziamento(Integer.parseInt(val.get(1)),ae, pr);
+        fm.exit();
+        if(fn==null){
+            System.out.println("Errore: finanziamento non creato \n");
+               }
+    }
     public void insertMessage(Vector<String>val) {
         fm = new FundracingManager();
         if( !fm.isSetup() ){

@@ -86,6 +86,12 @@ public class Gestore {
                         fin.set(3, id_new);
   
             }
+            for(Vector<String> mess: messaggi){
+                d.insertMessage(mess);
+            }
+            for(Vector<String> fin: finances){
+                d.insertFinanziamento(fin);
+            }
             
             
         }    
