@@ -265,16 +265,16 @@ public class DepositoDatiLevelDb extends DepositoDati{
     }
     
     public List<Vector<String>> getFinanziamentoWrites(){
+        //check if connession possible
         List<Vector<String>> res= conn.readAllEntities("writes:ProjectEntity");
-        List<Vector<String>> temp = new ArrayList<Vector<String>>();
-
-        for (Vector<String> finance:res){
-            
-        }
+        if res.isEmpty()
+            return null;
+        //recupera ordine attributi
         return res;
     }
     
     public List<Vector<String>> getMessageWrites(){
+                //check if connession possible
         List<Vector<String>> res= conn.readAllEntities("writes:ProjectEntity");
         List<Vector<String>> temp = new ArrayList<Vector<String>>();
         for (Vector<String> mess:res){
@@ -287,6 +287,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
             val.add(this.getAgency(mess.get(2)).get(0));            
             val.add(getProject(Integer.getInteger(mess.get(0))).get(0).get(0)); //id del progetto
             temp.add(val);
+            //chiamare clearEntity?
         }
         return temp;
     }
