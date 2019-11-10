@@ -62,9 +62,12 @@ public class Gestore {
 	}
         
         public void routine(){
-            if(false) // controlla se la connessione è possibile
-                return;
             List<Vector<String>> projects= d.getProjectWrites();
+
+            //controllare se connessione possibile
+            if(false) //da settare
+                return projects;
+            
             List<Vector<String>> messaggi= d.getMessageWrites();
             for(Vector<String> project: projects){
                 d.insertProject(project);
@@ -72,5 +75,5 @@ public class Gestore {
             
             
         }
-}
+
 

@@ -249,8 +249,8 @@ public class DepositoDatiLevelDb extends DepositoDati{
     
     public List<Vector<String>> getProjectWrites(){
         List<Vector<String>> res= conn.readAllEntities("writes:ProjectEntity");
-        if(res.isEmpty())
-            return null;
+        if(!createConnection())
+            return res;
         List<Vector<String>> temp = new ArrayList<Vector<String>>();
         for( Vector<String> projects: res){
             Vector<String> val=new Vector<String>();
@@ -267,15 +267,19 @@ public class DepositoDatiLevelDb extends DepositoDati{
     public List<Vector<String>> getFinanziamentoWrites(){
         //check if connession possible
         List<Vector<String>> res= conn.readAllEntities("writes:ProjectEntity");
-        if res.isEmpty()
-            return null;
+        if(!createConnection())
+            return res;
         //recupera ordine attributi
         return res;
     }
     
     public List<Vector<String>> getMessageWrites(){
+        
+            
                 //check if connession possible
         List<Vector<String>> res= conn.readAllEntities("writes:ProjectEntity");
+        if(!createConnection())
+            return res;
         List<Vector<String>> temp = new ArrayList<Vector<String>>();
         for (Vector<String> mess:res){
             Vector<String> val=new Vector<String>();
@@ -287,7 +291,6 @@ public class DepositoDatiLevelDb extends DepositoDati{
             val.add(this.getAgency(mess.get(2)).get(0));            
             val.add(getProject(Integer.getInteger(mess.get(0))).get(0).get(0)); //id del progetto
             temp.add(val);
-            //chiamare clearEntity?
         }
         return temp;
     }
