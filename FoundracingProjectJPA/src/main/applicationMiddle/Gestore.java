@@ -74,6 +74,10 @@ public class Gestore {
                 String id_old=project.get(0);
                 d.insertProject(project);
                 String id_new= Integer.toString(d.getId("ProgettoEntity"));
+                if(id_new.equals("-1")){
+                    System.out.println("Errore nel recupero dell'ultima entità inserita");
+                    return;
+                }
                 for (Vector<String> mess: messaggi)
                     if(mess.get(4)==id_old)
                         mess.set(4, id_new);
