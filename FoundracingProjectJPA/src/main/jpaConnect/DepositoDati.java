@@ -11,13 +11,16 @@ import java.util.Vector;
 
 public class DepositoDati {
     private FundracingManager fm = null;
+    private boolean aggiornamentoFatto=false;
+    private boolean routinesInExecution=false;
+    
+    
+    public DepositoDati() {
+    	fm = new FundracingManager();
+    }
 
     protected List<RowTableProjects> getRowTableProjects(List<ProgettoEntity> list, String agencyName, Boolean withStake) {
-        fm = new FundracingManager();
-        if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
-            return null;
-        }
+        
 
         List<RowTableProjects> rows = new ArrayList<RowTableProjects>();
         for(ProgettoEntity p : list){
@@ -41,9 +44,10 @@ public class DepositoDati {
             rows.add( rtp );
         }
 
-        fm.exit();
+       // fm.exit();
         return rows;
     }
+    
     protected List<RowTableMessage> getRowTableMessage(List<MessaggioEntity> me_list) {
         if(me_list == null)
             return new ArrayList<RowTableMessage>();
@@ -64,15 +68,15 @@ public class DepositoDati {
     protected List<Vector<String>> getAgencyEntities() {
         String sql = "select a	from	AziendaEntity a ";
 
-        fm = new FundracingManager();
+        //fm = new FundracingManager();
         if (!fm.isSetup()) {
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return null;
         }
 
         List<AziendaEntity> agencies = fm.query(AziendaEntity.class, sql);
 
-        fm.exit();
+       // fm.exit();
 
         List<Vector<String>> list = new ArrayList<>();
 
@@ -94,43 +98,67 @@ public class DepositoDati {
         return list;
     }
     protected List<ProgettoEntity> getProjectEntities(){
-        fm = new FundracingManager();
+        //fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return null;
         }
 
         List<ProgettoEntity> projects = fm.query(ProgettoEntity.class, "SELECT p FROM ProgettoEntity p");
-        fm.exit();
+       // fm.exit();
 
         return projects;
     }
     protected List<MessaggioEntity> getMessageEntities(String agencyName){
         String sql = "SELECT m FROM MessaggioEntity m WHERE destinatario = '" + agencyName + "'";
 
-        fm = new FundracingManager();
+        //fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return null;
         }
 
         List<MessaggioEntity> messages = fm.query(MessaggioEntity.class, sql);
 
-        fm.exit();
+       // fm.exit();
 
         return messages;
     }
+    
 
+    public boolean getAggiornamentoFatto() {
+    	return this.aggiornamentoFatto;
+    }
+    
+    public void setAggiornamentoFatto(boolean aggiornamentoFatto) {
+    	this.aggiornamentoFatto=aggiornamentoFatto;
+    }
+    
+    public boolean getRoutinesInExecution() {
+    	return this.routinesInExecution;
+    }
+    
+    public void setRoutinesInExecution(boolean routinesInExecution) {
+    	this.routinesInExecution=routinesInExecution;
+    }
+    
+    public void close() {	//Sbagliata??? E' corretto scrivere if (fm.isSetup()) 
+    	if (fm.isSetup()) {
+            fm.exit();
+        }
+    }
+    
+    
     public Vector<String> getAgency(String agencyName,String password) {
-        fm = new FundracingManager();
+        //fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return null;
         }
 
         AziendaEntity ae = fm.selectAgency(agencyName);
 
-        fm.exit();
+        //fm.exit();
 
         Vector<String> vett = new Vector<String>();
 
@@ -146,15 +174,15 @@ public class DepositoDati {
         return vett;
     }
     public Vector<String> getAgency(String agencyName) {
-        fm = new FundracingManager();
+        //fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return new Vector<>();
         }
 
         AziendaEntity ae = fm.selectAgency(agencyName);
 
-        fm.exit();
+        //fm.exit();
 
         if( ae ==null){
             System.out.print("Agency not present \n");
@@ -165,14 +193,18 @@ public class DepositoDati {
         vett.add(ae.getNomeAzienda());
         return vett;
         }
+    
+    
     public void insertAgency(Vector<String> val){
-        fm = new FundracingManager();
+       // fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
         }
         fm.createAgency(val.get(0), val.get(1), val.get(2), val.get(3), Integer.parseInt(val.get(4)), val.get(5));
-        fm.exit();
+        //fm.exit();
     }
+    
+    
     public List<String> getListAgency(){
 
         List<Vector<String>> agencyList = getAgencyEntities();
@@ -199,13 +231,13 @@ public class DepositoDati {
     }
 
     public String getDescriptionMessage(int id_message) {
-        fm = new FundracingManager();
+       // fm = new FundracingManager();
         if(!fm.isSetup())
             return " ";
 
         MessaggioEntity msg = fm.selectMessaggio(id_message);
 
-        fm.exit();
+       // fm.exit();
 
         if(msg == null)
             return " ";
@@ -217,13 +249,13 @@ public class DepositoDati {
         String sql = "SELECT sum(f.budget) FROM FinanziamentoEntity f  WHERE f.progetto= " + selectedProjectID ;
 
 
-        fm = new FundracingManager();
+        //fm = new FundracingManager();
         if(!fm.isSetup())
             return -1;
 
         Long stake = fm.singleReturnQuery(Long.class, sql);
 
-        fm.exit();
+        //fm.exit();
 
         if(stake == null)
             return 0;
@@ -232,38 +264,38 @@ public class DepositoDati {
         return Integer.parseInt(stake.toString());
     }
 
-    public double getProgress(int id_progetto) {
+    /*public Double getProgress(int id_progetto) {
         fm = new FundracingManager();
         if(!fm.isSetup())
-            return 0;
+            return 0.0;
 
-        Integer progress = fm.singleReturnQuery(int.class, "SELECT SUM(f.budget) FROM FinanziamentoEntity f WHERE f.progetto = " + id_progetto );
-        if( progress == null)
-            progress = 0;
+        Long somma_stake = fm.singleReturnQuery(Long.class, "SELECT SUM(f.budget) FROM FinanziamentoEntity f WHERE f.progetto = " + id_progetto );
+        if( somma_stake == null)
+            return 0.0;
 
         fm.exit();
 
-        return progress;
-    }
+        return progress.intValue();
+    }*/
 
     public List<RowTableProjects> getProjectsWithoutStake(){
-        fm = new FundracingManager();
+       // fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return null;
         }
         List<ProgettoEntity> projects = fm.query(ProgettoEntity.class, "SELECT p FROM ProgettoEntity p");
 
         List<RowTableProjects> ret = getRowTableProjects( projects, null, false );
 
-        fm.exit();
+        //fm.exit();
         return ret;
         }
 
     public void insertProject(Vector<String>val) {
-        fm = new FundracingManager();
+        //fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return;
         }
         AziendaEntity ae = fm.selectAgency(val.get(3));
@@ -272,23 +304,23 @@ public class DepositoDati {
             return;
         }
 
-        fm.createProject(val.get(0), Integer.parseInt(val.get(1)), val.get(2), ae );
+        fm.createProject(val.get(0), Integer.parseInt(val.get(1)), val.get(2), ae );	//nome, budget, descrizione, azienda
 
-        fm.exit();
+        //fm.exit();
 
     }
 
     public boolean iAmOwner(int projectId,String agencyName) {
-        fm = new FundracingManager();
+        //fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return false;
         }
 
 
         ProgettoEntity progetto = fm.singleReturnQuery(ProgettoEntity.class, "SELECT p FROM ProgettoEntity p WHERE p.azienda = '" + agencyName + "' AND p.id = " + projectId );
 
-        fm.exit();
+        //fm.exit();
         if(progetto == null)
             return false;
 
@@ -296,9 +328,9 @@ public class DepositoDati {
     }
 
     public int myStake(String agencyName, int id_project){
-        fm = new FundracingManager();
+        //fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return -1;
         }
 
@@ -306,7 +338,7 @@ public class DepositoDati {
         if (stake == null)
             stake = new Long( 0);
 
-        fm.exit();
+        //fm.exit();
 
         return Integer.parseInt(stake.toString());
     }
@@ -317,71 +349,99 @@ public class DepositoDati {
         return false;
     }
 
-    public void deleteProject(int projectId) {
-        fm = new FundracingManager();
+    public void deleteProject(int projectId) { 
+    	
+    	this.deleteMessages(projectId);
+        
+    	//fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return;
         }
+        
+       
 
         fm.deleteProject(projectId);
 
-        fm.exit();
+       // fm.exit();
 
     }
 
     public void deleteMessage(int messageId) {
-        fm = new FundracingManager();
+        //fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return;
         }
 
         fm.deleteMessaggio(messageId);
 
-        fm.exit();
+       // fm.exit();
 
     }
 
     public String getDescriptionProject(int id_project) {
-        fm = new FundracingManager();
+       // fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return null;
         }
 
         ProgettoEntity pe = fm.selectProject(id_project);
 
-        fm.exit();
+       // fm.exit();
 
         if(pe == null)
             return null;
 
         return pe.getDescrizione();
     }
+    
+    
+    public void deleteMessages(int projectId) {
+    	String sql = "DELETE FROM MessaggioEntity m WHERE m.progetto =" + projectId;
+    	
+    	//fm = new FundracingManager();
+        if( !fm.isSetup() ){
+            System.out.print("Non ho la connessione con il database \n");
+            return;
+        }
+        
+        int occurrency = fm.executeUpdateQuery(sql);
+        
+        if(occurrency<1) {
+        	System.out.println("FAILED TO DELETE MESSAGES");
+        }
+
+       // fm.exit();
+
+        
+    }
+    
 
     public void deleteMyStake(int projectId,String agencyName) {
         String sql = "DELETE FROM FinanziamentoEntity WHERE progetto = "+ projectId +" and azienda = '"+ agencyName + "'";
 
-        fm = new FundracingManager();
+        //fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return;
         }
 
         int occurrency = fm.executeUpdateQuery(sql);
 
-        fm.exit();
-
+       // fm.exit();
+        
         if( occurrency < 1 )
             System.out.print("FAILED TO DELETE STAKE \n");
+            
     }
 
     public void updateStake(int stakeBudget,String agencyName,int idProgetto, boolean add) {
-        fm = new FundracingManager();
+       // fm = new FundracingManager();
 
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return;
         }
 
@@ -401,22 +461,22 @@ public class DepositoDati {
             fm.updateFinanziamento(finanziamento.getId(), finanziamento);
         }
 
-        fm.exit();
+       // fm.exit();
 
     }
 
     public List<Vector<String>> getProject(int idProgetto){
         String sql = "SELECT p FROM ProgettoEntity p WHERE id =" + idProgetto ;
 
-        fm = new FundracingManager();
+       // fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return null;
         }
 
         List<ProgettoEntity> projects = fm.query(ProgettoEntity.class, sql);
 
-        fm.exit();
+       // fm.exit();
         if(projects == null)
             return new ArrayList<Vector<String>>();
 
@@ -439,9 +499,15 @@ public class DepositoDati {
 
 
     public void insertMessage(Vector<String>val) {
-        fm = new FundracingManager();
+    	
+    	System.out.println("Sono in insertMessage");
+    	for(int i = 0; i < val.size(); i++) {
+        	System.out.println("insertMessage " + val.get(i));
+        }
+    	
+        //fm = new FundracingManager();
         if( !fm.isSetup() ){
-            System.out.print("Impossibile creare il manager del database \n");
+            System.out.print("Non ho la connessione con il database \n");
             return;
         }
 
@@ -453,10 +519,10 @@ public class DepositoDati {
 
         AziendaEntity aeMitt = fm.selectAgency( val.get(0) );
         if(aeMitt == null){
-            System.out.print( "Impossibile inviare un messaggio a un'azienda non registrata \n");
+            System.out.print( "Impossibile far inviare un messaggio a un'azienda non registrata \n");
             return;
         }
-        System.out.println("Questo ï¿½ l'id "+Integer.parseInt(val.get(2)));
+        System.out.println("Questo è l'id "+Integer.parseInt(val.get(2)));
         ProgettoEntity pe = fm.selectProject(Integer.parseInt( val.get(2) ));
         if(pe == null){
             System.out.print( "Impossibile inviare un messaggio a su di un progetto inesistente \n");
@@ -464,10 +530,11 @@ public class DepositoDati {
         }
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date date = new java.sql.Date(utilDate.getTime());
+        
 
         MessaggioEntity me = fm.createMessage( val.get(3), Integer.parseInt(val.get(4)), date, aeMitt, aeDest, pe );
 
-        fm.exit();
+        //fm.exit();
 
         if(me == null){
             System.out.print("MESSAGE SEND FAILED \n");

@@ -39,25 +39,73 @@ public class Connect {
             e.printStackTrace();
         }
     }
+    
+    public void changeConnection(String str) {
+    	this.close();
+    	if(str.equals("read")){
+    		 options.createIfMissing(true);
+    	        try {
+    	            db =  factory.open( new File("levelDbStore"), options);
+    	        } catch (IOException e) {
+    	            e.printStackTrace();
+    	            db = null;
+    	        }
+    	}else if(str.equals("delete")) {
+    		options.createIfMissing(true);
+	        try {
+	            db =  factory.open( new File("levelDbDeleteStore"), options);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            db = null;
+	        }
+    	}else if(str.equals("insert")) {
+    		options.createIfMissing(true);
+	        try {
+	            db =  factory.open( new File("levelDbInsertStore"), options);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            db = null;
+	        }
+    	}else if(str.equals("update")) {
+    		options.createIfMissing(true);
+	        try {
+	            db =  factory.open( new File("levelDbUpdateStore"), options);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            db = null;
+	        }
+    	}
+    	
+    }
    
-    public void clearEntity(String entityName) {
+    public void clearEntity(String cache, String entityName) {
+    	
+    	this.changeConnection(cache);
+    	
     	DBIterator keyIterator = db.iterator();
         keyIterator.seek(bytes( entityName));
-        while (keyIterator.hasNext()) { 
-        	byte[]row=keyIterator.peekNext().getKey();
-        	String stored_key = asString(row); // key arrangement : employee:$employee_id:$attribute_name = $value
-            String[] keySplit = stored_key.split(":"); // split the key
-            if( keySplit[0].equals(entityName) ){
-                db.delete(row);
-                keyIterator.next();
-            }else
-            	break;
+        try {
+	        while (keyIterator.hasNext()) { 
+	        	byte[]row=keyIterator.peekNext().getKey();
+	        	String stored_key = asString(row); // key arrangement : employee:$employee_id:$attribute_name = $value
+	            String[] keySplit = stored_key.split(":"); // split the key
+	            if( keySplit[0].equals(entityName) ){
+	                db.delete(row);
+	                keyIterator.next();
+	            }else
+	            	break;
+	        }
+	        this.close();
+        }catch(Exception e ) {
+        	 e.printStackTrace();
         }
     }
 	
 
-    public void writeEntity(String entityName, Vector<String> attributes, Vector<String> values){
+    public void writeEntity(String cache, String entityName, Vector<String> attributes, Vector<String> values){
 
+    	this.changeConnection(cache);
+    	
         WriteBatch batch = db.createWriteBatch();
         String primaryKey = entityName + ":" + values.get(0);
 
@@ -72,15 +120,81 @@ public class Connect {
         } finally {
         	try {
         		batch.close();
+        		this.close();
         	}catch(IOException e) {
         		e.printStackTrace();
         	}
         }
     }
+    
+    public void deleteSingleEntity(String cache, String entityName,String primaryKey) {
+    	this.changeConnection(cache);
+    	DBIterator keyIterator = db.iterator();
+        keyIterator.seek(bytes( entityName+":"+primaryKey));
+        try {
+	        while (keyIterator.hasNext()) { 
+	        	byte[]row=keyIterator.peekNext().getKey();
+	        	String stored_key = asString(row); // key arrangement : employee:$employee_id:$attribute_name = $value
+	            String[] keySplit = stored_key.split(":"); // split the key
+	            if( keySplit[0].equals(entityName) && keySplit[1].equals(primaryKey) ){
+	                db.delete(row);
+	                keyIterator.next();
+	            }else
+	            	break;
+	        }
+	        this.close();
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }
+    }
+    
+    public void updateSingleValue(String cache, String entityName,String primaryKey,String attribute,String newValue) {
+    	this.changeConnection(cache);
+    	DBIterator keyIterator = db.iterator();
+        keyIterator.seek(bytes( entityName+":"+primaryKey+":"+attribute));
+        try {
+	        while (keyIterator.hasNext()) { 
+	        	byte[]row=keyIterator.peekNext().getKey();
+	        	String stored_key = asString(row); // key arrangement : employee:$employee_id:$attribute_name = $value
+	            String[] keySplit = stored_key.split(":"); // split the key
+	            if( keySplit[0].equals(entityName) && keySplit[1].equals(primaryKey) && keySplit[2].equals(attribute)){
+	                db.delete(row);
+	                db.put(bytes( entityName+":"+primaryKey+":"+attribute),bytes(newValue));
+	                keyIterator.next();
+	            }else
+	            	break;
+	        }
+	        this.close();
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }
+    }
+    
+    public String readSingleValue(String cache, String entityName,String primaryKey,String attribute) {
+    	this.changeConnection(cache);
+    	DBIterator keyIterator = db.iterator();
+        keyIterator.seek(bytes( entityName+":"+primaryKey+":"+attribute));
+        try {
+	        while (keyIterator.hasNext()) { 
+	        	byte[]row=keyIterator.peekNext().getKey();
+	        	String stored_key = asString(row); // key arrangement : employee:$employee_id:$attribute_name = $value
+	            String[] keySplit = stored_key.split(":"); // split the key
+	            if( keySplit[0].equals(entityName) && keySplit[1].equals(primaryKey) && keySplit[2].equals(attribute)){
+	            	return asString( db.get( bytes( stored_key )));
+	            }else
+	            	break;
+	        }
+	        this.close();
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }
+        return new String();
+    }
 
-    public List<Vector<String>> readEntity(String entityName, String primaryKey){
+    public List<Vector<String>> readEntity(String cache, String entityName, String primaryKey){
         // effettuiamo uno snapshot per evitare letture inconsistenti a causa dei thread di update
         // del database
+    	this.changeConnection(cache);
         ReadOptions ro = new ReadOptions();
         ro.snapshot(db.getSnapshot());
 
@@ -98,19 +212,25 @@ public class Connect {
                 String[] keySplit = stored_key.split(":"); // split the key
 
                 if( !keySplit[0].equals(entityName) ){
-                    resultSet.add(entity);
+                    
                     break;
                 }
 
-                if( keySplit[1].equals( primaryKey )  ){
+                if( keySplit[1].equals( primaryKey )  )
+                {
                     entity.add( asString( db.get( bytes( stored_key ) ) ) );
                     keyIterator.next();
-                } else
-                    break;
+                } 
+                else //secondo me qui c'è un problema,se siamo sulla entità corretta ma id sbagliato,usciamo senza inseririre nulla -->
+                {
+                	resultSet.add(entity);
+                	break;
+                }
 
             }
+            resultSet.add(entity);
 
-            if( resultSet.isEmpty() && (entity.size() > 1) )
+            if( resultSet.isEmpty() && (entity.size() > 1) ) //--> e qui abbiamo resultSet empty e entityVuoto->in questo caso ritorno un resultSet vuoto
                 resultSet.add(entity);
 
         }catch(Exception e) {
@@ -120,6 +240,7 @@ public class Connect {
     		try {
 	            keyIterator.close();
 	            ro.snapshot().close();
+	            this.close();
     		}catch(IOException e) {
     			e.printStackTrace();
     		}
@@ -127,6 +248,59 @@ public class Connect {
 
         return resultSet;
     }
+    
+    
+    public List<Vector<String>> readAllEntity(String cache, String entityName){
+    	this.changeConnection(cache);
+    	ReadOptions ro = new ReadOptions();
+        ro.snapshot(db.getSnapshot());
+
+        DBIterator keyIterator = db.iterator();
+        keyIterator.seek(bytes( entityName ));
+        Vector<String> entity=new Vector<String>();
+        String primaryKey="";
+        List<Vector<String>> resultSet = new ArrayList<Vector<String>>();
+        try {
+            while (keyIterator.hasNext()) {
+            	String stored_key = asString(keyIterator.peekNext().getKey()); // key arrangement : employee:$employee_id:$attribute_name = $value
+                String[] keySplit = stored_key.split(":"); // split the key
+                if( !keySplit[0].equals(entityName) ){//se non hai la classe che cerchi
+                	
+                    break;
+                }
+               
+                else if(keySplit[0].equals(entityName)&&!keySplit[1].equals(primaryKey)) { //siamo su un nuova chiave
+                	if(!entity.isEmpty())
+                		resultSet.add(entity);
+                	entity=new Vector<String>();
+                	primaryKey=keySplit[1];
+                	entity.add(primaryKey);
+                	entity.add( asString( db.get( bytes( stored_key ) ) ) );
+                }
+                else { //stessa chiave,nuovo valore
+                	entity.add( asString( db.get( bytes( stored_key ) ) ) );
+                
+                }
+                keyIterator.next(); 	
+            }
+            resultSet.add(entity);
+        }catch(Exception e) {
+        	e.printStackTrace();
+        }
+    	finally {
+    		try {
+	            keyIterator.close();
+	            ro.snapshot().close();
+	            this.close();
+    		}catch(IOException e) {
+    			e.printStackTrace();
+    		}
+        }
+
+        return resultSet;
+    } 
+    
+
 
 
 }
