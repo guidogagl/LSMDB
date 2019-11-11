@@ -1,0 +1,51 @@
+CONNECT 
+isSetup():Boolean - checks wheter the connection to one of the shards was succesfull or not
+Connect(): create the default connection with the read shard
+close():void  close the opened connection
+changeConnection(String str):void - close the opened connection,of there is one,and open the new one the the shard specified in the argument
+clearEntity(String cache,String entityName):void - delete from the specified connection all the key-value pairs that present as entityName the value passed as the second argument
+writeEntity(String entityName, Vector attributes, Vector values): void  writes into the specified shard a new key-value instance with the attributes and values given as arguments
+deleteSingleEntity(String cache,String entityName,String primaryKey): delete from the specified shard all the key-value rows related to the entity and key given as arguments
+updateSingleValue(String cache,String entityName,String primaryKey,String attribute,String newValue):update an attribute of entity of a shard,all specified in the arguments,with the new value
+readSingleValue(String cache,String entityName,String primaryKey,String attribute):String- return the value of the attribute of the entity in the specified shard
+readEntity(String cache,String entityName,String primaryKey):List<Vector<String>> - return a list of all the values belonging to the specified entity in a shard
+readAllEntity(String cache,String entityName):List<Vector<String>> return all the values belonging to a certain type of entity in a shard
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DEPOSITODATILEVELDB
+
+- **createConnection():Boolean** - it checks whether the connection to the database was successful or not
+- **getEntityFromLevelDb(String EntityName, String entityID ):Vector<String>** - returns the list of instances present in the read shard with the value of Entity name and Primary Key equal to those specified as a function parameter
+- **DepositoDatiLevelDb()** - class constructor, initializes the vectors agencyAtt, projectsAtt,messageAtt,finanziamentoAtt,deleteAtt with the names of the attributes of the various entities
+- **getAgency(String agencyName):Vector<String>** - it returns cached information about the company whose name is specified as a function parameter
+- **getAgency(String agencyName,String password):Vector<String>** - returns an empty vector in the case in which a company with the name and value of the password specified as argument of the function are not present in the cache, otherwise returns the information of the specified company
+- **getAggiornamentoFatto(): return the boolean aggiornamentoFatto,used to indicate wheter or not the update of the mysql db is finished
+- **setAggiornamentofatto(boolean aggiornamentoFatto): set the value of boolean aggiornamentoFatto inside the class with the one specified in the argument
+- **getRoutinesInExecution(): return the boolean routinesInExecution,used to indicate wheter or not the routines of update(meaning both from shards to db and viceversa) is still going
+- **setRoutinesInExecution(boolean routinesInExecution): return the value of the boolean routinesInExecution inside the class with the one specified in the argument
+- **insertAgency(Vector<String> val):void** - it inserts the company in the mysql db,and the updating the read shard with all the agencies present in the db
+- **getListAgency():List<String>** - returns the list of agencies in the read shard
+- **getProjects(String agencyName):List<RowTableProjects>** - returns the list of projects (having as owner the company whose name is specified as a function parameter) that are present in the read shard 
+- **getProjectsWithoutStake():List<RowTableProjects>** - returns the list of all projects in the read shard without their progress 
+- **getProject(int idProgetto):List<Vector<String>>** - returns information about the project whose id is passed as an argument of the function that are present in the read shard
+- **getProgress(int id_progetto):double** - returns the value of the progress relative to the project whose id is passed as the function's argument. To do this, the function uses the information in the database
+- **getDescriptionProject(int id_project):String** - returns the description, present in the read shard,relative to the project whose id is passed as argument of the function
+- **iAmOwner(int projectId,String agencyName):boolean** - returns true if the company, whose id is passed as function parameter, is the company owner of the project whose id is passed as function parameter, otherwise it returns false. The function uses the information present in the read shard
+- **getSommaStakes(int selectedProjectID):int** - returns the sum of the funding received by the project whose id is passed as argument to the function. This information is taken from the read shard
+- **getMessages(String agencyName):List<RowTableMessage>** - returns from the read shard the list of messages having as receiver the company whose name is passed as argument of the function 
+- **getDescriptionMessage(int id_message):String** - returns the description present in the read shard relative to the message whose id is passed as argument of the function
+- **deleteMessage(int messageId):void - delete from the read and delete shard the message, if present, whose id is passed as argument of the function
+- **insertProject(Vector<String>vector):void - insert into the read and insert shard a new project with the values passed as arguments
+- **insertMessage(Vector<String>vector):void - insert into the read and insert shard a new message with the values passed as arguments
+- **updateStake(int selectedStake,String agencyName,int selectedProjectid,boolean add): depending on the boolean add,the function will add/update with the newStake passed as argument the relative project and its funds,both in the read and update shard
+- **deleteMyStake(int selectedProjectId,String agencyName):void - the function reset the fund of a project(and consequently the progress) of a project in the read shard
+- **deleteProject(int selectedProjectId):void - delete the project from the read shard and add a now row in the delete shard,meaning the project that will be deleted when the routine is in execution
+- **clearCache(String cacheName):void - clear the specified shard
+- **readProgettoFromMySql(String agencyName): void - read all the projects from mysql db and add their relative informations in the read shard
+- **readMessagioFromMySql(String agencyname): void - read all the messages, whose receiver is the one specified in the argument, from mysql db and add their relative informations in the read shard
+- **readAziendaFromMySql(): void - read all the agencies from mysql db and add them in the read shard
+- **getProjectsWrites(): List<Vector<String>> - retrieve from the read shard all the projects. The distinction will be next made based on the value of the id
+- **getMessagesWrites(): List<Vector<String>> - retrieve from the insert shard all the messages that will be insert in the mysql db
+- **copyProjectAndFundsInDB(List<vector<String>> projects,String agencyName):void - insert into the mysql db the projects specified in the argument,with the respective funds taken from the update shard.A remapping of the id will be executed if needed.
+- **copyMessagesInDB(List<Vector<String>> messages):void - insert into the mysql db the messages given in the argument
+- **deleteEntitiesInMySql(String agencyName):void - retrive from the delete shard all the entities that must be deleted from the mysql db
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
