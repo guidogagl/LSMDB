@@ -50,15 +50,21 @@ public class Connect {
     	            e.printStackTrace();
     	            db = null;
     	        }
-    	}else if(str.equals("delete")) {
+    	}
+    	else if(str.equals("delete")) 
+    	{
     		options.createIfMissing(true);
-	        try {
+	        try 
+	        {
 	            db =  factory.open( new File("levelDbDeleteStore"), options);
-	        } catch (IOException e) {
+	        } catch (IOException e) 
+	        {
 	            e.printStackTrace();
 	            db = null;
 	        }
-    	}else if(str.equals("insert")) {
+    	}
+    	else if(str.equals("insert"))
+    	{
     		options.createIfMissing(true);
 	        try {
 	            db =  factory.open( new File("levelDbInsertStore"), options);
@@ -66,7 +72,9 @@ public class Connect {
 	            e.printStackTrace();
 	            db = null;
 	        }
-    	}else if(str.equals("update")) {
+    	}
+    	else if(str.equals("update")) 
+    	{
     		options.createIfMissing(true);
 	        try {
 	            db =  factory.open( new File("levelDbUpdateStore"), options);
@@ -261,11 +269,12 @@ public class Connect {
         String primaryKey="";
         List<Vector<String>> resultSet = new ArrayList<Vector<String>>();
         try {
-            while (keyIterator.hasNext()) {
+            while (keyIterator.hasNext()) 
+            {
             	String stored_key = asString(keyIterator.peekNext().getKey()); // key arrangement : employee:$employee_id:$attribute_name = $value
                 String[] keySplit = stored_key.split(":"); // split the key
-                if( !keySplit[0].equals(entityName) ){//se non hai la classe che cerchi
-                	
+                if( !keySplit[0].equals(entityName) ) //se non hai la classe che cerchi
+                {
                     break;
                 }
                
