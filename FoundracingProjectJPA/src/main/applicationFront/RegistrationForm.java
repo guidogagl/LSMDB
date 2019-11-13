@@ -30,10 +30,13 @@ public class RegistrationForm extends JFrame {
          public JTextField urlLogo_field = new JTextField();
          public JButton submit = new JButton("Submit");
          public JButton reset = new JButton("Reset");
-         public DepositoDatiLevelDb deposito=null;
+         //public DepositoDatiLevelDb deposito=null;
+         public DepositoDati deposito=null;
          private Boolean Mysql_active = true;
 
         public RegistrationForm(DepositoDatiLevelDb db) {
+       // public RegistrationForm(DepositoDati db) {
+
         	deposito=db;
         	reset.addActionListener(new ActionListener() {
            public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -45,32 +48,43 @@ public class RegistrationForm extends JFrame {
         	this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         	
             submit.addActionListener(new ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
+                public void actionPerformed(java.awt.event.ActionEvent e) 
+                {
                 	
-                	/*if(!Mysql_active) {
+                	if(!Mysql_active) {
                 		JOptionPane.showMessageDialog(null, "Non puoi rigistrarti perché manca la connessione al server.");
     					return;
-                	}else {*/
+                	}else 
+                	{
                 	
                     if (name_field.getText().isEmpty() || address_field.getText().isEmpty() || ZIP_field.getText().isEmpty()
-                                    || password.getPassword()==null || confirm_password.getPassword()==null|| url.getText().isEmpty() || urlLogo_field.getText().isEmpty()) {  
+                                    || password.getPassword()==null || confirm_password.getPassword()==null|| url.getText().isEmpty() || urlLogo_field.getText().isEmpty()) 
+                    {  
                                 JOptionPane.showMessageDialog(null, "Attenzione! Alcuni campi sono ancora vuoti!");
-                    }else if(!ZIP_field.getText().matches("[0-9]+")) {
+                    }
+                    else if(!ZIP_field.getText().matches("[0-9]+")) 
+                    {
                     	JOptionPane.showMessageDialog(null, "Attenzione! Il cap deve essere numerico!");
                     	ZIP_field.setText("");
                     }
-                    	else {
+                    else
+                    {
                         if (!deposito.getAgency(name_field.getText()).isEmpty()) {
                             JOptionPane.showMessageDialog(null, "Questa azienda è già presente!");
                             resetFields();
-                        } else {
+                        }
+                        else 
+                        {
                             if(password.getPassword()==null)
                                 JOptionPane.showMessageDialog(null, "Password non inserita!");
-                            else if (!Arrays.equals(password.getPassword(), confirm_password.getPassword())) {
+                            else if (!Arrays.equals(password.getPassword(), confirm_password.getPassword())) 
+                            {
                             	JOptionPane.showMessageDialog(null, "Le due password non coincidono!");
                                 password.setText("");;
                                 confirm_password.setText("");;
-                            } else {
+                            } 
+                            else 
+                            {
                                 Vector<String> val = new Vector<String>();
                                 val.add(name_field.getText());
                                 val.add(urlLogo_field.getText());
@@ -79,14 +93,16 @@ public class RegistrationForm extends JFrame {
                                 val.add(ZIP_field.getText());
                                 //password passata in chiaro!!!
                                 val.add(new String(password.getPassword()));
-                                if(Mysql_active == true) {
+                                if(Mysql_active==true) 
+                                {
                                 	deposito.insertAgency(val);	//Inserisce direttamente l'agenzia nel database
                                 	dispose();
                                 	JOptionPane.showMessageDialog(null, "Inserimento realizzato con successo!");
                                 }
-                                else {
-	                                dispose();
-	                                JOptionPane.showMessageDialog(null, "Inserimento realizzato con successo!");
+                                else
+                                {
+                                	dispose();
+                                	JOptionPane.showMessageDialog(null, "Inserimento non realizzabile,connessione con il database assente!");
                                 }
                             }
                         }
@@ -94,7 +110,7 @@ public class RegistrationForm extends JFrame {
                     }
 
                 }
-               // }
+            }
                 
                 //Chiamo il gestore che copia le informazioni da database a cache
                 

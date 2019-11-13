@@ -26,11 +26,13 @@ import javafx.scene.input.*;
 
 import javafx.stage.*;
 import javafx.util.*;
+import jpaConnect.DepositoDati;
 import jpaEntities.MessaggioEntity;
 import lvDbConnect.DepositoDatiLevelDb;
 
 
-public class Fundracing extends Application{
+public class Fundracing extends Application
+{
 	
 	protected TextField tf_companyName = new TextField();
 	protected Button login = new Button("Login");
@@ -63,6 +65,7 @@ public class Fundracing extends Application{
 	private Label address_agency = new Label("");
 	private Label site_agency = new Label("");
 	private DepositoDatiLevelDb deposito = new DepositoDatiLevelDb();
+	//private DepositoDati deposito=new DepositoDati();
 	private JLabel label;
 	private Image image;
 	private ImageView iv1 = new ImageView();
@@ -79,22 +82,15 @@ public class Fundracing extends Application{
 	private Button send = new Button("Send");
 	private ChoiceBox choice_agency = new ChoiceBox(null);
 	private Label message_receiver = new Label("Message receiver");
-	private Gestore gm = null;
+	private Gestore gm =null;
     private Button register=new Button("Register");
 	private RegistrationForm form=new RegistrationForm(deposito);
 	
-	public boolean AggiornamentoFatto=true;
-	
 	public void start(Stage stage) {
-		deposito.readAziendaFromMySql();
+		
+		
 		java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE); //LEVEL.SEVERE altrimenti,o ON
 		
-		//Ripulisco la cache
-		/*deposito.clearCache();
-		//Leggo dal database e aggiorno cache
-		deposito.readProgettoFromMySql(agencyName);
-		deposito.readMessaggioFromMySql(agencyName);
-		deposito.readAziendaFromMySql();*/
 		
 		table.updateProjects(deposito.getProjectsWithoutStake());
 		selectTableRow();
@@ -123,8 +119,9 @@ public class Fundracing extends Application{
 					if(gm!=null) {
 						gm.endAggiornamento();
 					}
-					
-					gm = new Gestore(deposito,table, table_message,choice_agency, agencyName);
+					gm=new Gestore(deposito,table, table_message,choice_agency, agencyName);
+					gm.setStatusKV(true);
+					gm.setStatusMySql(true);
 					gm.startAggiornamento();
 					logged = true;
 					insert.setDisable(false);
@@ -140,27 +137,31 @@ public class Fundracing extends Application{
 					address_agency.setText(result.get(3) + ", " + result.get(4) );
 					site_agency.setText(result.get(2));
 					urlLogo = result.get(1);
-					try {
+					try 
+					{
 						image = new Image(urlLogo);
 						iv1.setImage(image);
-					}catch(IllegalArgumentException iae) {
+					}
+					catch(IllegalArgumentException iae) 
+					{
 						Alert alert = new Alert(Alert.AlertType.INFORMATION);
-						alert.setHeaderText("Siamo spiacenti, probabilmente l'url del tuo logo è sbagliato, l'immagine non può essere visualizzata.");
-						alert.showAndWait();
-					}catch(Exception e) {
-						Alert alert = new Alert(Alert.AlertType.INFORMATION);
-						alert.setHeaderText("Siamo spiacenti, probabilmente l'url del tuo logo è sbagliato, l'immagine non può essere visualizzata.");
+						alert.setHeaderText("Siamo spiacienti,probabilmente l'url del tuo logo è sbagliato,l'immagine non può essere visualizzata!");
 						alert.showAndWait();
 					}
-					//accept.setDisable(false);
-					//refuse.setDisable(false);
+					catch(Exception e) 
+					{
+						Alert alert = new Alert(Alert.AlertType.INFORMATION);
+						alert.setHeaderText("Siamo spiacienti,l'immagine non può essere visualizzata!");
+						alert.showAndWait();
+					}
 					send.setDisable(false);
 					description_message.setEditable(true);
 					stake_message.setEditable(true);
 					project_message.setEditable(true);
 					
 				} //Se il nome dell'azienda non è presente nel db
-				else {
+				else 
+				{
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
 					alert.setHeaderText("Il nome dell'azienda è errato oppure la password è scorretta!");
 					alert.showAndWait();
@@ -194,12 +195,6 @@ public class Fundracing extends Application{
 				return;
 			}
 			
-			/*if(description_message.getText().equals("")) {
-				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setHeaderText("Non hai selezionato nessun messaggio!");
-				alert.showAndWait();
-				return;
-			}*/
 			deposito.deleteMessage(selectedMessagetId); //fatta
 			table_message.updateMessages(deposito.getMessages(agencyName)); 
 			refuse.setDisable(true);
@@ -227,12 +222,6 @@ public class Fundracing extends Application{
 				return;
 			}
 			
-			/*if(description_message.getText().equals("")) {
-				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setHeaderText("Non hai selezionato nessun messaggio!");
-				alert.showAndWait();
-				return;
-			}*/
 			deposito.updateStake(selectedMessageStake, agencyName, selectedProjectMessageId, true);
 			deposito.deleteMessage(selectedMessagetId);//fatta
 			accept.setDisable(true);
@@ -320,13 +309,6 @@ public class Fundracing extends Application{
 				alert.showAndWait();	
 				return;
 			}
-			
-			/*if(description.getText().equals("")) {
-				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setHeaderText("Non hai selezionato nessun progetto!");
-				alert.showAndWait();
-				return;
-			}*/
 			
 			
 			Boolean iAmOwner = deposito.iAmOwner(selectedProjectId, agencyName);
@@ -455,7 +437,8 @@ public class Fundracing extends Application{
 				return;
 			} 
 
-			if(!description.equals("") || !stake.equals("") || !project.equals("") || !(object_receiver == null)) {
+			if(!description.equals("") && !stake.equals("") && !project.equals("") && !(object_receiver == null)) 
+			{
 			
 				if(!stake.matches("[0-9]+") || !project.matches("[0-9]+")) {
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -480,7 +463,7 @@ public class Fundracing extends Application{
 					vector.add(description);	//testo
 					vector.add(stake);	//stake
 					deposito.insertMessage(vector); 
-					deposito.getMessages(project);
+					table_message.updateMessages(deposito.getMessages(agencyName));
 					description_message.clear();
 					stake_message.clear();
 					project_message.clear();
@@ -561,12 +544,9 @@ public class Fundracing extends Application{
                 final int index = row.getIndex(); 
                 RowTableMessage res = table_message.getItems().get(index);
                 selectedMessagetId = res.getId();
-                //System.out.println("Message id: " + selectedMessagetId);
-                //selectedTotalBudget=res.getBudget();
                 selectedMessageStake=res.getStake();
                 selectedProjectMessageId = res.getId_project();
                 description_message.setText(deposito.getDescriptionMessage(selectedMessagetId));
-                //stake.setText(Integer.toString(res.getStake()));
                 accept.setDisable(false);
                 refuse.setDisable(false);
                 deposito.setAggiornamentoFatto(false);
@@ -577,14 +557,12 @@ public class Fundracing extends Application{
         }); 
 	}
 	
-	public void inizializeChoiceBox() {
+	public void inizializeChoiceBox()
+	{
 		List<String> agencyList = deposito.getListAgency();
 		
 		choice_agency.setItems(FXCollections.observableArrayList(agencyList));
 		
-		/*for(int i = 0; i < agencyList.size(); i++) {
-			System.out.println("agency " + i + " : " + agencyList.get(i));
-		}*/
 	}	
 	
 	
