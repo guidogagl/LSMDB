@@ -15,15 +15,19 @@ import javafx.scene.control.ChoiceBox;
 
 
 public class Gestore {
-	private DepositoDatiLevelDb d;
+	//private DepositoDatiLevelDb d;
+	private DepositoDati d;
 	private TableMessage tm;
 	private TableProjects tp;
 	private ChoiceBox cb;
 	private String agencyName;
 	private Timer timer = null;
 	private TimerTask task = null;
-	public Boolean Mysql_active;
-	public Gestore( DepositoDatiLevelDb d,TableProjects tp,TableMessage tm,ChoiceBox cb,String agencyName)
+	private Boolean Mysql_active;
+	private Boolean KV_active;
+	//public Gestore( DepositoDatiLevelDb d,TableProjects tp,TableMessage tm,ChoiceBox cb,String agencyName)
+	public Gestore( DepositoDati d,TableProjects tp,TableMessage tm,ChoiceBox cb,String agencyName)
+	
 	{
 		this.d=d;
 		this.tp=tp;
@@ -31,11 +35,14 @@ public class Gestore {
 		this.cb=cb;
 		this.agencyName=agencyName;
 		this.Mysql_active = true;
-		
+		this.KV_active=true;
 	}
 	
-	public void SetStatus(Boolean value) {
+	public void setStatusMySql(Boolean value) {
 		Mysql_active = value;
+	}
+	public void setStatusKV(Boolean value) {
+		this.KV_active=value;
 	}
 	
 	public void startAggiornamento() {
@@ -54,7 +61,7 @@ public class Gestore {
 	
 	private void aggiorna()
 	{
-		if(this.Mysql_active) 
+		if(this.Mysql_active&&this.KV_active) 
 		{
 			d.setRoutinesInExecution(true);
 			//routine da cache a database
@@ -92,7 +99,7 @@ public class Gestore {
 		//Copio i messaggi nel database e aggiorno l'id nella cache
 		d.copyMessagesInDB(messages);
 		
-		d.deleteEntitiesInMysql(agencyName);
+		d.deleteEntitiesInMysql();
 		
 		d.clearCache("insert");
 		d.clearCache("update");
