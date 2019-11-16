@@ -64,8 +64,8 @@ public class Fundracing extends Application
 	private Label name_agency = new Label("");
 	private Label address_agency = new Label("");
 	private Label site_agency = new Label("");
-	private DepositoDatiLevelDb deposito = new DepositoDatiLevelDb();
-	//private DepositoDati deposito=new DepositoDati();
+	//private DepositoDatiLevelDb deposito = new DepositoDatiLevelDb();
+	private DepositoDati deposito=new DepositoDati();
 	private JLabel label;
 	private Image image;
 	private ImageView iv1 = new ImageView();
@@ -121,7 +121,7 @@ public class Fundracing extends Application
 					}
 					gm=new Gestore(deposito,table, table_message,choice_agency, agencyName);
 					gm.setStatusKV(true);
-					gm.setStatusMySql(true);
+					gm.setStatusMySql(false);
 					gm.startAggiornamento();
 					logged = true;
 					insert.setDisable(false);
@@ -178,7 +178,7 @@ public class Fundracing extends Application
 		
 		
 		refuse.setOnAction((ActionEvent ev1)->{
-			
+			Long start=new Date().getTime();
 			if(deposito.getRoutinesInExecution()==true)
 			{
 				Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -195,17 +195,19 @@ public class Fundracing extends Application
 				return;
 			}
 			
-			deposito.deleteMessage(selectedMessagetId); //fatta
+			deposito.deleteMessage(selectedMessagetId); 
 			table_message.updateMessages(deposito.getMessages(agencyName)); 
 			refuse.setDisable(true);
 			accept.setDisable(true);
 			description_message.clear();
+			Long end=new Date().getTime();
+			System.out.println("execution time: "+(end-start));
 		});
 
 		
 		
 		accept.setOnAction((ActionEvent ev1)->{
-			
+			Long start=new Date().getTime();
 			if(deposito.getRoutinesInExecution()==true)
 			{
 				Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -221,7 +223,7 @@ public class Fundracing extends Application
 				alert.showAndWait();	
 				return;
 			}
-			
+			;
 			deposito.updateStake(selectedMessageStake, agencyName, selectedProjectMessageId, true);
 			deposito.deleteMessage(selectedMessagetId);//fatta
 			accept.setDisable(true);
@@ -229,6 +231,8 @@ public class Fundracing extends Application
 			description_message.clear();
 			table.updateProjects(deposito.getProjects(agencyName));
 			table_message.updateMessages(deposito.getMessages(agencyName));
+			Long end=new Date().getTime();
+			System.out.println("execution time: "+(end-start));
 		});
 		
 		
@@ -241,7 +245,7 @@ public class Fundracing extends Application
 		
 		
 		insert.setOnAction((ActionEvent ev2)->{
-			
+			Long start=new Date().getTime();
 			String budget = total_budget.getText();
 			String desc = description.getText(); 
 			String name = name_project.getText();
@@ -289,11 +293,13 @@ public class Fundracing extends Application
 				alert.showAndWait();
 				return;
 			}
+			Long end=new Date().getTime();
+			System.out.println("execution time: "+(end-start));
         });
 		
 		
 		delete.setOnAction((ActionEvent ev1)->{
-			
+			Long start=new Date().getTime();
 			if(deposito.getRoutinesInExecution()==true)
 			{
 				Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -348,6 +354,8 @@ public class Fundracing extends Application
 				alert.showAndWait();
 				return;
 			}
+			Long end=new Date().getTime();
+			System.out.println("execution time: "+(end-start));
 		});
 			
 			
@@ -362,7 +370,7 @@ public class Fundracing extends Application
 			
 			
 		update.setOnAction((ActionEvent ev1)->{
-				
+			Long start=new Date().getTime();
 				String string_stakeInsered = stake.getText();
 				
 				if(deposito.getRoutinesInExecution()==true)
@@ -418,12 +426,15 @@ public class Fundracing extends Application
 					update.setDisable(true);
 					delete.setDisable(true);
 					description.clear();
-				} 
+				}
+				Long end=new Date().getTime();
+				System.out.println("execution time: "+(end-start));
 			});
 			
 			
 			
 		send.setOnAction((ActionEvent ev1)->{
+			Long start=new Date().getTime();
 			String description = description_message.getText();
 			String stake = stake_message.getText();
 			String project = project_message.getText();
@@ -476,6 +487,8 @@ public class Fundracing extends Application
 				alert.showAndWait();
 				return;
 			}
+			Long end=new Date().getTime();
+			System.out.println("execution time: "+(end-start));
 		});
 		
 		

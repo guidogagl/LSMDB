@@ -8,40 +8,43 @@ import java.util.logging.Level;
 
 public class FundracingEntityManager {
     private EntityManager em = null;
-
+    private EntityManagerFactory emf=null;
 
 
     public FundracingEntityManager(EntityManagerFactory emf){
         try{
         	// java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);//LEVEL.SEVERE altrimenti,o ON
             em = emf.createEntityManager();
+            this.emf=emf;
         }
         catch(Exception ex){
             ex.printStackTrace();
             em = null;
        
         }
+        
     }
 
     public Boolean isSetup(){
-        if(em == null)
-            return false;
-        return true;
+        return em.isOpen();
     }
 
     public void close(){
-        if( em != null ) em.close();
+        if(!em.isOpen() ) 
+        {
+        	em.close();
+        }
     }
 
     public <T> List<T>  query( Class<T> tableClass, String sql) {
-        if (!isSetup()) {
-            return null;
+        if (!em.isOpen()) {
+        	em = emf.createEntityManager();
         }
-
         TypedQuery<T> query = em.createQuery( sql, tableClass );
 
         try {
-            List<T> results = query.getResultList();
+            List<T> results = query.getResultList(); 
+            em.close();
             return results;
         } catch(NoResultException e){
             return null;
@@ -49,15 +52,16 @@ public class FundracingEntityManager {
     }
 
     public <T> T  singleResultQuery( Class<T> tableClass, String sql) {
-        if (!isSetup()) {
-            return null;
+        if (!em.isOpen()) {
+            em=emf.createEntityManager();
         }
 
         TypedQuery<T> query = em.createQuery( sql, tableClass );
 
-        try {
+        try 
+        {
             T results = query.getSingleResult();
-
+            em.close();
             return results;
         } catch(NoResultException e){
             return null;
@@ -65,8 +69,8 @@ public class FundracingEntityManager {
     }
     
     public int queryExecuteQuery(String sql){
-        if (!isSetup()) {
-            return (-1);
+        if (!em.isOpen()) {
+            em=emf.createEntityManager();
         }
         
         int results = 0;
@@ -79,33 +83,39 @@ public class FundracingEntityManager {
             System.out.println("La query ha dato risultato vuoto");
         }finally {
         	em.getTransaction().commit();
+        	em.close();
             return results;
         }
     }
 
     public <T> T create( T entity ){
-        if( entity == null || em == null)
+        if( entity == null )
             return null;
-
+        if(!em.isOpen())
+        	em=emf.createEntityManager();
         try {
             em.getTransaction().begin();
             em.persist(entity);
-            em.getTransaction().commit();
-            return entity;
+            em.getTransaction().commit();    
         } catch(Exception ex){
             ex.printStackTrace();
             return null;
+        }finally {
+        	em.close();
+        	return entity;
         }
     }
 
     public <T> T update(T entity){
-        if( entity == null || em == null )
+        if( entity == null )
             return null;
-
+        if(!em.isOpen())
+        	em=emf.createEntityManager();
         try{
             em.getTransaction().begin();
             T result  = em.merge(entity);
             em.getTransaction().commit();
+            em.close();
             return result;
         }catch(Exception ex){
             ex.printStackTrace();
@@ -114,8 +124,8 @@ public class FundracingEntityManager {
     }
 
     public <T> T read(Class<T> tableClass, String id) {
-        if (em == null)
-            return null;
+       if(!em.isOpen())
+    	   em=emf.createEntityManager();
 
         T result = null;
 
@@ -126,13 +136,14 @@ public class FundracingEntityManager {
             ex.printStackTrace();
         } finally {
             em.getTransaction().commit();
+            em.close();
             return result;
         }
     }
 
     public <T> T read(Class<T> tableClass, int id) {
-        if (em == null)
-            return null;
+        if(!em.isOpen())
+        	em=emf.createEntityManager();
 
         T result = null;
 
@@ -143,18 +154,20 @@ public class FundracingEntityManager {
             ex.printStackTrace();
         } finally {
             em.getTransaction().commit();
+            em.close();
             return result;
         }
     }
 
     public <T> T delete(Class<T> type, int id) {
-        if (em == null)
-            return null;
+        if(!em.isOpen())
+        	em=emf.createEntityManager();
         try {
             em.getTransaction().begin();
             T old = em.getReference(type, id);
             em.remove( old );
             em.getTransaction().commit();
+            em.close();
             return old;
         }catch(EntityNotFoundException ex){
             return null;
@@ -166,14 +179,15 @@ public class FundracingEntityManager {
     }
 
     public <T> T delete(Class<T> type, String id) {
-        if (em == null)
-            return null;
+        if(!em.isOpen())
+        	em=emf.createEntityManager();
         try {
             em.getTransaction().begin();
             T old = em.getReference(type, id);
             em.remove( old );
             em.getTransaction().commit();
-            return old;
+            em.close();
+        	return old;
         }
         catch(EntityNotFoundException ex){
             return null;

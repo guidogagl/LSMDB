@@ -34,8 +34,8 @@ public class RegistrationForm extends JFrame {
          public DepositoDati deposito=null;
          private Boolean Mysql_active = true;
 
-        public RegistrationForm(DepositoDatiLevelDb db) {
-       // public RegistrationForm(DepositoDati db) {
+       // public RegistrationForm(DepositoDatiLevelDb db) {
+        public RegistrationForm(DepositoDati db) {
 
         	deposito=db;
         	reset.addActionListener(new ActionListener() {

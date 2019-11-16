@@ -9,17 +9,28 @@ import java.util.List;
 public class FundracingManager {
     private EntityManagerFactory factory = null;
     private FundracingEntityManager fem = null;
+    
+
+    private void setup() 
+    {
+        try
+        {
+            factory = Persistence.createEntityManagerFactory("esercizio1");
+        }
+        catch(Exception e)
+        {
+        	e.printStackTrace();
+        }
+        fem = new FundracingEntityManager(factory);
+        
+    }
 
     private <T> T select(Class<T> classTable, int id){
-        fem = new FundracingEntityManager(factory);
-        if(fem == null){
+         if(fem == null){
             System.out.print("Impossibile costruire connessione con il database");
             return null;
         }
-
         T ret = fem.read(classTable, id);
-
-        fem.close();
 
         if (ret == null)
             System.out.print("Elemento non trovato nel database");
@@ -33,30 +44,25 @@ public class FundracingManager {
         if(ret == null)
             return null;
 
-        fem = new FundracingEntityManager(factory);
         if(fem == null){
             System.out.print("Impossibile costruire connessione con il database");
             return null;
         }
 
         ret = fem.update(newEntity);
-        fem.close();
-
+        
         if (ret == null)
             System.out.print("Elemento non trovato nel database");
         return ret;
     }
 
     private <T> T delete(Class<T> classTable, int id){
-        fem = new FundracingEntityManager(factory);
         if(fem == null){
             System.out.print("Impossibile costruire connessione con il database");
             return null;
         }
 
         T ret = fem.delete(classTable, id);
-
-        fem.close();
 
         if (ret == null)
             System.out.print("Elemento non trovato nel database");
@@ -65,15 +71,12 @@ public class FundracingManager {
     }
 
     private <T> T create(T entity){
-        fem = new FundracingEntityManager(factory);
         if(fem == null){
             System.out.print("Impossibile costruire connessione con il database");
             return null;
         }
 
         T ret = fem.create(entity);
-
-        fem.close();
 
         if (ret == null)
             System.out.print("Elemento non trovato nel database");
@@ -82,47 +85,33 @@ public class FundracingManager {
 
     }
 
-    private void setup() {
-        try{
-            factory = Persistence.createEntityManagerFactory("esercizio1");
-        }
-        catch(Exception e){
-        e.printStackTrace();
-        }
-    }
-
     
     public FundracingManager(){
         this.setup();
     }
 
-    public Boolean isSetup(){
-        if(factory == null)
+    public Boolean isSetup()
+    {
+        if(factory == null||fem==null)
             return false;
         else
             return true;
     }
 
     public <T> List<T> query(Class<T> tableClass, String sql ){
-        fem = new FundracingEntityManager(factory);
-        if(!fem.isSetup())
+    	if(factory == null||fem==null)
             return null;
 
         List<T> res = fem.query( tableClass, sql);
-
-        fem.close();
 
         return res;
     }
 
     public int executeUpdateQuery( String sql ){
-        fem = new FundracingEntityManager(factory);
-        if(!fem.isSetup())
+    	if(factory == null||fem==null)
             return -1;
         
         int res = fem.queryExecuteQuery( sql);
-
-        fem.close();
 
         if( res < 0 )
             System.out.print("DELETE OR UPDATE FAILED \n");
@@ -131,13 +120,10 @@ public class FundracingManager {
     }
 
     public <T> T singleReturnQuery(Class<T> tableClass, String sql ){
-        fem = new FundracingEntityManager(factory);
-        if(!fem.isSetup())
+    	if(factory == null||fem==null)
             return null;
 
         T res = fem.singleResultQuery( tableClass, sql );
-
-        fem.close();
 
         return res;
     }
@@ -147,7 +133,8 @@ public class FundracingManager {
                         String urlSito,
                         String indirizzo,
                         Integer cap,
-                        String password ){
+                        String password )
+    {
 
         AziendaEntity newAzienda = new AziendaEntity();
         newAzienda.setNomeAzienda(nomeAzienda);
@@ -157,15 +144,12 @@ public class FundracingManager {
         newAzienda.setCap(cap);
         newAzienda.setPassword(password);
 
-        fem = new FundracingEntityManager(factory);
-        if(fem == null){
+       if(fem == null){
             System.out.print("Impossibile costruire connessione con il database");
             return null;
         }
 
         AziendaEntity ret = fem.create(newAzienda);
-
-        fem.close();
 
         if (ret == null)
             System.out.print("Elemento non trovato nel database");
@@ -174,15 +158,12 @@ public class FundracingManager {
     }
 
     public AziendaEntity deleteAgency(String nomeAzienda){
-        fem = new FundracingEntityManager(factory);
-        if(fem == null){
+    	if(factory == null||fem==null){
             System.out.print("Impossibile costruire connessione con il database");
             return null;
         }
 
         AziendaEntity ret = fem.delete(AziendaEntity.class, nomeAzienda);
-
-        fem.close();
 
         if (ret == null)
             System.out.print("Elemento non trovato nel database");
@@ -191,16 +172,14 @@ public class FundracingManager {
     }
 
     public AziendaEntity selectAgency(String nomeAzienda){
-        fem = new FundracingEntityManager(factory);
-        if(fem == null){
+    	if(factory == null||fem==null){
             System.out.print("Impossibile costruire connessione con il database");
             return null;
         }
 
         AziendaEntity ret = fem.read(AziendaEntity.class, nomeAzienda);
 
-        fem.close();
-
+       
         if (ret == null)
             System.out.print("Elemento non trovato nel database");
 
@@ -212,15 +191,13 @@ public class FundracingManager {
         if(ret == null)
             return null;
 
-        fem = new FundracingEntityManager(factory);
-        if(fem == null){
+        if(factory == null||fem==null){
             System.out.print("Impossibile costruire connessione con il database");
             return null;
         }
 
         ret = fem.update(newAzienda);
-        fem.close();
-
+       
         if (ret == null)
             System.out.print("Elemento non trovato nel database");
         return ret;
@@ -310,11 +287,12 @@ public class FundracingManager {
     }
 
     public void exit(){
+    	if(fem.isSetup())
+    		fem.close();
         if (factory == null){
             System.out.print("Tentativo di exit su factory non costruita \n");
             return;
         }
-
         factory.close();
     }
 

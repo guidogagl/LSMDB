@@ -1,6 +1,5 @@
 package jpaConnect;
 
-//import application.*;
 import applicationMiddle.RowTableMessage;
 import applicationMiddle.RowTableProjects;
 import jpaEntities.*;
@@ -18,7 +17,7 @@ public class DepositoDati {
     public DepositoDati() {
     	fm = new FundracingManager();
     }
-
+    
     protected List<RowTableProjects> getRowTableProjects(List<ProgettoEntity> list, String agencyName, Boolean withStake) {
         
 
@@ -44,8 +43,7 @@ public class DepositoDati {
             rows.add( rtp );
         }
 
-       // fm.exit();
-        return rows;
+       return rows;
     }
     
     protected List<RowTableMessage> getRowTableMessage(List<MessaggioEntity> me_list) {
@@ -68,16 +66,14 @@ public class DepositoDati {
     protected List<Vector<String>> getAgencyEntities() {
         String sql = "select a	from	AziendaEntity a ";
 
-        //fm = new FundracingManager();
-        if (!fm.isSetup()) {
+       if (!fm.isSetup()) {
             System.out.print("Non ho la connessione con il database \n");
             return null;
         }
 
         List<AziendaEntity> agencies = fm.query(AziendaEntity.class, sql);
 
-       // fm.exit();
-
+      
         List<Vector<String>> list = new ArrayList<>();
 
         if (agencies == null)
@@ -98,21 +94,18 @@ public class DepositoDati {
         return list;
     }
     protected List<ProgettoEntity> getProjectEntities(){
-        //fm = new FundracingManager();
-        if( !fm.isSetup() ){
+       if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return null;
         }
 
         List<ProgettoEntity> projects = fm.query(ProgettoEntity.class, "SELECT p FROM ProgettoEntity p");
-       // fm.exit();
-
+      
         return projects;
     }
     protected List<MessaggioEntity> getMessageEntities(String agencyName){
         String sql = "SELECT m FROM MessaggioEntity m WHERE destinatario = '" + agencyName + "'";
 
-        //fm = new FundracingManager();
         if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return null;
@@ -120,8 +113,7 @@ public class DepositoDati {
 
         List<MessaggioEntity> messages = fm.query(MessaggioEntity.class, sql);
 
-       // fm.exit();
-
+      
         return messages;
     }
     
@@ -142,15 +134,12 @@ public class DepositoDati {
     	this.routinesInExecution=routinesInExecution;
     }
     
-    public void close() {	//Sbagliata??? E' corretto scrivere if (fm.isSetup()) 
-    	if (fm.isSetup()) {
-            fm.exit();
-        }
+    public void close() {	
+    	fm.exit();
     }
     
     
     public Vector<String> getAgency(String agencyName,String password) {
-        //fm = new FundracingManager();
         if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return null;
@@ -158,8 +147,7 @@ public class DepositoDati {
 
         AziendaEntity ae = fm.selectAgency(agencyName);
 
-        //fm.exit();
-
+      
         Vector<String> vett = new Vector<String>();
 
         if(ae == null || !password.equals(ae.getPassword()) )
@@ -174,15 +162,12 @@ public class DepositoDati {
         return vett;
     }
     public Vector<String> getAgency(String agencyName) {
-        //fm = new FundracingManager();
-        if( !fm.isSetup() ){
+       if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return new Vector<>();
         }
 
         AziendaEntity ae = fm.selectAgency(agencyName);
-
-        //fm.exit();
 
         if( ae ==null){
             System.out.print("Agency not present \n");
@@ -196,12 +181,11 @@ public class DepositoDati {
     
     
     public void insertAgency(Vector<String> val){
-       // fm = new FundracingManager();
-        if( !fm.isSetup() ){
+       if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
         }
         fm.createAgency(val.get(0), val.get(1), val.get(2), val.get(3), Integer.parseInt(val.get(4)), val.get(5));
-        //fm.exit();
+       
     }
     
     
@@ -231,13 +215,10 @@ public class DepositoDati {
     }
 
     public String getDescriptionMessage(int id_message) {
-       // fm = new FundracingManager();
         if(!fm.isSetup())
             return " ";
 
         MessaggioEntity msg = fm.selectMessaggio(id_message);
-
-       // fm.exit();
 
         if(msg == null)
             return " ";
@@ -248,39 +229,21 @@ public class DepositoDati {
     public int getSommaStakes(int selectedProjectID){
         String sql = "SELECT sum(f.budget) FROM FinanziamentoEntity f  WHERE f.progetto= " + selectedProjectID ;
 
-
-        //fm = new FundracingManager();
-        if(!fm.isSetup())
+ if(!fm.isSetup())
             return -1;
 
         Long stake = fm.singleReturnQuery(Long.class, sql);
 
-        //fm.exit();
-
+       
         if(stake == null)
             return 0;
 
-        //return Integer.parseInt(stake.toString());
         return Integer.parseInt(stake.toString());
     }
 
-    /*public Double getProgress(int id_progetto) {
-        fm = new FundracingManager();
-        if(!fm.isSetup())
-            return 0.0;
-
-        Long somma_stake = fm.singleReturnQuery(Long.class, "SELECT SUM(f.budget) FROM FinanziamentoEntity f WHERE f.progetto = " + id_progetto );
-        if( somma_stake == null)
-            return 0.0;
-
-        fm.exit();
-
-        return progress.intValue();
-    }*/
 
     public List<RowTableProjects> getProjectsWithoutStake(){
-       // fm = new FundracingManager();
-        if( !fm.isSetup() ){
+       if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return null;
         }
@@ -288,13 +251,12 @@ public class DepositoDati {
 
         List<RowTableProjects> ret = getRowTableProjects( projects, null, false );
 
-        //fm.exit();
+        
         return ret;
         }
 
     public void insertProject(Vector<String>val) {
-        //fm = new FundracingManager();
-        if( !fm.isSetup() ){
+       if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return;
         }
@@ -306,12 +268,10 @@ public class DepositoDati {
 
         fm.createProject(val.get(0), Integer.parseInt(val.get(1)), val.get(2), ae );	//nome, budget, descrizione, azienda
 
-        //fm.exit();
 
     }
 
     public boolean iAmOwner(int projectId,String agencyName) {
-        //fm = new FundracingManager();
         if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return false;
@@ -320,16 +280,14 @@ public class DepositoDati {
 
         ProgettoEntity progetto = fm.singleReturnQuery(ProgettoEntity.class, "SELECT p FROM ProgettoEntity p WHERE p.azienda = '" + agencyName + "' AND p.id = " + projectId );
 
-        //fm.exit();
-        if(progetto == null)
+       if(progetto == null)
             return false;
 
         return true;
     }
 
     public int myStake(String agencyName, int id_project){
-        //fm = new FundracingManager();
-        if( !fm.isSetup() ){
+       if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return -1;
         }
@@ -337,8 +295,6 @@ public class DepositoDati {
         Long stake = fm.singleReturnQuery(Long.class, "SELECT SUM(f.budget) FROM FinanziamentoEntity f WHERE f.progetto = " + id_project + "AND f.azienda = '" + agencyName + "'");
         if (stake == null)
             stake = new Long( 0);
-
-        //fm.exit();
 
         return Integer.parseInt(stake.toString());
     }
@@ -353,8 +309,7 @@ public class DepositoDati {
     	
     	this.deleteMessages(projectId);
         
-    	//fm = new FundracingManager();
-        if( !fm.isSetup() ){
+    	 if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return;
         }
@@ -363,12 +318,10 @@ public class DepositoDati {
 
         fm.deleteProject(projectId);
 
-       // fm.exit();
 
     }
 
     public void deleteMessage(int messageId) {
-        //fm = new FundracingManager();
         if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return;
@@ -376,20 +329,15 @@ public class DepositoDati {
 
         fm.deleteMessaggio(messageId);
 
-       // fm.exit();
-
     }
 
     public String getDescriptionProject(int id_project) {
-       // fm = new FundracingManager();
         if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return null;
         }
 
         ProgettoEntity pe = fm.selectProject(id_project);
-
-       // fm.exit();
 
         if(pe == null)
             return null;
@@ -401,8 +349,7 @@ public class DepositoDati {
     public void deleteMessages(int projectId) {
     	String sql = "DELETE FROM MessaggioEntity m WHERE m.progetto =" + projectId;
     	
-    	//fm = new FundracingManager();
-        if( !fm.isSetup() ){
+    	  if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return;
         }
@@ -413,8 +360,6 @@ public class DepositoDati {
         	System.out.println("FAILED TO DELETE MESSAGES");
         }
 
-       // fm.exit();
-
         
     }
     
@@ -422,7 +367,6 @@ public class DepositoDati {
     public void deleteMyStake(int projectId,String agencyName) {
         String sql = "DELETE FROM FinanziamentoEntity WHERE progetto = "+ projectId +" and azienda = '"+ agencyName + "'";
 
-        //fm = new FundracingManager();
         if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return;
@@ -430,16 +374,13 @@ public class DepositoDati {
 
         int occurrency = fm.executeUpdateQuery(sql);
 
-       // fm.exit();
-        
         if( occurrency < 1 )
             System.out.print("FAILED TO DELETE STAKE \n");
             
     }
 
     public void updateStake(int stakeBudget,String agencyName,int idProgetto, boolean add) {
-       // fm = new FundracingManager();
-
+      
         if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return;
@@ -461,14 +402,12 @@ public class DepositoDati {
             fm.updateFinanziamento(finanziamento.getId(), finanziamento);
         }
 
-       // fm.exit();
 
     }
 
     public List<Vector<String>> getProject(int idProgetto){
         String sql = "SELECT p FROM ProgettoEntity p WHERE id =" + idProgetto ;
 
-       // fm = new FundracingManager();
         if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return null;
@@ -476,7 +415,6 @@ public class DepositoDati {
 
         List<ProgettoEntity> projects = fm.query(ProgettoEntity.class, sql);
 
-       // fm.exit();
         if(projects == null)
             return new ArrayList<Vector<String>>();
 
@@ -500,12 +438,11 @@ public class DepositoDati {
 
     public void insertMessage(Vector<String>val) {
     	
-    	System.out.println("Sono in insertMessage");
+    	/*System.out.println("Sono in insertMessage");
     	for(int i = 0; i < val.size(); i++) {
         	System.out.println("insertMessage " + val.get(i));
-        }
+        }*/
     	
-        //fm = new FundracingManager();
         if( !fm.isSetup() ){
             System.out.print("Non ho la connessione con il database \n");
             return;
@@ -534,13 +471,46 @@ public class DepositoDati {
 
         MessaggioEntity me = fm.createMessage( val.get(3), Integer.parseInt(val.get(4)), date, aeMitt, aeDest, pe );
 
-        //fm.exit();
-
         if(me == null){
             System.out.print("MESSAGE SEND FAILED \n");
         }
 
     }
-
+    
+    public void clearCache(String nome) {
+    	
+    }
+    
+    public void readProgettoFromMySql(String nome) {
+    	
+    }
+    
+    public void readMessaggioFromMySql(String nome) {
+    	
+    }
+    
+    public void readAziendaFromMySql() {
+    	
+    }
+    
+    public List<Vector<String>> getProjectsWrites() {
+    	return null;
+    }
+    
+    public void copyProjectAndFundsInDB(List<Vector<String>>a,String nome) {
+    	
+    }
+    
+    public List<Vector<String>>getMessagesWrites(){
+    	return null;
+    }
+    
+    public void copyMessagesInDB(List<Vector<String>>a) {
+    	
+    }
+    
+    public void deleteEntitiesInMysql() {
+    	
+    }
     
 }
