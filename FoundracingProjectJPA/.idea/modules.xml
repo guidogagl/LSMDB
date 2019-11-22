@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FoundracingProjectJPA.iml" filepath="$PROJECT_DIR$/FoundracingProjectJPA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/FoundracingProjectJPA.iml" filepath="$PROJECT_DIR$/.idea/FoundracingProjectJPA.iml" />
     </modules>
   </component>
 </project>
