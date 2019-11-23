@@ -134,7 +134,7 @@ public class DepositoDati {
     	this.routinesInExecution=routinesInExecution;
     }
     
-    public void close() {	
+    public void close() {	//Sbagliata??? E' corretto scrivere if (fm.isSetup()) 
     	fm.exit();
     }
     
@@ -355,11 +355,11 @@ public class DepositoDati {
         }
         
         int occurrency = fm.executeUpdateQuery(sql);
-        
+        /*
         if(occurrency<1) {
         	System.out.println("FAILED TO DELETE MESSAGES");
         }
-
+		*/
         
     }
     
@@ -373,9 +373,9 @@ public class DepositoDati {
         }
 
         int occurrency = fm.executeUpdateQuery(sql);
-
+        /*
         if( occurrency < 1 )
-            System.out.print("FAILED TO DELETE STAKE \n");
+            System.out.print("FAILED TO DELETE STAKE \n"); */
             
     }
 
