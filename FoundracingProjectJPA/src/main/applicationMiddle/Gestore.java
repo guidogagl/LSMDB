@@ -36,6 +36,7 @@ public class Gestore {
 		this.agencyName=agencyName;
 		this.Mysql_active = true;
 		this.KV_active=true;
+
 	}
 	
 	public void setStatusMySql(Boolean value) {
@@ -76,21 +77,19 @@ public class Gestore {
 		}
 		
 		//Leggo in ogni caso dalla cache e aggiorno
-			d.setAggiornamentoFatto(true);
+		d.setAggiornamentoFatto(true);
+		if(cb.getValue()==null||cb.getValue().toString().equals("")) //posso aggiornare solo se non è stato selezionato nulla nel choicebox
+			cb.setItems(FXCollections.observableArrayList(d.getListAgency()));
 		tp.updateProjects(d.getProjects(agencyName));
 		List<RowTableMessage> messaggiDaAggiungere = d.getMessages(agencyName);
 		tm.updateMessages(messaggiDaAggiungere);
-		if(cb.getValue()==null||cb.getValue().toString().equals("")) //posso aggiornare solo se non è stato selezionato nulla nel choicebox
-			cb.setItems(FXCollections.observableArrayList(d.getListAgency()));
+		
 	}
 	
 	
 	private  void fromCacheToDB() {
 		//Prendot tutti i progetti, finanziamenti e messaggi da copiare nel database
 		List<Vector<String>> projects = d.getProjectsWrites();
-		//List<Vector<String>> finanziamenti = d.getFinanziamentiWrites();
-		
-		
 		//Copio i progetti e i finanziamenti nel database
 		d.copyProjectAndFundsInDB(projects,agencyName);
 		
