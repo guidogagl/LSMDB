@@ -61,7 +61,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
         projectsAtt.add("budget");
         projectsAtt.add("azienda");
         projectsAtt.add("Progress");
-        projectsAtt.add("Stake");
+        projectsAtt.add("stake");
 
         messageAtt.add("id");
         messageAtt.add("idProgetto");
@@ -76,7 +76,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
         finanziamentoAtt.add("stake");
         
         deleteAtt.add("id");
-        deleteAtt.add("entityType");
+        deleteAtt.add("stake");
         
         aggiornamentoFatto=false;
     }
@@ -217,13 +217,18 @@ public class DepositoDatiLevelDb extends DepositoDati{
     	{
     		
     		Vector<String>progetto=progetti.get(i);
-    		RowTableProjects rtp=new RowTableProjects(Integer.parseInt(progetto.get(0)),
+    		if(progetto.size()==7)
+    		{
+    			RowTableProjects rtp=new RowTableProjects(Integer.parseInt(progetto.get(0)),
+    		
     				progetto.get(6),
     				progetto.get(1),
     				Integer.parseInt(progetto.get(4)),
     				0,
     				progetto.get(3));
-    		ret.add(rtp);
+    			
+    				ret.add(rtp);
+    		}
     	}
     	
     	return ret;
@@ -265,7 +270,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
 
     
     public int getSommaStakes(int selectedProjectID){ //Deve prendere il progress e il total budget del progetto e da questi calcolare la somma degli stake
-    	return Integer.parseInt(conn.readSingleValue("read","ProgettoEntity", Integer.toString(selectedProjectID), "Stake"));
+    	return Integer.parseInt(conn.readSingleValue("read","ProgettoEntity", Integer.toString(selectedProjectID), "stake"));
     }
 
     public List<RowTableMessage> getMessages(String agencyName){
@@ -306,8 +311,8 @@ public class DepositoDatiLevelDb extends DepositoDati{
     	conn.deleteSingleEntity("read","MessaggioEntity", Integer.toString(messageId));
     	Vector<String> val = new Vector<String>();
     	val.add(Integer.toString(messageId));
-    	val.add("MessaggioEntity");
-    	conn.writeEntity("delete","DeleteEntity", deleteAtt, val);
+    	val.add("0");
+    	conn.writeEntity("delete","MessaggioEntity", deleteAtt, val);
     	 
     }
     
@@ -353,10 +358,15 @@ public class DepositoDatiLevelDb extends DepositoDati{
     	Vector<String>val=new Vector<String>(); //riordino i valori
     	List<Vector<String>> entities=conn.readAllEntity("read","MessaggioEntity");
     	int oldLast=0;
-    	for(int i=0;i<entities.size();i++){
-    		int id=Integer.parseInt(entities.get(i).get(0));
-    		if(id>oldLast)
-    			oldLast=id;
+    	for(int i=0;i<entities.size();i++)
+    	{
+    		if(entities.get(i).size()==7)
+    		{
+    			int id=Integer.parseInt(entities.get(i).get(0));
+    			if(id>oldLast)
+    				oldLast=id;
+    		}
+    		
     	}
     	Vector<String>attr=entities.get(entities.size()-1);
     	int newLast=0;
@@ -385,7 +395,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
     	
     	String progressString=conn.readSingleValue("read","ProgettoEntity", Integer.toString(selectedProjectId), "Progress");
     	String totBudgetStakeString=conn.readSingleValue("read","ProgettoEntity", Integer.toString(selectedProjectId), "budget");
-    	String sommaStakeString=conn.readSingleValue("read","ProgettoEntity", Integer.toString(selectedProjectId), "Stake");
+    	String sommaStakeString=conn.readSingleValue("read","ProgettoEntity", Integer.toString(selectedProjectId), "stake");
     	
     	if(progressString.equals("")||totBudgetStakeString.equals("")||sommaStakeString.equals(""))
     		return ;
@@ -422,7 +432,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
     		newProgress=(double)(((sumStakes-myStake+selectedStake)/tot_budget)*100);
     		if(newProgress<0)
     			newProgress=0.0;
-    		conn.updateSingleValue("read","ProgettoEntity",Integer.toString(selectedProjectId), "Stake", Integer.toString(selectedStake));
+    		conn.updateSingleValue("read","ProgettoEntity",Integer.toString(selectedProjectId), "stake", Integer.toString(selectedStake));
     		if(conn.readSingleValue("update","FinanziamentoEntity", Integer.toString(selectedProjectId), "stake").equals(""))
     		{
     			Vector<String> valFin=new Vector<String>();
@@ -455,7 +465,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
     	if(newProgress<0)
     		newProgress=0.0;
     	
-    	conn.updateSingleValue("read","ProgettoEntity",Integer.toString(selectedProjectId),"Stake", Integer.toString(0));
+    	conn.updateSingleValue("read","ProgettoEntity",Integer.toString(selectedProjectId),"stake", Integer.toString(0));
     	conn.updateSingleValue("read","ProgettoEntity",Integer.toString(selectedProjectId),"Progress", Double.toString(newProgress));
     	if(conn.readSingleValue("update","FinanziamentoEntity", Integer.toString(selectedProjectId),"stake").equals(""))
     	{
@@ -471,7 +481,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
     
     public Boolean isMyStake(String agencyName, int selectedProjectId) {
     	
-    	Double stake = Double.parseDouble(conn.readSingleValue("read","ProgettoEntity", Integer.toString(selectedProjectId), "Stake"));
+    	Double stake = Double.parseDouble(conn.readSingleValue("read","ProgettoEntity", Integer.toString(selectedProjectId), "stake"));
     	
     	if(stake > 0)
     		return true;
@@ -483,23 +493,30 @@ public class DepositoDatiLevelDb extends DepositoDati{
     	conn.deleteSingleEntity("read","ProgettoEntity", Integer.toString(selectedProjectId));
     	Vector<String> val = new Vector<String>();
     	val.add(Integer.toString(selectedProjectId));
-    	val.add("ProgettoEntity");
-    	conn.writeEntity("delete","DeleteEntity", deleteAtt, val);
+    	val.add("0");
+    	conn.writeEntity("delete","ProgettoEntity", deleteAtt, val);
     	
     	
     }
     
     public void clearCache(String cacheName) {
     	
-    	if(cacheName.equals("read")) {
+    	if(cacheName.equals("read")) 
+    	{
 	    	conn.clearEntity("read","AziendaEntity");
 	    	conn.clearEntity("read","ProgettoEntity");
 	    	conn.clearEntity("read","MessaggioEntity");
-    	}else if(cacheName.equals("delete")) {
+    	}
+    	else if(cacheName.equals("delete")) 
+    	{
     		conn.clearEntity("delete", "DeleteEntity");
-    	}else if(cacheName.equals("update")) {
+    	}
+    	else if(cacheName.equals("update")) 
+    	{
     		conn.clearEntity("update", "FinanziamentoEntity");
-    	}else if(cacheName.equals("insert")) {
+    	}
+    	else if(cacheName.equals("insert")) 
+    	{
     		conn.clearEntity("insert", "ProgettoEntity");
     		conn.clearEntity("insert", "MessaggioEntity");
     	}
@@ -692,32 +709,39 @@ public class DepositoDatiLevelDb extends DepositoDati{
     
     public void deleteEntitiesInMysql() 
     {
-    	List<Vector<String>> valuesToBeEliminated=conn.readAllEntity("delete","DeleteEntity");
+    	
     	List<Vector<String>> agencies = conn.readAllEntity("read","AziendaEntity");
-		
-    	for(int i=0;i<valuesToBeEliminated.size();i++)
+    	List<Vector<String>> projectsToBeEliminated=conn.readAllEntity("delete","ProgettoEntity");
+    	List<Vector<String>> messagesToBeEliminated=conn.readAllEntity("delete","MessaggioEntity");
+    	
+    	for(int i=0;i<projectsToBeEliminated.size();i++)
     	{
-    		Vector<String>row=valuesToBeEliminated.get(i);
+    		Vector<String>row=projectsToBeEliminated.get(i);
     		
     		if(row==null||row.isEmpty()||row.size()<2)
     			;
-    		
     		else
     		{
     		
-    			if(row.get(1).equals("ProgettoEntity"))
-    			{
-    				for(int j = 0; j < agencies.size(); j++)
-    					super.deleteMyStake(Integer.parseInt(row.get(0)), agencies.get(j).get(0));
-    				
-    				//Elimino il messaggio relativo al progetto dal database
+    			for(int j = 0; j < agencies.size(); j++)
+    				super.deleteMyStake(Integer.parseInt(row.get(0)), agencies.get(j).get(0));
     				
     				super.deleteProject(Integer.parseInt(row.get(0)));
     				
-    			}
-    				
-    			else
-    				super.deleteMessage(Integer.parseInt(row.get(0)));
+    		}
+    	}
+    	
+    	for(int i=0;i<messagesToBeEliminated.size();i++)
+    	{
+    		
+    		Vector<String>row=projectsToBeEliminated.get(i);
+    		
+    		if(row==null||row.isEmpty()||row.size()<2)
+    			;
+    		else
+    		{
+    		
+    			super.deleteMessage(Integer.parseInt(row.get(0)));
     		}
     	}
     }
