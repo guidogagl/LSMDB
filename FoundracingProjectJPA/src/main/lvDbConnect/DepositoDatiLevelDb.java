@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DepositoDatiLevelDb extends DepositoDati{
     private Connect conn = null;
@@ -19,8 +20,8 @@ public class DepositoDatiLevelDb extends DepositoDati{
     private Vector<String> messageAtt = new Vector<String>();
     private Vector<String> finanziamentoAtt = new Vector<String>();
     private Vector<String> deleteAtt=new Vector<String>();
-    private boolean aggiornamentoFatto=false;
-    private boolean routinesInExecution=false;
+    private AtomicBoolean aggiornamentoFatto=new AtomicBoolean(false);
+    private AtomicBoolean routinesInExecution=new AtomicBoolean(false);
     
    
     private Boolean createConnection(){
@@ -78,7 +79,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
         deleteAtt.add("id");
         deleteAtt.add("stake");
         
-        aggiornamentoFatto=false;
+        aggiornamentoFatto.set(false);
     }
     
     public void close() {
@@ -117,20 +118,20 @@ public class DepositoDatiLevelDb extends DepositoDati{
     }
     
     public boolean getAggiornamentoFatto() {
-    	return this.aggiornamentoFatto;
+    	return this.aggiornamentoFatto.get();
     }
     
     public void setAggiornamentoFatto(boolean aggiornamentoFatto) {
-    	this.aggiornamentoFatto=aggiornamentoFatto;
+    	this.aggiornamentoFatto.set(aggiornamentoFatto);
     }
     
 
     public boolean getRoutinesInExecution() {
-    	return this.routinesInExecution;
+    	return this.routinesInExecution.get();
     }
     
     public void setRoutinesInExecution(boolean routinesInExecution) {
-    	this.routinesInExecution=routinesInExecution;
+    	this.routinesInExecution.set(routinesInExecution);
     	
     }
     
@@ -197,11 +198,11 @@ public class DepositoDatiLevelDb extends DepositoDati{
     		
     		Vector<String>progetto=progetti.get(i);
     		RowTableProjects rtp=new RowTableProjects(Integer.parseInt(progetto.get(0)),
-    				progetto.get(6),
+    				progetto.get(5),
     				progetto.get(1),
-    				Integer.parseInt(progetto.get(4)),
-    				Integer.parseInt(progetto.get(2)),
-    				progetto.get(3));
+    				Integer.parseInt(progetto.get(3)),
+    				Integer.parseInt(progetto.get(6)),
+    				progetto.get(2));
     		ret.add(rtp);
     	}
     	return ret;
@@ -220,12 +221,11 @@ public class DepositoDatiLevelDb extends DepositoDati{
     		if(progetto.size()==7)
     		{
     			RowTableProjects rtp=new RowTableProjects(Integer.parseInt(progetto.get(0)),
-    		
-    				progetto.get(6),
-    				progetto.get(1),
-    				Integer.parseInt(progetto.get(4)),
-    				0,
-    				progetto.get(3));
+        				progetto.get(5),
+        				progetto.get(1),
+        				Integer.parseInt(progetto.get(3)),
+        				Integer.parseInt(progetto.get(6)),
+        				progetto.get(2));
     			
     				ret.add(rtp);
     		}
@@ -455,10 +455,10 @@ public class DepositoDatiLevelDb extends DepositoDati{
             return;
     	
     	Double progress = Double.parseDouble(projectList.get(1));
-    	Double tot_budget = Double.parseDouble(projectList.get(4));    	
+    	Double tot_budget = Double.parseDouble(projectList.get(3));    	
     	Double somma_stake = (progress*tot_budget)/100;
     	
-    	int myStake=Integer.parseInt(projectList.get(2));
+    	int myStake=Integer.parseInt(projectList.get(6));
     	
     	newProgress = ((somma_stake-myStake)/tot_budget)*100;
     	
@@ -509,7 +509,8 @@ public class DepositoDatiLevelDb extends DepositoDati{
     	}
     	else if(cacheName.equals("delete")) 
     	{
-    		conn.clearEntity("delete", "DeleteEntity");
+    		conn.clearEntity("delete", "ProgettoEntity");
+    		conn.clearEntity("delete", "MessaggioEntity");
     	}
     	else if(cacheName.equals("update")) 
     	{
@@ -621,12 +622,20 @@ public class DepositoDatiLevelDb extends DepositoDati{
     	{		
     		int oldID = Integer.parseInt(projects.get(i).get(0));//id del progetto in cache
     		if(oldID>=1000000)
-    		{
+    		{/*
+    			progetto.get(0)),
+			progetto.get(5),
+			progetto.get(1),
+			Integer.parseInt(progetto.get(3)),
+			Integer.parseInt(progetto.get(6)),
+			progetto.get(2));
+    			 */
+    			
     			Vector<String> vett = new Vector<String>();
-    			vett.add(projects.get(i).get(6));	//nome
-        		vett.add(projects.get(i).get(4));	//budget
-        		vett.add(projects.get(i).get(5));	//descrizione
-        		vett.add(projects.get(i).get(3));	//azienda owner
+    			vett.add(projects.get(i).get(5));	//nome
+        		vett.add(projects.get(i).get(3));	//budget
+        		vett.add(projects.get(i).get(4));	//descrizione
+        		vett.add(projects.get(i).get(2));	//azienda owner
         		//Inserisco il progetto nel db
         		super.insertProject(vett);
         		
@@ -734,7 +743,7 @@ public class DepositoDatiLevelDb extends DepositoDati{
     	for(int i=0;i<messagesToBeEliminated.size();i++)
     	{
     		
-    		Vector<String>row=projectsToBeEliminated.get(i);
+    		Vector<String>row=messagesToBeEliminated.get(i);
     		
     		if(row==null||row.isEmpty()||row.size()<2)
     			;
