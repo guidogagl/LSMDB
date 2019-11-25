@@ -7,11 +7,12 @@ import jpaEntities.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DepositoDati {
     private FundracingManager fm = null;
     private boolean aggiornamentoFatto=false;
-    private boolean routinesInExecution=false;
+    private AtomicBoolean routinesInExecution = new AtomicBoolean(false);
     
     
     public DepositoDati() {
@@ -127,11 +128,11 @@ public class DepositoDati {
     }
     
     public boolean getRoutinesInExecution() {
-    	return this.routinesInExecution;
+    	return this.routinesInExecution.get();
     }
     
     public void setRoutinesInExecution(boolean routinesInExecution) {
-    	this.routinesInExecution=routinesInExecution;
+    	this.routinesInExecution.set( routinesInExecution );
     }
     
     public void close() {	//Sbagliata??? E' corretto scrivere if (fm.isSetup()) 
@@ -459,7 +460,7 @@ public class DepositoDati {
             System.out.print( "Impossibile far inviare un messaggio a un'azienda non registrata \n");
             return;
         }
-        System.out.println("Questo è l'id "+Integer.parseInt(val.get(2)));
+        System.out.println("Questo ï¿½ l'id "+Integer.parseInt(val.get(2)));
         ProgettoEntity pe = fm.selectProject(Integer.parseInt( val.get(2) ));
         if(pe == null){
             System.out.print( "Impossibile inviare un messaggio a su di un progetto inesistente \n");
