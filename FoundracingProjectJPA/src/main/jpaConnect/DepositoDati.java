@@ -11,9 +11,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DepositoDati {
     private FundracingManager fm = null;
-    private boolean aggiornamentoFatto=false;
-    private AtomicBoolean routinesInExecution = new AtomicBoolean(false);
-    
+    private AtomicBoolean aggiornamentoFatto=new AtomicBoolean(false);
+    private AtomicBoolean routinesInExecution=new AtomicBoolean(false);
+     
     
     public DepositoDati() {
     	fm = new FundracingManager();
@@ -120,19 +120,21 @@ public class DepositoDati {
     
 
     public boolean getAggiornamentoFatto() {
-    	return this.aggiornamentoFatto;
+    	return this.aggiornamentoFatto.get();
     }
     
     public void setAggiornamentoFatto(boolean aggiornamentoFatto) {
-    	this.aggiornamentoFatto=aggiornamentoFatto;
+    	this.aggiornamentoFatto.set(aggiornamentoFatto);
     }
     
+
     public boolean getRoutinesInExecution() {
     	return this.routinesInExecution.get();
     }
     
     public void setRoutinesInExecution(boolean routinesInExecution) {
-    	this.routinesInExecution.set( routinesInExecution );
+    	this.routinesInExecution.set(routinesInExecution);
+    	
     }
     
     public void close() {	//Sbagliata??? E' corretto scrivere if (fm.isSetup()) 
@@ -460,7 +462,7 @@ public class DepositoDati {
             System.out.print( "Impossibile far inviare un messaggio a un'azienda non registrata \n");
             return;
         }
-        System.out.println("Questo ï¿½ l'id "+Integer.parseInt(val.get(2)));
+        System.out.println("Questo è l'id "+Integer.parseInt(val.get(2)));
         ProgettoEntity pe = fm.selectProject(Integer.parseInt( val.get(2) ));
         if(pe == null){
             System.out.print( "Impossibile inviare un messaggio a su di un progetto inesistente \n");
