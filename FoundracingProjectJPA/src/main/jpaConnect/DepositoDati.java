@@ -11,9 +11,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DepositoDati {
     private FundracingManager fm = null;
-    private AtomicBoolean aggiornamentoFatto=new AtomicBoolean(false);
-    private AtomicBoolean routinesInExecution=new AtomicBoolean(false);
-     
+
+    private AtomicBoolean aggiornamentoFatto = new AtomicBoolean( false );
+    private AtomicBoolean lock = new AtomicBoolean(true );
+
     
     public DepositoDati() {
     	fm = new FundracingManager();
@@ -126,17 +127,27 @@ public class DepositoDati {
     public void setAggiornamentoFatto(boolean aggiornamentoFatto) {
     	this.aggiornamentoFatto.set(aggiornamentoFatto);
     }
-    
 
-    public boolean getRoutinesInExecution() {
-    	return this.routinesInExecution.get();
+    public void getLock(){
+        while( true ){
+            boolean isNotLocked = lock.getAndSet( false );
+
+            if ( isNotLocked )
+                break;
+            try {
+                lock.wait();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
-    
-    public void setRoutinesInExecution(boolean routinesInExecution) {
-    	this.routinesInExecution.set(routinesInExecution);
-    	
-    }
-    
+
+    public void freeLock(){
+        lock.set( true );
+        lock.notifyAll();
+
+
     public void close() {	//Sbagliata??? E' corretto scrivere if (fm.isSetup()) 
     	fm.exit();
     }
@@ -462,7 +473,7 @@ public class DepositoDati {
             System.out.print( "Impossibile far inviare un messaggio a un'azienda non registrata \n");
             return;
         }
-        System.out.println("Questo è l'id "+Integer.parseInt(val.get(2)));
+        System.out.println("Questo ï¿½ l'id "+Integer.parseInt(val.get(2)));
         ProgettoEntity pe = fm.selectProject(Integer.parseInt( val.get(2) ));
         if(pe == null){
             System.out.print( "Impossibile inviare un messaggio a su di un progetto inesistente \n");
