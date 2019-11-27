@@ -64,21 +64,25 @@ public class Gestore {
 	{
 		if(this.Mysql_active&&this.KV_active) 
 		{
-			d.setRoutinesInExecution(true);
-			//routine da cache a database
-			fromCacheToDB();
-			//Ripulisco la cache
-			d.clearCache("read");
-			//Leggo dal database e aggiorno cache
-			d.readProgettoFromMySql(agencyName);
-			d.readMessaggioFromMySql(agencyName);
-			d.readAziendaFromMySql();
-			d.setRoutinesInExecution(false);
+			d.getLock();
+			// inizio sezione protetta da variabile atomica
+
+				//routine da cache a database
+				fromCacheToDB();
+				//Ripulisco la cache
+				d.clearCache("read");
+				//Leggo dal database e aggiorno cache
+				d.readProgettoFromMySql(agencyName);
+				d.readMessaggioFromMySql(agencyName);
+				d.readAziendaFromMySql();
+
+			// fine sezione protetta da variabile atomica
+			d.freeLock();
 		}
 		
 		//Leggo in ogni caso dalla cache e aggiorno
 		d.setAggiornamentoFatto(true);
-		if(cb.getValue()==null||cb.getValue().toString().equals("")) //posso aggiornare solo se non è stato selezionato nulla nel choicebox
+		if(cb.getValue()==null||cb.getValue().toString().equals("")) //posso aggiornare solo se non ï¿½ stato selezionato nulla nel choicebox
 			cb.setItems(FXCollections.observableArrayList(d.getListAgency()));
 		tp.updateProjects(d.getProjects(agencyName));
 		List<RowTableMessage> messaggiDaAggiungere = d.getMessages(agencyName);
