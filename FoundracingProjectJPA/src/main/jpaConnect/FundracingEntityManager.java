@@ -137,14 +137,15 @@ public class FundracingEntityManager {
         } finally {
             em.getTransaction().commit();
             em.close();
-            return result;
+            
         }
+        return result;
     }
 
     public <T> T read(Class<T> tableClass, int id) {
-        if(!em.isOpen())
+        while(!em.isOpen())
         	em=emf.createEntityManager();
-
+        
         T result = null;
 
         try {

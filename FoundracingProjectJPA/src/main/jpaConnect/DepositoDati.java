@@ -2,6 +2,7 @@ package jpaConnect;
 
 import applicationMiddle.RowTableMessage;
 import applicationMiddle.RowTableProjects;
+import applicationMiddle.wrapperDbs;
 import jpaEntities.*;
 
 import java.util.ArrayList;
@@ -9,12 +10,11 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class DepositoDati {
+public class DepositoDati implements wrapperDbs {
     private FundracingManager fm = null;
-
-    private AtomicBoolean aggiornamentoFatto = new AtomicBoolean( false );
-    private AtomicBoolean lock = new AtomicBoolean(true );
-
+    private AtomicBoolean aggiornamentoFatto=new AtomicBoolean(false);
+    private AtomicBoolean routinesInExecution=new AtomicBoolean(false);
+     
     
     public DepositoDati() {
     	fm = new FundracingManager();
@@ -114,8 +114,7 @@ public class DepositoDati {
         }
 
         List<MessaggioEntity> messages = fm.query(MessaggioEntity.class, sql);
-
-      
+        
         return messages;
     }
     
@@ -127,27 +126,17 @@ public class DepositoDati {
     public void setAggiornamentoFatto(boolean aggiornamentoFatto) {
     	this.aggiornamentoFatto.set(aggiornamentoFatto);
     }
+    
 
-    public void getLock(){
-        while( true ){
-            boolean isNotLocked = lock.getAndSet( false );
-
-            if ( isNotLocked )
-                break;
-            try {
-                lock.wait();
-
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
+    public boolean getRoutinesInExecution() {
+    	return this.routinesInExecution.get();
     }
-
-    public void freeLock(){
-        lock.set( true );
-        lock.notifyAll();
-
-
+    
+    public void setRoutinesInExecution(boolean routinesInExecution) {
+    	this.routinesInExecution.set(routinesInExecution);
+    	
+    }
+    
     public void close() {	//Sbagliata??? E' corretto scrivere if (fm.isSetup()) 
     	fm.exit();
     }
@@ -321,6 +310,10 @@ public class DepositoDati {
 
     public void deleteProject(int projectId) { 
     	
+    	//delete di tutti finanziamenti fatti da tutte le aziende sul progetto eliminato
+			
+    	this.deleteFinanziamenti(projectId);
+    	
     	this.deleteMessages(projectId);
         
     	 if( !fm.isSetup() ){
@@ -328,8 +321,6 @@ public class DepositoDati {
             return;
         }
         
-       
-
         fm.deleteProject(projectId);
 
 
@@ -377,6 +368,23 @@ public class DepositoDati {
         
     }
     
+    public void deleteFinanziamenti(int projectId) {
+    	String sql = "DELETE FROM FinanziamentoEntity f WHERE f.progetto =" + projectId;
+    	
+  	  if( !fm.isSetup() ){
+          System.out.print("Non ho la connessione con il database \n");
+          return;
+      }
+      
+      int occurrency = fm.executeUpdateQuery(sql);
+      /*
+      if(occurrency<1) {
+      	System.out.println("FAILED TO DELETE MESSAGES");
+      }
+		*/
+      
+  }
+    
 
     public void deleteMyStake(int projectId,String agencyName) {
         String sql = "DELETE FROM FinanziamentoEntity WHERE progetto = "+ projectId +" and azienda = '"+ agencyName + "'";
@@ -402,7 +410,8 @@ public class DepositoDati {
 
         FinanziamentoEntity finanziamento = fm.singleReturnQuery(FinanziamentoEntity.class, "SELECT f FROM FinanziamentoEntity f WHERE f.progetto =" + idProgetto + "AND f.azienda = '" + agencyName + "'");
 
-        if(finanziamento == null){
+        if(finanziamento == null)
+        {
             AziendaEntity azienda = fm.selectAgency(agencyName);
             ProgettoEntity progetto = fm.selectProject(idProgetto);
 
@@ -467,13 +476,11 @@ public class DepositoDati {
             System.out.print( "Impossibile inviare un messaggio a un'azienda non registrata \n");
             return;
         }
-
         AziendaEntity aeMitt = fm.selectAgency( val.get(0) );
         if(aeMitt == null){
             System.out.print( "Impossibile far inviare un messaggio a un'azienda non registrata \n");
             return;
         }
-        System.out.println("Questo � l'id "+Integer.parseInt(val.get(2)));
         ProgettoEntity pe = fm.selectProject(Integer.parseInt( val.get(2) ));
         if(pe == null){
             System.out.print( "Impossibile inviare un messaggio a su di un progetto inesistente \n");
@@ -524,6 +531,14 @@ public class DepositoDati {
     }
     
     public void deleteEntitiesInMysql() {
+    	
+    }
+    
+    public void freeLock() {
+    	
+    }
+    
+    public void getLock() {
     	
     }
     
