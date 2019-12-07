@@ -13,24 +13,28 @@ public class Connect {
     private Options options = new Options();
     private DB db = null;
 
-    public Boolean isSetup(){
+    private Boolean isSetup(){
         if(db == null)
             return false;
         return true;
     }
-
-    public Connect(){
-    	 options.createIfMissing(true);
+    
+    private void createConnection(String str) {
+    	options.createIfMissing(true);
         try {
-            db =  factory.open( new File("levelDbStore"), options);
+            db =  factory.open( new File(str), options);
         } catch (IOException e) {
             e.printStackTrace();
             db = null;
         }
     }
+
+    public Connect(){
+    }
+    
     public void close(){
         if(!isSetup()){
-            System.out.print("Tentativo di connessione su database chiuso \n");
+            System.out.print("Tentativo di chiusura su un database già chiuso \n");
             return;
         }
         try {
@@ -42,48 +46,16 @@ public class Connect {
     
     public void changeConnection(String str) {
     	this.close();
-    	if(str.equals("read")){
-    		 options.createIfMissing(true);
-    	        try {
-    	            db =  factory.open( new File("levelDbStore"), options);
-    	        } catch (IOException e) {
-    	            e.printStackTrace();
-    	            db = null;
-    	        }
-    	}
+    	if(str.equals("read"))
+    		 createConnection("levelDbStore");
     	else if(str.equals("delete")) 
-    	{
-    		options.createIfMissing(true);
-	        try 
-	        {
-	            db =  factory.open( new File("levelDbDeleteStore"), options);
-	        } catch (IOException e) 
-	        {
-	            e.printStackTrace();
-	            db = null;
-	        }
-    	}
+    		createConnection("levelDbDeleteStore");
     	else if(str.equals("insert"))
-    	{
-    		options.createIfMissing(true);
-	        try {
-	            db =  factory.open( new File("levelDbInsertStore"), options);
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            db = null;
-	        }
-    	}
-    	else if(str.equals("update")) 
-    	{
-    		options.createIfMissing(true);
-	        try {
-	            db =  factory.open( new File("levelDbUpdateStore"), options);
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            db = null;
-	        }
-    	}
-    	
+    		createConnection("levelDbInsertStore");
+    	else if(str.equals("update"))
+    		createConnection("levelDbUpdateStore");
+    	else
+    		System.out.println("Operazione non permessa!");
     }
    
     public void clearEntity(String cache, String entityName) {
@@ -108,6 +80,8 @@ public class Connect {
         	 e.printStackTrace();
         }
     }
+    
+    
 	
 
     public void writeEntity(String cache, String entityName, Vector<String> attributes, Vector<String> values){
