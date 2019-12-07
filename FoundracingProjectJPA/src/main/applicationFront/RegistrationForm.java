@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Vector;
 import javax.swing.*;
 
+import applicationMiddle.wrapperDbs;
 import javafx.scene.control.Alert;
 import jpaConnect.DepositoDati;
 import lvDbConnect.DepositoDatiLevelDb;
@@ -31,11 +32,11 @@ public class RegistrationForm extends JFrame {
          public JButton submit = new JButton("Submit");
          public JButton reset = new JButton("Reset");
          //public DepositoDatiLevelDb deposito=null;
-         public DepositoDati deposito=null;
+         public wrapperDbs deposito=null;
          private Boolean Mysql_active = true;
 
        // public RegistrationForm(DepositoDatiLevelDb db) {
-        public RegistrationForm(DepositoDati db) {
+         public RegistrationForm(wrapperDbs db) {
 
         	deposito=db;
         	reset.addActionListener(new ActionListener() {
@@ -52,7 +53,7 @@ public class RegistrationForm extends JFrame {
                 {
                 	
                 	if(!Mysql_active) {
-                		JOptionPane.showMessageDialog(null, "Non puoi rigistrarti perché manca la connessione al server.");
+                		JOptionPane.showMessageDialog(null, "Non puoi registrarti perché manca la connessione al server");
     					return;
                 	}else 
                 	{
@@ -118,6 +119,10 @@ public class RegistrationForm extends JFrame {
             );
           
     }
+         
+         public void changeStatusSql(boolean b) {
+        	 this.Mysql_active=b;
+         }
         
         private void resetFields() {
         	ZIP_field.setText("");

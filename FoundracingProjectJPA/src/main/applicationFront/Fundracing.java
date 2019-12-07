@@ -12,6 +12,7 @@ import applicationMiddle.Gestore;
 import applicationMiddle.Interface;
 import applicationMiddle.RowTableMessage;
 import applicationMiddle.RowTableProjects;
+import applicationMiddle.wrapperDbs;
 import applicationMiddle.Interface;
 import javafx.scene.image.*;
 
@@ -64,8 +65,14 @@ public class Fundracing extends Application
 	private Label name_agency = new Label("");
 	private Label address_agency = new Label("");
 	private Label site_agency = new Label("");
-	//private DepositoDatiLevelDb deposito = new DepositoDatiLevelDb();
-	private DepositoDati deposito=new DepositoDati();
+	private DepositoDati dbMySql = new DepositoDati();
+	private DepositoDati dbKV=new DepositoDatiLevelDb();
+	private wrapperDbs deposito=dbKV;
+	//private  dep=new DepositoDati();
+	//private wrapperDbs deposito=new wrapperDbs();
+	
+	//private DepositoDatiLevelDb deposito =(DepositoDatiLevelDb)depositoMySql;
+	//private DepositoDati deposito=new DepositoDati();
 	private JLabel label;
 	private Image image;
 	private ImageView iv1 = new ImageView();
@@ -82,57 +89,60 @@ public class Fundracing extends Application
 	private Button send = new Button("Send");
 	private ChoiceBox choice_agency = new ChoiceBox(null);
 	private Label message_receiver = new Label("Message receiver");
-	private Gestore gm =null;
+	private Gestore gm =new Gestore(deposito,table, table_message,choice_agency, agencyName);
     private Button register=new Button("Register");
 	private RegistrationForm form=new RegistrationForm(deposito);
+	private Button mysql=new Button();
+	private Button keyValue=new Button();
+	private Label mysqlText=new Label();
+	private Label keyValueText=new Label();
+	private boolean mysqlActive=true;
+	private boolean KVActive=true;
 	
 	public void start(Stage stage) {
 		
-		
 		java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE); //LEVEL.SEVERE altrimenti,o ON
-		/*
-		deposito.clearCache("insert");
-		deposito.clearCache("update");
-		deposito.clearCache("delete");
-		deposito.clearCache("read");
-		*/
+		
+		
 		deposito.getLock();
 		// inizio sezione protetta da variabile atomica
 
 			table.updateProjects(deposito.getProjectsWithoutStake());
+			
 			selectTableRow();
 
 			selectTableMessages();
-
-
+			
 			inizializeChoiceBox();
+			
+			deposito.readAziendaFromMySql();
 
 		// fine sezione protetta da variabile atomica
 		deposito.freeLock();
 		
 		
-		login.setOnAction((ActionEvent ev1)->{
+		login.setOnAction((ActionEvent ev1)->
+		{
 			String urlLogo = "";
 			
-			if(!tf_companyName.getText().equals("") || !tf_password.getText().equals("")) {
+			if(!tf_companyName.getText().equals("") || !tf_password.getText().equals("")) 
+			{
 				
 				agencyName = tf_companyName.getText();
 				String password=tf_password.getText();
 				Vector<String> result = deposito.getAgency(agencyName,password); 
-				
-				
-				
-				//Se il nome dell'azienda ï¿½ presente nel db e la password ï¿½ corretta
-				if(!result.isEmpty()) {
+				if(!result.isEmpty()) 
+				{
+				//Se il nome dell'azienda è presente nel db e la password è corretta
 					deposito.getLock();
-					// inizio sezione protetta da variabile atomica
+				// inizio sezione protetta da variabile atomica
 
-						//table.updateProjects(deposito.getProjects(agencyName));
+					//table.updateProjects(deposito.getProjects(agencyName));
 
-						if(gm!=null) {
-							gm.endAggiornamento();
-						}
-						gm=new Gestore(deposito,table, table_message,choice_agency, agencyName);
+					if(gm!=null) {
+						gm.endAggiornamento();
+					}
+						gm.changeAgency(agencyName);
 						gm.setStatusKV(true);
 						gm.setStatusMySql(true);
 						gm.startAggiornamento();
@@ -146,39 +156,37 @@ public class Fundracing extends Application
 						register.setVisible(false);
 						//update.setDisable(false);
 
-						name_agency.setText(result.get(0));
+						name_agency.setText(result.get(0)); 
 						address_agency.setText(result.get(3) + ", " + result.get(4) );
 						site_agency.setText(result.get(2));
 						urlLogo = result.get(1);
-						try
+						try 
 						{
 							image = new Image(urlLogo);
 							iv1.setImage(image);
 						}
-						catch(IllegalArgumentException iae)
+						catch(IllegalArgumentException iae) 
 						{
 							Alert alert = new Alert(Alert.AlertType.INFORMATION);
-							alert.setHeaderText("Siamo spiacienti,probabilmente l'url del tuo logo ï¿½ sbagliato,l'immagine non puï¿½ essere visualizzata!");
+							alert.setHeaderText("Siamo spiacienti,probabilmente l'url del tuo logo è sbagliato,l'immagine non può essere visualizzata!");
 							alert.showAndWait();
 						}
-						catch(Exception e)
+						catch(Exception e) 
 						{
 							Alert alert = new Alert(Alert.AlertType.INFORMATION);
-							alert.setHeaderText("Siamo spiacienti,l'immagine non puï¿½ essere visualizzata!");
+							alert.setHeaderText("Siamo spiacienti,l'immagine non può essere visualizzata!");
 							alert.showAndWait();
 						}
 						send.setDisable(false);
 						description_message.setEditable(true);
 						stake_message.setEditable(true);
 						project_message.setEditable(true);
-					// fine sezione protetta da variabile atomica
-					deposito.freeLock();
-					
-				} //Se il nome dell'azienda non ï¿½ presente nel db
+						deposito.freeLock();	
+				} //Se il nome dell'azienda non è presente nel db
 				else 
 				{
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
-					alert.setHeaderText("Il nome dell'azienda ï¿½ errato oppure la password ï¿½ scorretta!");
+					alert.setHeaderText("Il nome dell'azienda è errato oppure la password è scorretta!");
 					alert.showAndWait();
 					return;
 				}
@@ -193,25 +201,24 @@ public class Fundracing extends Application
 		
 		
 		refuse.setOnAction((ActionEvent ev1)->{
+			
 			if( deposito.getAggiornamentoFatto()==true)
 			{
 				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setHeaderText("Siamo spiacienti,abbiamo appena aggiornato la tabella perciï¿½ ï¿½ necessario riselezionare la riga che ti interessa");
+				alert.setHeaderText("Siamo spiacienti,abbiamo appena aggiornato la tabella perciò è necessario riselezionare la riga che ti interessa");
 				alert.showAndWait();	
 				return;
 			}
-
+			
 			deposito.getLock();
 			// inizio sezione protetta da variabile atomica
-				Long start=new Date().getTime();
-
+				
 				deposito.deleteMessage(selectedMessagetId);
 				table_message.updateMessages(deposito.getMessages(agencyName));
 				refuse.setDisable(true);
 				accept.setDisable(true);
 				description_message.clear();
-				Long end=new Date().getTime();
-				System.out.println("execution time: "+(end-start));
+				
 			// fine sezione protetta da variabile atomica
 			deposito.freeLock();
 
@@ -220,15 +227,15 @@ public class Fundracing extends Application
 		
 		
 		accept.setOnAction((ActionEvent ev1)->{
+			
 			if( deposito.getAggiornamentoFatto()==true)
 			{
 				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setHeaderText("Siamo spiacienti,abbiamo appena aggiornato la tabella perciï¿½ ï¿½ necessario riselezionare la riga che ti interessa");
+				alert.setHeaderText("Siamo spiacienti,abbiamo appena aggiornato la tabella perciò è necessario riselezionare la riga che ti interessa");
 				alert.showAndWait();	
 				return;
 			}
-			Long start=new Date().getTime();
-
+			
 			deposito.getLock();
 			// inizio sezione protetta da variabile atomica
 
@@ -240,9 +247,7 @@ public class Fundracing extends Application
 				description_message.clear();
 				table.updateProjects(deposito.getProjects(agencyName));
 				table_message.updateMessages(deposito.getMessages(agencyName));
-				Long end=new Date().getTime();
-				System.out.println("execution time: "+(end-start));
-
+			
 			// fine sezione protetta da variabile atomica
 			deposito.freeLock();
 		});
@@ -253,15 +258,13 @@ public class Fundracing extends Application
 				name_agency, address_agency, site_agency,tf_password,l_agencyName,l_password,
 				table_message, l_stake, l_description, l_total_budget, l_project_name, messages_received, accept, refuse,
 				l_description_message, description_message, stake_message, project_message,
-				l_stake_message, l_project_message, send, choice_agency, message_receiver, register);
+				l_stake_message, l_project_message, send, choice_agency, message_receiver, register,mysql,keyValue,mysqlText,keyValueText);
 		
 		
 		insert.setOnAction((ActionEvent ev2)->{
-			Long start=new Date().getTime();
 			String budget = total_budget.getText();
 			String desc = description.getText(); 
 			String name = name_project.getText();
-
 			
 			if(!desc.equals("") && !name.equals("") && !budget.equals("")) {
 				
@@ -281,55 +284,52 @@ public class Fundracing extends Application
 				vector.add(agencyName);
 				vector.add(Integer.toString(0));	//progress
 				vector.add(Integer.toString(0));	//stake
-
-
+				
+				deposito.getLock();
+					// inizio sezione protetta da variabile atomica
+					deposito.insertProject(vector);
+					table.updateProjects(deposito.getProjects(agencyName));
+					// fine sezione protetta da variabile atomica
+				deposito.freeLock();
 				description.clear();
 				name_project.clear();
 				total_budget.clear();
-
+				
 				vector.clear();
-				deposito.getLock();
-				// inizio sezione protetta da variabile atomica
-					table.updateProjects(deposito.getProjects(agencyName));
-				// fine sezione protetta da variabile atomica
-				deposito.freeLock();
-
+				
+				table.updateProjects(deposito.getProjects(agencyName));  
 				}else {
 				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setHeaderText("Uno dei campi non ï¿½ stato inserito!");
+				alert.setHeaderText("Uno dei campi non è stato inserito!");
 				alert.showAndWait();
 				return;
 			}
-			Long end=new Date().getTime();
-			System.out.println("execution time: "+(end-start));
+			
         });
 		
 		
 		delete.setOnAction((ActionEvent ev1)->{
-			Long start=new Date().getTime();
 			
 			if( deposito.getAggiornamentoFatto()==true)
 			{
 				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setHeaderText("Siamo spiacienti,abbiamo appena aggiornato la tabella perciï¿½ ï¿½ necessario riselezionare la riga che ti interessa");
+				alert.setHeaderText("Siamo spiacienti,abbiamo appena aggiornato la tabella perciò è necessario riselezionare la riga che ti interessa");
 				alert.showAndWait();	
 				return;
 			}
-
 			deposito.getLock();
-			
 			Boolean iAmOwner = deposito.iAmOwner(selectedProjectId, agencyName);
-			System.out.println("Project: " + selectedProjectId + " Agency: " + agencyName + " Owner " + iAmOwner);
 			
 			//Se sono il proprietario
-			if(iAmOwner) {
+			if(iAmOwner)
+			{
 				
 				if(selectedStake == 0) {
 				
-					List<String>agencies=deposito.getListAgency(); 
+					/*List<String>agencies=deposito.getListAgency(); 
 					
 					for(String a : agencies) //delete di tutti finanziamenti fatti da tutte le aziende sul progetto eliminato
-						deposito.deleteMyStake(selectedProjectId, a); 
+						deposito.deleteMyStake(selectedProjectId, a); */
 					
 					deposito.deleteProject(selectedProjectId);
 				}else {
@@ -355,11 +355,8 @@ public class Fundracing extends Application
 				alert.showAndWait();
 				return;
 			}
-
 			deposito.freeLock();
-
-			Long end=new Date().getTime();
-			System.out.println("execution time: "+(end-start));
+			
 		});
 			
 			
@@ -374,14 +371,13 @@ public class Fundracing extends Application
 			
 			
 		update.setOnAction((ActionEvent ev1)->{
-			Long start=new Date().getTime();
 				String string_stakeInsered = stake.getText();
-
+				
 				
 				if( deposito.getAggiornamentoFatto()==true)
 				{
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
-					alert.setHeaderText("Siamo spiacienti,abbiamo appena aggiornato la tabella perciï¿½ ï¿½ necessario riselezionare la riga che ti interessa");
+					alert.setHeaderText("Siamo spiacienti,abbiamo appena aggiornato la tabella perciò è necessario riselezionare la riga che ti interessa");
 					alert.showAndWait();	
 					return;
 				}
@@ -393,7 +389,7 @@ public class Fundracing extends Application
 					return;
 				}
 				
-				//Controllo se il valore inserito ï¿½ un numero
+				//Controllo se il valore inserito è un numero
 				if(!string_stakeInsered.matches("[0-9]+")) {
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
 					alert.setHeaderText("Puoi inserire solo valori numerici nel campo stake!");
@@ -401,43 +397,41 @@ public class Fundracing extends Application
 					return;
 				}
 				deposito.getLock();
-				// inizio sezione protetta da variabile atomica
-
-					int stakeInsered=Integer.parseInt(string_stakeInsered);
-					int totalStakes=deposito.getSommaStakes(selectedProjectId);
-					//se ho giï¿½ raggiunto l'obiettivo
-					if(totalStakes>=selectedTotalBudget) {
-						Alert alert = new Alert(Alert.AlertType.INFORMATION);
-						alert.setHeaderText("Ti ringraziamo per la tua generositï¿½, ma abbiamo giï¿½ raggiunto l'obbiettivo prefissato!");
-						alert.showAndWait();
-					} //se non ho raggiunto l'obiettivo e voglio aggiungere soldi
-					else  {
-						int newStake=0;
-						//se voglio mettere piï¿½ soldi di quelli necessari,metto solo quelli che mi servono per raggiungere il budget prefisso
-						if((totalStakes-selectedStake+stakeInsered)>selectedTotalBudget)
-							newStake=(selectedStake+(selectedTotalBudget-totalStakes)); //quanto ho messo piï¿½ quanto manca per il max
-						else //altrimenti il nuovo stake sarï¿½ semplicemente quello inserito
-							newStake=stakeInsered;
-						deposito.updateStake(newStake,agencyName,selectedProjectId, false);
-						table.updateProjects(deposito.getProjects(agencyName));
-						stake.setText("");
-						update.setDisable(true);
-						delete.setDisable(true);
-						description.clear();
-					deposito.freeLock();
-					}
-				Long end=new Date().getTime();
-				System.out.println("execution time: "+(end-start));
+				int stakeInsered=Integer.parseInt(string_stakeInsered);
+				int totalStakes=deposito.getSommaStakes(selectedProjectId); 
+				//se ho già raggiunto l'obiettivo
+				if(totalStakes>=selectedTotalBudget) {
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setHeaderText("Ti ringraziamo per la tua generosità, ma abbiamo già raggiunto l'obbiettivo prefissato!");
+					alert.showAndWait();
+				} //se non ho raggiunto l'obiettivo e voglio aggiungere soldi
+				else  
+				{
+					int newStake=0;
+					//se voglio mettere più soldi di quelli necessari,metto solo quelli che mi servono per raggiungere il budget prefisso
+					if((totalStakes-selectedStake+stakeInsered)>selectedTotalBudget)
+						newStake=(selectedStake+(selectedTotalBudget-totalStakes)); //quanto ho messo più quanto manca per il max
+					else //altrimenti il nuovo stake sarà semplicemente quello inserito
+						newStake=stakeInsered;
+					deposito.updateStake(newStake,agencyName,selectedProjectId, false); 
+					table.updateProjects(deposito.getProjects(agencyName));
+					stake.setText("");
+					update.setDisable(true);
+					delete.setDisable(true);
+					description.clear();
+				}
+				deposito.freeLock();
+				
 			});
 			
 			
 			
 		send.setOnAction((ActionEvent ev1)->{
-			Long start=new Date().getTime();
 			String description = description_message.getText();
 			String stake = stake_message.getText();
 			String project = project_message.getText();
 			Object object_receiver = choice_agency.getValue();
+			
 
 			if(!description.equals("") && !stake.equals("") && !project.equals("") && !(object_receiver == null)) 
 			{
@@ -448,12 +442,11 @@ public class Fundracing extends Application
 					alert.showAndWait();
 					return;
 				}
-				
-				String receiver = object_receiver.toString();
-
 				deposito.getLock();
-
-				if(deposito.getProject(Integer.parseInt(project)).isEmpty()) {
+				String receiver = object_receiver.toString();
+				
+				if(deposito.getProject(Integer.parseInt(project)).isEmpty()) 
+				{
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
 					alert.setHeaderText("Il progetto selezionato non esiste!");
 					alert.showAndWait();
@@ -474,24 +467,87 @@ public class Fundracing extends Application
 					choice_agency.setValue(null);
 					
 				}
-
 				deposito.freeLock();
-
-			} else {
+				
+			} 
+			else
+			{
 				Alert alert = new Alert(Alert.AlertType.INFORMATION);
 				alert.setHeaderText("Non hai compilato correttamente tutti i campi!");
 				alert.showAndWait();
 				return;
 			}
-			Long end=new Date().getTime();
-			System.out.println("execution time: "+(end-start));
 		});
 		
+		mysql.setOnAction((ActionEvent ev1)->{
+			if(mysqlActive==true) //mysql=green
+			{
+				if(KVActive==false)//kv=red
+				{
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setHeaderText("Non puoi disattivare la connessione di keyValue finchè non attivi quella di KeyValue!");
+					alert.showAndWait();
+					return;
+				}
+				else
+				{//kv=green
+					mysqlActive=false;
+					mysql.setStyle("-fx-background-color: red");
+					gm.setStatusMySql(false);
+					deposito=dbKV;
+					gm.changeDB(deposito);
+					form.changeStatusSql(false);
+				}
+				
+				//switch connessione
+			}
+			else
+			{//mysql=red->green
+				mysqlActive=true;
+				mysql.setStyle("-fx-background-color: green");
+				gm.setStatusMySql(true);
+				form.changeStatusSql(true);
+			}
+		});
+		
+		keyValue.setOnAction((ActionEvent ev1)->{
+			if(KVActive==true) //kv=green
+			{//sto passando da keyvalue verde a rosso
+				if(mysqlActive==false) //sql=red
+				{
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setHeaderText("Non puoi disattivare la connessione di keyValue finchè non attivi quella di mySQL!");
+					alert.showAndWait();
+					return;
+				}
+				else
+				{	//sql=green
+					KVActive=false;
+					keyValue.setStyle("-fx-background-color: red");
+					gm.setStatusKV(false);
+					deposito=dbMySql;
+					gm.changeDB(deposito);
+				}
+			}
+			else 
+			{	//kv=red
+				KVActive=true;
+				keyValue.setStyle("-fx-background-color: green");
+				deposito=dbKV;
+				deposito.readProgettoFromMySql(agencyName);
+				deposito.readMessaggioFromMySql(agencyName);
+				deposito.readAziendaFromMySql();
+				gm.setStatusKV(true);
+				gm.changeDB(deposito);
+			}
+			
+		});
 		
 		stage.setOnCloseRequest((WindowEvent we)->{
 			if(gm != null) {
 				gm.endAggiornamento();
-			deposito.close();
+			dbMySql.close();
+			dbKV.close();
 			}
 		});
 		
@@ -499,7 +555,7 @@ public class Fundracing extends Application
 				name_project, total_budget, insert, delete, iv1, stake, update, 
 				name_agency, address_agency, site_agency,l_agencyName,l_password, table_message, l_stake, l_description, l_total_budget,
 				l_project_name, messages_received, accept, refuse, l_description_message, description_message, stake_message, project_message,
-				l_stake_message, l_project_message, send, choice_agency, message_receiver, register);
+				l_stake_message, l_project_message, send, choice_agency, message_receiver, register,mysql,keyValue,mysqlText,keyValueText);
 		
 		
 	
@@ -525,8 +581,7 @@ public class Fundracing extends Application
                 
             public void handle(MouseEvent event) 
             {  
-				deposito.getLock();
-
+            	deposito.getLock();
                 final int index = row.getIndex(); 
                 RowTableProjects res = table.getItems().get(index);
                 selectedProjectId = res.getId_project();
@@ -537,9 +592,8 @@ public class Fundracing extends Application
                 update.setDisable(false);
                 delete.setDisable(false);
                 deposito.setAggiornamentoFatto(false);
-
                 deposito.freeLock();
-            }
+            }  
          });  
             return row;  
         }  
@@ -556,8 +610,7 @@ public class Fundracing extends Application
                 
             public void handle(MouseEvent event) 
             { 
-				deposito.getLock();
-
+            	deposito.getLock();
                 final int index = row.getIndex(); 
                 RowTableMessage res = table_message.getItems().get(index);
                 selectedMessagetId = res.getId();
@@ -567,9 +620,8 @@ public class Fundracing extends Application
                 accept.setDisable(false);
                 refuse.setDisable(false);
                 deposito.setAggiornamentoFatto(false);
-
                 deposito.freeLock();
-            }
+            }  
          });  
             return row;  
         }  
