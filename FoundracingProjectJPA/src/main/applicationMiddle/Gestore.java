@@ -16,7 +16,7 @@ import javafx.scene.control.ChoiceBox;
 
 public class Gestore {
 	//private DepositoDatiLevelDb d;
-	private DepositoDati d;
+	private wrapperDbs d;
 	private TableMessage tm;
 	private TableProjects tp;
 	private ChoiceBox cb;
@@ -26,7 +26,7 @@ public class Gestore {
 	private Boolean Mysql_active;
 	private Boolean KV_active;
 	//public Gestore( DepositoDatiLevelDb d,TableProjects tp,TableMessage tm,ChoiceBox cb,String agencyName)
-	public Gestore( DepositoDati d,TableProjects tp,TableMessage tm,ChoiceBox cb,String agencyName)
+	public Gestore( wrapperDbs d,TableProjects tp,TableMessage tm,ChoiceBox cb,String agencyName)
 	
 	{
 		this.d=d;
@@ -46,6 +46,10 @@ public class Gestore {
 		this.KV_active=value;
 	}
 	
+	public void changeDB(wrapperDbs d) {
+		this.d=d;
+	}
+	
 	public void startAggiornamento() {
 			timer = new Timer();
 			task = new TimerTask() {
@@ -55,16 +59,17 @@ public class Gestore {
 					
 				}
 			};
-			timer.schedule(task, 0, 15000);
+			timer.schedule(task, 0, 30000);
 			
 							
 	}
 	
 	private void aggiorna()
 	{
+		d.getLock();
 		if(this.Mysql_active&&this.KV_active) 
 		{
-			d.getLock();
+			
 			// inizio sezione protetta da variabile atomica
 
 				//routine da cache a database
@@ -77,21 +82,22 @@ public class Gestore {
 				d.readAziendaFromMySql();
 
 			// fine sezione protetta da variabile atomica
-			d.freeLock();
+			
 		}
 		
 		//Leggo in ogni caso dalla cache e aggiorno
 		d.setAggiornamentoFatto(true);
-		if(cb.getValue()==null||cb.getValue().toString().equals("")) //posso aggiornare solo se non ï¿½ stato selezionato nulla nel choicebox
+		if(cb.getValue()==null||cb.getValue().toString().equals("")) //posso aggiornare solo se non è stato selezionato nulla nel choicebox
 			cb.setItems(FXCollections.observableArrayList(d.getListAgency()));
 		tp.updateProjects(d.getProjects(agencyName));
 		List<RowTableMessage> messaggiDaAggiungere = d.getMessages(agencyName);
 		tm.updateMessages(messaggiDaAggiungere);
+		d.freeLock();
 		
 	}
 	
 	
-	private  void fromCacheToDB() {
+	private void fromCacheToDB() {
 		//Prendot tutti i progetti, finanziamenti e messaggi da copiare nel database
 		List<Vector<String>> projects = d.getProjectsWrites();
 		//Copio i progetti e i finanziamenti nel database
@@ -110,8 +116,14 @@ public class Gestore {
 	}
 	
 	public void endAggiornamento() {
-		timer.cancel();
-		timer.purge();
+		if(timer!=null) {
+			timer.cancel();
+			timer.purge();
+		}
+	}
+	
+	public void changeAgency(String agency) {
+		this.agencyName=agency;
 	}
 }
 

@@ -6,6 +6,9 @@ import javafx.scene.image.*;
 
 import javafx.event.*;
 import javafx.scene.control.*;
+
+import java.awt.Color;
+
 import javax.swing.JLabel;
 
 import applicationFront.RegistrationForm;
@@ -20,7 +23,25 @@ public class Interface {
 			Label l_agencyName,Label l_password, TableMessage table_message, Label l_stake, Label l_description, Label l_total_budget,
 			Label l_project_name, Label messages_received, Button accept, Button refuse, Label l_description_message, TextArea description_message,
 			TextField stake_message, TextField project_message, Label l_stake_message, Label l_project_message, Button send,
-			ChoiceBox choice_agency, Label message_receiver, Button register){
+			ChoiceBox choice_agency, Label message_receiver, Button register,Button mysql,Button keyValue,Label mysqlText,Label keyValueText){
+		
+		mysqlText.setText("MySQL active");
+		mysqlText.setLayoutY(565);
+		mysqlText.setLayoutX(1160);
+		
+		mysql.setLayoutX(1240);
+		mysql.setLayoutY(560);
+		mysql.setMinSize(30, 30);
+		mysql.setStyle("-fx-background-color: green");
+		
+		keyValue.setLayoutX(1240);
+		keyValue.setLayoutY(600);
+		keyValue.setMinSize(30, 30);
+		keyValue.setStyle("-fx-background-color: green");
+		
+		keyValueText.setText("KeyValue active");
+		keyValueText.setLayoutY(605);
+		keyValueText.setLayoutX(1150);
 		
 		//Abbasso tutte le y di 20
 		login.setLayoutX(490);
