@@ -78,7 +78,8 @@ public class DepositoDatiLevelDb extends DepositoDati implements wrapperDbs {
     }
     
     
-    public Vector<String> getAgency(String agencyName) {
+    public Vector<String> getAgency(String agencyName) 
+    {	/*
         Vector<String> agency = getEntityFromLevelDb( "AziendaEntity", agencyName );
         if( agency == null || agency.size() < 6 )
             return new Vector<String>();
@@ -91,7 +92,11 @@ public class DepositoDatiLevelDb extends DepositoDati implements wrapperDbs {
         ret.add(agency.get(1));
         
         return ret;
+        */
+    	return super.getAgency(agencyName);
     }
+    
+    
     public Vector<String> getAgency(String agencyName,String password) {
     	Vector<String> agency = getEntityFromLevelDb( "AziendaEntity", agencyName );
     	if( agency == null || agency.size() < 6 || !agency.get(3).equals(password))
